@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -14,6 +14,19 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void on_welcomeNavBtn_clicked();
+
+    void on_addCustomerNavBtn_clicked();
+
+    void on_rentNavBtn_clicked();
+
+    void on_returnNavBtn_clicked();
+
+    void on_viewTransactionsNavBtn_clicked();
+
+    void on_returnQueueNavBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
