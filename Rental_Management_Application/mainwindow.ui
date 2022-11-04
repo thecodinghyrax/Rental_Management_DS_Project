@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Rental Management</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/keys.ico</normaloff>:/images/keys.ico</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>

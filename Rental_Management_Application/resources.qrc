@@ -4,5 +4,6 @@
         <file>images/economy.png</file>
         <file>images/premium.png</file>
         <file>images/standard.png</file>
+        <file>images/keys.ico</file>
     </qresource>
 </RCC>
