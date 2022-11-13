@@ -116,7 +116,7 @@ hr { height: 1px; border-width: 0; }
        <string>Add Customer</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="firstNameLabel">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -133,7 +133,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>First Name</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_7">
+     <widget class="QLabel" name="lastNameLabel">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -150,12 +150,12 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>Last  Name</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_8">
+     <widget class="QLabel" name="addressLable">
       <property name="geometry">
        <rect>
         <x>70</x>
         <y>200</y>
-        <width>91</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
@@ -167,7 +167,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>Street Address</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_9">
+     <widget class="QLabel" name="cityLabel">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -184,7 +184,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>City</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="stateLabel">
       <property name="geometry">
        <rect>
         <x>210</x>
@@ -201,7 +201,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>State</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_11">
+     <widget class="QLabel" name="zipLabel">
       <property name="geometry">
        <rect>
         <x>340</x>
@@ -218,7 +218,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>Zip Code</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_12">
+     <widget class="QLabel" name="DLLabel">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -235,7 +235,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>Driver License Number</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_13">
+     <widget class="QLabel" name="CCLabel">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -252,7 +252,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>Credit Card Number</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_14">
+     <widget class="QLabel" name="phoneNumberLabel">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -396,6 +396,9 @@ border-color: rgb(255, 255, 255);</string>
       </property>
      </widget>
      <widget class="QPushButton" name="addCustSubmitBtn">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>160</x>
