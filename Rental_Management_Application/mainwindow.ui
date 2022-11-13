@@ -99,7 +99,7 @@ hr { height: 1px; border-width: 0; }
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>0</y>
+        <y>-20</y>
         <width>331</width>
         <height>81</height>
        </rect>
@@ -120,7 +120,7 @@ hr { height: 1px; border-width: 0; }
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>80</y>
+        <y>50</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -137,7 +137,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>140</y>
+        <y>110</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -154,7 +154,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>200</y>
+        <y>170</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -171,7 +171,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>260</y>
+        <y>230</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -187,8 +187,8 @@ font: 12pt &quot;Segoe UI&quot;;</string>
      <widget class="QLabel" name="stateLabel">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>260</y>
+        <x>70</x>
+        <y>290</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -204,8 +204,8 @@ font: 12pt &quot;Segoe UI&quot;;</string>
      <widget class="QLabel" name="zipLabel">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>260</y>
+        <x>250</x>
+        <y>290</y>
         <width>91</width>
         <height>21</height>
        </rect>
@@ -222,7 +222,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>380</y>
+        <y>410</y>
         <width>171</width>
         <height>21</height>
        </rect>
@@ -239,7 +239,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>440</y>
+        <y>470</y>
         <width>171</width>
         <height>21</height>
        </rect>
@@ -256,7 +256,7 @@ font: 12pt &quot;Segoe UI&quot;;</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>320</y>
+        <y>350</y>
         <width>171</width>
         <height>21</height>
        </rect>
@@ -269,142 +269,16 @@ font: 12pt &quot;Segoe UI&quot;;</string>
        <string>Phone Number</string>
       </property>
      </widget>
-     <widget class="QTextEdit" name="firstNameInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>100</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="lastNameInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>160</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="addressInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>220</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="cityInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>280</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="stateInput">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>280</y>
-        <width>121</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="zipInput">
-      <property name="geometry">
-       <rect>
-        <x>340</x>
-        <y>280</y>
-        <width>111</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="phoneNumberInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>340</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="DLInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>400</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="CCInput">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>460</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="addCustSubmitBtn">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>530</y>
-        <width>131</width>
-        <height>51</height>
+        <x>150</x>
+        <y>570</y>
+        <width>121</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -419,6 +293,280 @@ background-color: rgb(0, 159, 77);</string>
       </property>
       <property name="text">
        <string>Submit</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="firstNameInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>70</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="validateLable">
+      <property name="geometry">
+       <rect>
+        <x>-40</x>
+        <y>532</y>
+        <width>501</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(170, 0, 0);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lastNameInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>130</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="addressInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>190</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="cityInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>250</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="phoneNumberInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>370</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="DLInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>430</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="CCInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>490</y>
+        <width>281</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="stateInput">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>310</y>
+        <width>171</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="zipInput">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>310</y>
+        <width>101</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="existingCustomersLabel">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>40</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+font: 12pt &quot;Segoe UI&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Existing Customers</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>70</y>
+        <width>256</width>
+        <height>451</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="loadCustList">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>40</y>
+        <width>101</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 127);
+color: rgb(0, 0, 0);</string>
+      </property>
+      <property name="text">
+       <string>Load Customers</string>
       </property>
      </widget>
     </widget>
@@ -1368,6 +1516,37 @@ background-color: rgb(25, 25, 25);</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>textBrowser</tabstop>
+  <tabstop>calendarWidget</tabstop>
+  <tabstop>selectEconomyBtn</tabstop>
+  <tabstop>selectCompactBtn</tabstop>
+  <tabstop>selectStandardBtn</tabstop>
+  <tabstop>selectPremiumBtn</tabstop>
+  <tabstop>viewTransactionsNavBtn_2</tabstop>
+  <tabstop>listView</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>viewTransactionsNavBtn_3</tabstop>
+  <tabstop>listView_2</tabstop>
+  <tabstop>returnedToLotBtn</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>welcomeNavBtn</tabstop>
+  <tabstop>addCustomerNavBtn</tabstop>
+  <tabstop>rentNavBtn</tabstop>
+  <tabstop>returnNavBtn</tabstop>
+  <tabstop>returnQueueNavBtn</tabstop>
+  <tabstop>viewTransactionsNavBtn</tabstop>
+  <tabstop>firstNameInput</tabstop>
+  <tabstop>lastNameInput</tabstop>
+  <tabstop>addressInput</tabstop>
+  <tabstop>cityInput</tabstop>
+  <tabstop>stateInput</tabstop>
+  <tabstop>zipInput</tabstop>
+  <tabstop>phoneNumberInput</tabstop>
+  <tabstop>DLInput</tabstop>
+  <tabstop>CCInput</tabstop>
+  <tabstop>addCustSubmitBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>

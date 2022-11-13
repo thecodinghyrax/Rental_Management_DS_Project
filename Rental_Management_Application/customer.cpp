@@ -4,13 +4,15 @@
 Customer::Customer(){
 
 };
-Customer::Customer(std::string firstName,
-                   std::string lastName,
-                   std::string address,
-                   std::string city,
-                   std::string state,
-                   std::string zip,
-                   std::string phoneNumber){
+Customer::Customer(QString firstName,
+                   QString lastName,
+                   QString address,
+                   QString city,
+                   QString state,
+                   QString zip,
+                   QString phoneNumber,
+                   QString DLNumber,
+                   QString CCNumber){
     this->firstName = firstName;
     this->lastName = lastName;
     this->address = address;
@@ -18,56 +20,70 @@ Customer::Customer(std::string firstName,
     this->state = state;
     this->zip = zip;
     this->phoneNumber = phoneNumber;
+    this->DLNumber = DLNumber;
+    this->CCNumber = CCNumber;
 };
 Customer::~Customer(){
 
 };
-void Customer::setFirstName(std::string firstName){
+void Customer::setFirstName(QString firstName){
         this->firstName = firstName;
 };
-void Customer::setLastName(std::string lastName){
+void Customer::setLastName(QString lastName){
         this->lastName = lastName;
 };
-void Customer::setAddress(std::string address){
+void Customer::setAddress(QString address){
         this->address = address;
 };
-void Customer::setCity(std::string city){
+void Customer::setCity(QString city){
         this->city = city;
 };
-void Customer::setState(std::string state){
+void Customer::setState(QString state){
         this->state = state;
 };
-void Customer::setZip(std::string zip){
+void Customer::setZip(QString zip){
         this->zip = zip;
 };
-void Customer::setPhoneNumber(std::string phoneNumber){
+void Customer::setPhoneNumber(QString phoneNumber){
         this->phoneNumber = phoneNumber;
 };
+void Customer::setDLNumber(QString DLNumber){
+        this->DLNumber = DLNumber;
+};
+void Customer::setCCNumber(QString CCNumber){
+        this->CCNumber = CCNumber;
+};
 
-std::string Customer::getFirstName(){
+QString Customer::getFirstName(){
     return firstName;
 };
-std::string Customer::getLastName(){
+QString Customer::getLastName(){
         return lastName;
 };
-std::string Customer::getAddress(){
+QString Customer::getAddress(){
         return address;
 };
-std::string Customer::getCity(){
+QString Customer::getCity(){
         return city;
 };
-std::string Customer::getState(){
+QString Customer::getState(){
         return state;
 };
-std::string Customer::getZip(){
+QString Customer::getZip(){
         return zip;
 };
-std::string Customer::getPhoneNumber(){
+QString Customer::getPhoneNumber(){
         return phoneNumber;
 };
+QString Customer::getDLNumber(){
+        return DLNumber;
+};
+QString Customer::getCCNumber(){
+        return CCNumber;
+};
 
-std::string Customer::printCustomer(){
-    std::string output;
+QString Customer::printCustomer(){
+    QString output;
     output.append("Customer[");;
     output.append(getFirstName() + " ");
     output.append(getLastName() + "\n");
@@ -76,6 +92,8 @@ std::string Customer::printCustomer(){
     output.append(getState() + " ");
     output.append(getZip() + "\n");
     output.append(getPhoneNumber() + "\n");
+    output.append(getDLNumber() + "\n");
+    output.append(getCCNumber() + "\n");
     return output;
 };
 
