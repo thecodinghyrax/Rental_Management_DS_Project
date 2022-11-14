@@ -88,11 +88,14 @@ bool MainWindow::loadCustomers(){
             tempCust.setCCNumber(line);
             break;
         default:
+            file.close();
             return false;
             break;
         }
         count++;
     }
+
+    file.close();
     return true;
 };
 
@@ -139,15 +142,45 @@ bool MainWindow::loadVehicles(){
             else{
                 tempVehicle.setIsRented(false);
             }
+            break;
         case 7:
             tempVehicle.setRenterId(line.toInt());
             break;
         default:
+            file.close();
             return false;
             break;
         }
         count++;
     }
+
+    file.close();
+    return true;
+}
+
+bool MainWindow::saveCustomers()
+{
+    QMessageBox box;
+    QFile file(":/images/customers.txt");
+    if(!file.open(QIODevice::WriteOnly)){
+        box.setText("Faild to Open customers.txt"); // cant open for some reason
+        box.exec();
+        return false;
+    }
+    box.setText("customers.txt was opened");
+    box.exec();
+    QTextStream stream(&file);
+
+    for(auto& customer : customers){
+        stream << customer.getFirstName() << "\n";
+        stream << customer.getLastName() << "\n";
+    }
+    file.close();
+    return true;
+}
+
+bool MainWindow::saveVehilces()
+{
     return true;
 };
 
@@ -339,7 +372,7 @@ void MainWindow::on_editCustSubmitBtn_clicked()
         }
     }
 
-
+saveCustomers();
 }
 
 void MainWindow::clearAllInput(){

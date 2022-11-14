@@ -29,6 +29,10 @@ private slots:
 
     bool loadVehicles();
 
+    bool saveCustomers();
+
+    bool saveVehilces();
+
     void on_welcomeNavBtn_clicked();
 
     void on_addCustomerNavBtn_clicked();

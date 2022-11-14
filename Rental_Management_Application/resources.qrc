@@ -7,5 +7,7 @@
         <file>images/keys.ico</file>
         <file>images/customers.txt</file>
         <file>images/vehicles.txt</file>
+        <file>images/customers-bkp.txt</file>
+        <file>images/vehicles-bkp.txt</file>
     </qresource>
 </RCC>
