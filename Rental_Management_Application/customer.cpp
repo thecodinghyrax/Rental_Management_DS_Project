@@ -1,9 +1,7 @@
 ﻿#include "customer.h"
+#include "qmessagebox.h"
 
 
-Customer::Customer(){
-
-};
 Customer::Customer(QString firstName,
                    QString lastName,
                    QString address,
@@ -13,15 +11,17 @@ Customer::Customer(QString firstName,
                    QString phoneNumber,
                    QString DLNumber,
                    QString CCNumber){
-    this->firstName = firstName;
-    this->lastName = lastName;
-    this->address = address;
-    this->city = city;
-    this->state = state;
-    this->zip = zip;
-    this->phoneNumber = phoneNumber;
-    this->DLNumber = DLNumber;
-    this->CCNumber = CCNumber;
+    setFirstName(firstName);
+    setLastName(lastName);
+    setAddress(address);
+    setCity(city);
+    setState(state);
+    setZip(zip);
+    setPhoneNumber(phoneNumber);
+    setDLNumber(DLNumber);
+    setCCNumber(CCNumber);
+    setCustNumber();
+
 };
 Customer::~Customer(){
 
@@ -80,6 +80,28 @@ QString Customer::getDLNumber(){
 };
 QString Customer::getCCNumber(){
         return CCNumber;
+};
+
+int Customer::getCustNumber(){
+    return custNumber;
+};
+
+void Customer::setCustNumber(){
+    int id = createCustNumber(this->getCCNumber(), this->getDLNumber());
+    this->custNumber = id;
+};
+
+int Customer::createCustNumber(QString str1, QString str2){
+
+    uint value1 = 0;
+    for(int i = 0; i < str1.length(); ++i){
+        value1 += str1[i].digitValue();
+        }
+    uint value2 = 0;
+    for(int i = 0; i < str2.length(); ++i){
+        value2 += str2[i].digitValue();
+        }
+    return (value1 * value1 * value2 * value2) % 1000000;
 };
 
 QString Customer::printCustomer(){

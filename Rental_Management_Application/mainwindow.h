@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QVector>
 #include "customer.h"
+#include "qlistwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -54,6 +55,16 @@ private slots:
     void on_addCustSubmitBtn_clicked();
 
     void on_loadCustList_clicked();
+
+    void on_listWidget_itemClicked(QListWidgetItem *item);
+
+    int getCustomerIndexById(int);
+
+    void on_editCustSubmitBtn_clicked();
+
+    void clearAllInput();
+
+    void on_deleteCustSubmitBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
