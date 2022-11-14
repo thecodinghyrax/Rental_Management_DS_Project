@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QVector>
+#include <QFile>
 #include "customer.h"
 #include "qlistwidget.h"
+#include "rentalvehicle.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,6 +22,13 @@ public:
     ~MainWindow();
 
 private slots:
+
+    bool validate(QString, QString, int, int);
+
+    bool loadCustomers();
+
+    bool loadVehicles();
+
     void on_welcomeNavBtn_clicked();
 
     void on_addCustomerNavBtn_clicked();
@@ -31,8 +40,6 @@ private slots:
     void on_viewTransactionsNavBtn_clicked();
 
     void on_returnQueueNavBtn_clicked();
-
-    bool validate(QString, QString, int, int);
 
     void on_firstNameInput_textChanged(const QString &arg1);
 
@@ -69,5 +76,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QVector<Customer> customers;
+    QVector<RentalVehicle> rentals;
 };
 #endif // MAINWINDOW_H

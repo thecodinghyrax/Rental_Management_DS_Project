@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     customer.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    rentalvehicle.cpp
 
 HEADERS += \
     customer.h \
-    mainwindow.h
+    mainwindow.h \
+    rentalvehicle.h
 
 FORMS += \
     mainwindow.ui

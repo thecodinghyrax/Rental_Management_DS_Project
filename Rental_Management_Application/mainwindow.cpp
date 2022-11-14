@@ -8,35 +8,19 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     clearAllInput();
-//    ui->editCustSubmitBtn->hide();
-//    ui->addCustSubmitBtn->show();
-    customers.push_back(Customer("Drew",
-                                 "Crawford",
-                                 "437 Main Cir",
-                                 "Ankeny",
-                                 "Iowa",
-                                 "50123",
-                                 "514-868-9227",
-                                 "8492PP0043",
-                                 "9999-9999-9999-1234"));
-    customers.push_back(Customer("Cathy",
-                                 "Crawford",
-                                 "4427 SW Harmony Cir",
-                                 "Ankeny",
-                                 "Iowa",
-                                 "40023",
-                                 "515-865-7890",
-                                 "7894BB5674",
-                                 "1234-1234-4321-6435"));
-    customers.push_back(Customer("Larry",
-                                 "Thompson",
-                                 "1 Rockway Cir",
-                                 "Des Moines",
-                                 "Iowa",
-                                 "52023",
-                                 "515-555-8888",
-                                 "8493OI4784",
-                                 "4321-7894-1234-1234"));
+
+   if(!loadCustomers()){
+       QMessageBox box;
+       box.setWindowTitle("Error");
+       box.setText("Customers file could not be loaded!");
+       box.exec();
+   }
+   if(!loadVehicles()){
+       QMessageBox box;
+       box.setWindowTitle("Error");
+       box.setText("Vehicles file could not be loaded!");
+       box.exec();
+   }
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +40,116 @@ bool MainWindow::validate(QString userInput, QString msg, int minLength, int max
         return true;
     }
 }
+
+bool MainWindow::loadCustomers(){
+    QFile file(":/images/customers.txt");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        return false;
+    }
+
+    QTextStream in(&file);
+    int count = 0;
+    Customer tempCust;
+    QString line;
+    while(!in.atEnd()){
+        line = in.readLine();
+        if(line == "+++"){
+            count = 0;
+            tempCust.setCustNumber();
+            customers.push_back(tempCust);
+            line = in.readLine();
+        }
+        switch(count){
+        case 0:
+            tempCust.setFirstName(line);
+            break;
+        case 1:
+            tempCust.setLastName(line);
+            break;
+        case 2:
+            tempCust.setAddress(line);
+            break;
+        case 3:
+            tempCust.setCity(line);
+            break;
+        case 4:
+            tempCust.setState(line);
+            break;
+        case 5:
+            tempCust.setZip(line);
+            break;
+        case 6:
+            tempCust.setPhoneNumber(line);
+            break;
+        case 7:
+            tempCust.setDLNumber(line);
+            break;
+        case 8:
+            tempCust.setCCNumber(line);
+            break;
+        default:
+            return false;
+            break;
+        }
+        count++;
+    }
+    return true;
+};
+
+bool MainWindow::loadVehicles(){
+    QFile file(":/images/vehicles.txt");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        return false;
+    }
+
+    QTextStream in(&file);
+    int count = 0;
+    RentalVehicle tempVehicle;
+    QString line;
+    while(!in.atEnd()){
+        line = in.readLine();
+        if(line == "+++"){
+            count = 0;
+            rentals.push_back(tempVehicle);
+            line = in.readLine();
+        }
+        switch(count){
+        case 0:
+            tempVehicle.setId(line.toInt());
+            break;
+        case 1:
+            tempVehicle.setCatagory(line);
+            break;
+        case 2:
+            tempVehicle.setMake(line);
+            break;
+        case 3:
+            tempVehicle.setModel(line);
+            break;
+        case 4:
+            tempVehicle.setYear(line.toInt());
+            break;
+        case 5:
+            tempVehicle.setMilage(line.toInt());
+            break;
+        case 6:
+            if(line == "true"){
+                tempVehicle.setIsRented(true);
+            }
+            else{
+                tempVehicle.setIsRented(false);
+            }
+        case 7:
+            tempVehicle.setRenterId(line.toInt());
+            break;
+        default:
+            return false;
+            break;
+        }
+        count++;
+    }
+    return true;
+};
 
 // Navigation
 void MainWindow::on_welcomeNavBtn_clicked()

@@ -5,5 +5,7 @@
         <file>images/premium.png</file>
         <file>images/standard.png</file>
         <file>images/keys.ico</file>
+        <file>images/customers.txt</file>
+        <file>images/vehicles.txt</file>
     </qresource>
 </RCC>

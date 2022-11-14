@@ -2,6 +2,20 @@
 #include "qmessagebox.h"
 
 
+Customer::Customer()
+{
+    setFirstName("Not Entered");
+    setLastName("Not Entered");
+    setAddress("Not Entered");
+    setCity("Not Entered");
+    setState("Not Entered");
+    setZip("Not Entered");
+    setPhoneNumber("Not Entered");
+    setDLNumber("Not Entered");
+    setCCNumber("Not Entered");
+    // setCustomerNumber will need to be call after the DL and CC info is entered
+}
+
 Customer::Customer(QString firstName,
                    QString lastName,
                    QString address,

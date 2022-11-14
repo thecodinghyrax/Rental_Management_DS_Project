@@ -19,6 +19,7 @@ private:
     QString CCNumber;
     int custNumber;
 public:
+    Customer();
     Customer(QString, QString, QString, QString,
              QString, QString, QString, QString, QString);
     ~Customer();
