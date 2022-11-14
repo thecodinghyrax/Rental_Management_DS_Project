@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QVector>
+#include "customer.h"
+#include "qlistwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,7 +32,42 @@ private slots:
 
     void on_returnQueueNavBtn_clicked();
 
+    bool validate(QString, QString, int, int);
+
+    void on_firstNameInput_textChanged(const QString &arg1);
+
+    void on_lastNameInput_textChanged(const QString &arg1);
+
+    void on_addressInput_textChanged(const QString &arg1);
+
+    void on_cityInput_textChanged(const QString &arg1);
+
+    void on_stateInput_textChanged(const QString &arg1);
+
+    void on_zipInput_textChanged(const QString &arg1);
+
+    void on_phoneNumberInput_textChanged(const QString &arg1);
+
+    void on_DLInput_textChanged(const QString &arg1);
+
+    void on_CCInput_textChanged(const QString &arg1);
+
+    void on_addCustSubmitBtn_clicked();
+
+    void on_loadCustList_clicked();
+
+    void on_listWidget_itemClicked(QListWidgetItem *item);
+
+    int getCustomerIndexById(int);
+
+    void on_editCustSubmitBtn_clicked();
+
+    void clearAllInput();
+
+    void on_deleteCustSubmitBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QVector<Customer> customers;
 };
 #endif // MAINWINDOW_H

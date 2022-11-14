@@ -7,6 +7,36 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    clearAllInput();
+//    ui->editCustSubmitBtn->hide();
+//    ui->addCustSubmitBtn->show();
+    customers.push_back(Customer("Drew",
+                                 "Crawford",
+                                 "437 Main Cir",
+                                 "Ankeny",
+                                 "Iowa",
+                                 "50123",
+                                 "514-868-9227",
+                                 "8492PP0043",
+                                 "9999-9999-9999-1234"));
+    customers.push_back(Customer("Cathy",
+                                 "Crawford",
+                                 "4427 SW Harmony Cir",
+                                 "Ankeny",
+                                 "Iowa",
+                                 "40023",
+                                 "515-865-7890",
+                                 "7894BB5674",
+                                 "1234-1234-4321-6435"));
+    customers.push_back(Customer("Larry",
+                                 "Thompson",
+                                 "1 Rockway Cir",
+                                 "Des Moines",
+                                 "Iowa",
+                                 "52023",
+                                 "515-555-8888",
+                                 "8493OI4784",
+                                 "4321-7894-1234-1234"));
 }
 
 MainWindow::~MainWindow()
@@ -14,7 +44,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+bool MainWindow::validate(QString userInput, QString msg, int minLength, int maxLength){
+    ui->validateLable->setText("");
+    if(userInput.length() < minLength || userInput.length() > maxLength){
+        ui->validateLable->setText(msg + " must be bwtween " +
+                                   QString::number(minLength) + " and " +
+                                   QString::number(maxLength));
+        return false;
+    } else {
+        ui->validateLable->setText("");
+        return true;
+    }
+}
 
+// Navigation
 void MainWindow::on_welcomeNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
@@ -24,6 +67,8 @@ void MainWindow::on_welcomeNavBtn_clicked()
 void MainWindow::on_addCustomerNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    ui->editCustSubmitBtn->hide();
+    ui->addCustSubmitBtn->show();
 }
 
 
@@ -50,4 +95,184 @@ void MainWindow::on_viewTransactionsNavBtn_clicked()
     ui->stackedWidget->setCurrentIndex(5);
 }
 
+
+// Customer form
+
+void MainWindow::on_firstNameInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "First Name", 2, 20);
+}
+
+
+void MainWindow::on_lastNameInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "Last Name", 2, 20);
+}
+
+
+void MainWindow::on_addressInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "Address", 6, 30);
+}
+
+
+void MainWindow::on_cityInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "City", 2, 25);
+}
+
+
+void MainWindow::on_stateInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "State", 2, 12);
+}
+
+
+void MainWindow::on_zipInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "Zip Code", 5, 10);
+}
+
+
+void MainWindow::on_phoneNumberInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "Phone Number", 7, 31);
+}
+
+
+void MainWindow::on_DLInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "Drivers license number", 9, 11);
+}
+
+
+void MainWindow::on_CCInput_textChanged(const QString &arg1)
+{
+    validate(arg1, "Credit card number ", 16, 19);
+}
+
+
+void MainWindow::on_addCustSubmitBtn_clicked()
+{
+    QString first = ui->firstNameInput->text();
+    if(ui->validateLable->text().length() == 0 && first.length() != 0){
+        customers.push_back(Customer(
+                                ui->firstNameInput->text(),
+                                ui->lastNameInput->text(),
+                                ui->addressInput->text(),
+                                ui->cityInput->text(),
+                                ui->stateInput->text(),
+                                ui->zipInput->text(),
+                                ui->phoneNumberInput->text(),
+                                ui->DLInput->text(),
+                                ui->CCInput->text()
+                                ));
+
+        clearAllInput();
+        ui->validateLable->setText(first + " has been added!");
+    }
+
+}
+
+
+void MainWindow::on_loadCustList_clicked()
+{
+    ui->listWidget->clear();
+    for(auto customer : customers){
+        ui->listWidget->addItem(new QListWidgetItem(QString::number(customer.getCustNumber()) + " " +
+                                                    customer.getFirstName() + " " +
+                                                    customer.getLastName()
+                                                    ));
+        }
+}
+
+
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    ui->addCustSubmitBtn->hide();
+    ui->editCustSubmitBtn->show();
+    ui->deleteCustSubmitBtn->show();
+    QString cust = item->text();
+    int custNumber = cust.split(" ").at(0).toInt();
+    int customerIndex = getCustomerIndexById(custNumber);
+    if(customerIndex > -1){
+        Customer temp = customers[customerIndex];
+        ui->firstNameInput->setText(temp.getFirstName());
+        ui->lastNameInput->setText(temp.getLastName());
+        ui->addressInput->setText(temp.getAddress());
+        ui->cityInput->setText(temp.getCity());
+        ui->stateInput->setText(temp.getState());
+        ui->zipInput->setText(temp.getZip());
+        ui->phoneNumberInput->setText(temp.getPhoneNumber());
+        ui->DLInput->setText(temp.getDLNumber());
+        ui->CCInput->setText(temp.getCCNumber());
+        ui->custNumberLabel->setText(QString::number(temp.getCustNumber()));
+        ui->listWidget->clear();
+    }
+}
+
+int MainWindow::getCustomerIndexById(int id){
+    for(int i = 0; i < customers.size(); ++i){
+        if(customers[i].getCustNumber() == id){
+            return i;
+        }
+    }
+    return -1;
+};
+
+
+void MainWindow::on_editCustSubmitBtn_clicked()
+{
+    if(ui->validateLable->text().length() < 1){
+
+        int custNumber = ui->custNumberLabel->text().toInt();
+        for(int i = 0; i < customers.size(); ++i){
+            if(customers[i].getCustNumber() == custNumber){
+                customers[i].setFirstName(ui->firstNameInput->text());
+                customers[i].setLastName(ui->lastNameInput->text());
+                customers[i].setAddress(ui->addressInput->text());
+                customers[i].setCity(ui->cityInput->text());
+                customers[i].setState(ui->stateInput->text());
+                customers[i].setZip(ui->zipInput->text());
+                customers[i].setPhoneNumber(ui->phoneNumberInput->text());
+                customers[i].setDLNumber(ui->DLInput->text());
+                customers[i].setCCNumber(ui->CCInput->text());
+
+                clearAllInput();
+                ui->validateLable->setText("Recored has been updated!");
+
+            }
+        }
+    }
+
+
+}
+
+void MainWindow::clearAllInput(){
+    ui->firstNameInput->clear();
+    ui->lastNameInput->clear();
+    ui->addressInput->clear();
+    ui->cityInput->clear();
+    ui->stateInput->clear();
+    ui->zipInput->clear();
+    ui->phoneNumberInput->clear();
+    ui->DLInput->clear();
+    ui->CCInput->clear();
+    ui->editCustSubmitBtn->hide();
+    ui->deleteCustSubmitBtn->hide();
+    ui->addCustSubmitBtn->show();
+};
+
+
+void MainWindow::on_deleteCustSubmitBtn_clicked()
+{
+    int custNumber = ui->custNumberLabel->text().toInt();
+    for(int i = 0; i < customers.size(); ++i){
+        if(customers[i].getCustNumber() == custNumber){
+            customers.erase(customers.begin() + i);
+            clearAllInput();
+            ui->validateLable->setText("Recored has been deleted!");
+            }
+        }
+}
 
