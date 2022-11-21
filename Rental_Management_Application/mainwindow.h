@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QVector>
 #include <QFile>
+#include <QStandardPaths>
+#include <set>
 #include "customer.h"
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
@@ -76,6 +78,16 @@ private slots:
     void clearAllInput();
 
     void on_deleteCustSubmitBtn_clicked();
+
+    void on_selectEconomyBtn_clicked();
+
+    void on_selectCompactBtn_clicked();
+
+    void on_selectStandardBtn_clicked();
+
+    void on_selectPremiumBtn_clicked();
+
+    void on_customerSearchBox_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

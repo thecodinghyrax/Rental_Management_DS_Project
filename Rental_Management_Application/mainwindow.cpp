@@ -9,14 +9,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     clearAllInput();
 
+    QMessageBox box;
    if(!loadCustomers()){
-       QMessageBox box;
        box.setWindowTitle("Error");
        box.setText("Customers file could not be loaded!");
        box.exec();
    }
    if(!loadVehicles()){
-       QMessageBox box;
        box.setWindowTitle("Error");
        box.setText("Vehicles file could not be loaded!");
        box.exec();
@@ -42,8 +41,8 @@ bool MainWindow::validate(QString userInput, QString msg, int minLength, int max
 }
 
 bool MainWindow::loadCustomers(){
-    QFile file(":/images/customers.txt");
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+    QFile file("customers.txt");
+    if(!file.open(QIODevice::ReadOnly)){
         return false;
     }
 
@@ -51,14 +50,18 @@ bool MainWindow::loadCustomers(){
     int count = 0;
     Customer tempCust;
     QString line;
+
     while(!in.atEnd()){
+        qCritical() << "Starting loadCustomers while loop";
         line = in.readLine();
+        qCritical() << "first line: " << line;
         if(line == "+++"){
             count = 0;
             tempCust.setCustNumber();
             customers.push_back(tempCust);
             line = in.readLine();
         }
+
         switch(count){
         case 0:
             tempCust.setFirstName(line);
@@ -100,7 +103,7 @@ bool MainWindow::loadCustomers(){
 };
 
 bool MainWindow::loadVehicles(){
-    QFile file(":/images/vehicles.txt");
+    QFile file("vehicles.txt");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         return false;
     }
@@ -160,20 +163,24 @@ bool MainWindow::loadVehicles(){
 
 bool MainWindow::saveCustomers()
 {
-    QMessageBox box;
-    QFile file(":/images/customers.txt");
-    if(!file.open(QIODevice::WriteOnly)){
-        box.setText("Faild to Open customers.txt"); // cant open for some reason
-        box.exec();
+    QFile file("customers.txt");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
         return false;
     }
-    box.setText("customers.txt was opened");
-    box.exec();
+
     QTextStream stream(&file);
 
     for(auto& customer : customers){
         stream << customer.getFirstName() << "\n";
         stream << customer.getLastName() << "\n";
+        stream << customer.getAddress() << "\n";
+        stream << customer.getCity() << "\n";
+        stream << customer.getState() << "\n";
+        stream << customer.getZip() << "\n";
+        stream << customer.getPhoneNumber() << "\n";
+        stream << customer.getDLNumber() << "\n";
+        stream << customer.getCCNumber() << "\n";
+        stream << "+++\n";
     }
     file.close();
     return true;
@@ -401,5 +408,72 @@ void MainWindow::on_deleteCustSubmitBtn_clicked()
             ui->validateLable->setText("Recored has been deleted!");
             }
         }
+    saveCustomers();
+}
+
+
+void MainWindow::on_selectEconomyBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:5px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:0px solid green;");
+    ui->catSelectedLabel->setText("Economy");
+}
+
+
+void MainWindow::on_selectCompactBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:5px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:0px solid green;");
+    ui->catSelectedLabel->setText("Compact");
+}
+
+
+void MainWindow::on_selectStandardBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:5px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:0px solid green;");
+    ui->catSelectedLabel->setText("Standard");
+}
+
+
+void MainWindow::on_selectPremiumBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:5px solid green;");
+    ui->catSelectedLabel->setText("Premium");
+}
+
+
+void MainWindow::on_customerSearchBox_textChanged(const QString &arg1)
+{
+    std::set<Customer> results;
+    QString temp;
+    for(auto& customer : customers){
+        if(customer.getLastName().contains(arg1)){
+            results.insert(customer);
+        }
+        if(customer.getFirstName().contains(arg1)){
+            results.insert(customer);
+        }
+    }
+    for(auto& result : results){
+        QString temp2 = result.getFirstName().toStdString.c_str();
+        temp.append(result.getFirstName() + " ");
+    }
+    std::set<Customer>::iterator itr;
+    for(itr = results.begin(); itr != results.end(); ++itr){
+        temp.append(itr->getFirstName() + " ");
+        temp.append((itr->getLastName() + " "));
+        temp.append((QString::number(itr->getCustNumber())));
+        ui->customerSearchResultsList->addItem(temp);
+    }
 }
 
