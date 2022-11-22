@@ -8,9 +8,11 @@
 #include <QStandardPaths>
 #include <QTextStream>
 #include <QSet>
+#include <QMap>
 #include "customer.h"
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
+#include "inventory.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -94,6 +96,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QVector<Customer> customers;
-    QVector<RentalVehicle> rentals;
+    Inventory inventory;
+    QMap<int, RentalVehicle*> transactions;
 };
 #endif // MAINWINDOW_H

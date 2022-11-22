@@ -10,12 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     customer.cpp \
+    inventory.cpp \
     main.cpp \
     mainwindow.cpp \
     rentalvehicle.cpp
 
 HEADERS += \
     customer.h \
+    inventory.h \
     mainwindow.h \
     rentalvehicle.h
 
