@@ -40,7 +40,7 @@
      <string notr="true">background-color: rgb(0, 0, 0);</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Welcome">
      <widget class="QLabel" name="label">
@@ -996,13 +996,13 @@ background-color: rgb(255, 255, 127);</string>
        <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
-       <string>Premium</string>
+       <string>None</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_21">
       <property name="geometry">
        <rect>
-        <x>370</x>
+        <x>380</x>
         <y>400</y>
         <width>161</width>
         <height>21</height>
@@ -1044,9 +1044,9 @@ background-color: rgb(255, 255, 127);</string>
      <widget class="QPushButton" name="completeRentalButton">
       <property name="geometry">
        <rect>
-        <x>390</x>
+        <x>380</x>
         <y>480</y>
-        <width>171</width>
+        <width>231</width>
         <height>51</height>
        </rect>
       </property>
@@ -1071,7 +1071,7 @@ background-color: rgb(0, 159, 77);</string>
      <widget class="QSpinBox" name="daysSpinBox">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>550</x>
         <y>400</y>
         <width>61</width>
         <height>25</height>
@@ -1081,7 +1081,8 @@ background-color: rgb(0, 159, 77);</string>
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 16pt &quot;Segoe UI&quot;;</string>
+       <string notr="true">font: 16pt &quot;Segoe UI&quot;;
+color: rgb(255, 255, 255);</string>
       </property>
       <property name="minimum">
        <number>1</number>
@@ -1095,6 +1096,9 @@ background-color: rgb(0, 159, 77);</string>
         <width>271</width>
         <height>91</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="customerSearchBox">
@@ -1111,6 +1115,9 @@ background-color: rgb(0, 159, 77);</string>
       </property>
       <property name="toolTipDuration">
        <number>2</number>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </widget>

@@ -20,12 +20,25 @@ MainWindow::MainWindow(QWidget *parent)
        box.setText("Vehicles file could not be loaded!");
        box.exec();
    }
+   /*
+Note on file finding issues:
+Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
+*/
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+Customer MainWindow::getCustById(int id){
+    for(auto& customer : customers){
+        if(customer.getCustNumber() == id){
+            return customer;
+        }
+    }
+    return Customer();
+};
 
 bool MainWindow::validate(QString userInput, QString msg, int minLength, int maxLength){
     ui->validateLable->setText("");
@@ -450,24 +463,27 @@ void MainWindow::on_selectPremiumBtn_clicked()
 }
 
 
-void MainWindow::on_customerSearchBox_textChanged(QString &arg1)
+void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
 {
-    QSet<Customer> results;
+    ui->customerSearchResultsList->clear();
+    QSet<int> results;
     QString temp;
     for(auto& customer : customers){
         if(customer.getLastName().contains(arg1)){
-            results.insert(customer);
+            results.insert(customer.getCustNumber());
+            qCritical() << arg1;
         }
         if(customer.getFirstName().contains(arg1)){
-            results.insert(customer);
+            results.insert(customer.getCustNumber());
         }
     }
     for(auto result : results){
-        temp.append(result.getFirstName() + " ");
-        temp.append(result.getLastName() + " ");
-        temp.append(QString::number(result.getCustNumber()) + " ");
+        temp.clear();
+        Customer tempCust = getCustById(result);
+        temp.append(tempCust.getFirstName() + " ");
+        temp.append(tempCust.getLastName() + " ");
+        temp.append(QString::number(tempCust.getCustNumber()) + " ");
         ui->customerSearchResultsList->addItem(temp);
     }
-
 }
 

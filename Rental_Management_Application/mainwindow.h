@@ -23,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    Customer getCustById(int);
 
 private slots:
 
@@ -88,7 +89,7 @@ private slots:
 
     void on_selectPremiumBtn_clicked();
 
-    void on_customerSearchBox_textChanged(QString &arg1);
+    void on_customerSearchBox_textEdited(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

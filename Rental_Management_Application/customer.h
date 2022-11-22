@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 #include <QString>
+#include <QHashFunctions>
+#include <QHash>
 
 
 class Customer
@@ -48,7 +50,7 @@ public:
     int createCustNumber(QString, QString);
     QString printCustomer();
 
-    bool operator < (const Customer& ref) const { return custNumber<ref.custNumber;}
+
 
 };
 
