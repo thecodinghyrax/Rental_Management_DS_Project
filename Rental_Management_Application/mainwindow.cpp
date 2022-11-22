@@ -52,9 +52,7 @@ bool MainWindow::loadCustomers(){
     QString line;
 
     while(!in.atEnd()){
-        qCritical() << "Starting loadCustomers while loop";
         line = in.readLine();
-        qCritical() << "first line: " << line;
         if(line == "+++"){
             count = 0;
             tempCust.setCustNumber();
@@ -452,9 +450,9 @@ void MainWindow::on_selectPremiumBtn_clicked()
 }
 
 
-void MainWindow::on_customerSearchBox_textChanged(const QString &arg1)
+void MainWindow::on_customerSearchBox_textChanged(QString &arg1)
 {
-    std::set<Customer> results;
+    QSet<Customer> results;
     QString temp;
     for(auto& customer : customers){
         if(customer.getLastName().contains(arg1)){
@@ -464,16 +462,12 @@ void MainWindow::on_customerSearchBox_textChanged(const QString &arg1)
             results.insert(customer);
         }
     }
-    for(auto& result : results){
-        QString temp2 = result.getFirstName().toStdString.c_str();
+    for(auto result : results){
         temp.append(result.getFirstName() + " ");
-    }
-    std::set<Customer>::iterator itr;
-    for(itr = results.begin(); itr != results.end(); ++itr){
-        temp.append(itr->getFirstName() + " ");
-        temp.append((itr->getLastName() + " "));
-        temp.append((QString::number(itr->getCustNumber())));
+        temp.append(result.getLastName() + " ");
+        temp.append(QString::number(result.getCustNumber()) + " ");
         ui->customerSearchResultsList->addItem(temp);
     }
+
 }
 

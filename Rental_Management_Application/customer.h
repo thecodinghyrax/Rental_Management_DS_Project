@@ -48,6 +48,8 @@ public:
     int createCustNumber(QString, QString);
     QString printCustomer();
 
+    bool operator < (const Customer& ref) const { return custNumber<ref.custNumber;}
+
 };
 
 #endif // CUSTOMER_H

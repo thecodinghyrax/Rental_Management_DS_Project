@@ -6,7 +6,8 @@
 #include <QVector>
 #include <QFile>
 #include <QStandardPaths>
-#include <set>
+#include <QTextStream>
+#include <QSet>
 #include "customer.h"
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
@@ -87,7 +88,7 @@ private slots:
 
     void on_selectPremiumBtn_clicked();
 
-    void on_customerSearchBox_textChanged(const QString &arg1);
+    void on_customerSearchBox_textChanged(QString &arg1);
 
 private:
     Ui::MainWindow *ui;
