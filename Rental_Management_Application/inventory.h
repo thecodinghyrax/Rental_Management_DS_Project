@@ -3,6 +3,8 @@
 
 #include <QStack>
 #include <QVector>
+#include <QFile>
+#include <QTextStream>
 #include "rentalvehicle.h"
 
 
@@ -17,27 +19,24 @@ private:
 public:
     Inventory();
     ~Inventory();
-    RentalVehicle getEconomy();
-    RentalVehicle getCompact();
-    RentalVehicle getStandard();
-    RentalVehicle getPremium();
+
+    bool isAvailable(QStack<RentalVehicle>&);
+
+    RentalVehicle getNextVehicle(QStack<RentalVehicle>&);
+
     RentalVehicle peekReturns();
 
-    void addEconomy();
-    void addCompact();
-    void addStandard();
-    void addPremium();
-    void addReturn();
+    void addVehicle(RentalVehicle vehicle, QVector<RentalVehicle>& vec);
+    void addReturn(RentalVehicle);
 
-    bool removeEconomyById(int);
-    bool removeCompactById(int);
-    bool removeStandardById(int);
-    bool removePremiumById(int);
+    bool removeVehicleById(int id, QVector<RentalVehicle>& vec);
+
     bool removeNextReturn();
 
     void sortVehiclesByAge(QVector<RentalVehicle>&);
 
-    void loadVehicles();
+    bool loadVehicles();
+    bool saveVehilces();
 
 };
 

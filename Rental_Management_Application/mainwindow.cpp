@@ -15,11 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
        box.setText("Customers file could not be loaded!");
        box.exec();
    }
-   if(!loadVehicles()){
-       box.setWindowTitle("Error");
-       box.setText("Vehicles file could not be loaded!");
-       box.exec();
-   }
+//   if(!loadVehicles()){
+//       box.setWindowTitle("Error");
+//       box.setText("Vehicles file could not be loaded!");
+//       box.exec();
+//   }
    /*
 Note on file finding issues:
 Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
@@ -113,64 +113,6 @@ bool MainWindow::loadCustomers(){
     return true;
 };
 
-bool MainWindow::loadVehicles(){
-    QFile file("vehicles.txt");
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        return false;
-    }
-
-    QTextStream in(&file);
-    int count = 0;
-    RentalVehicle tempVehicle;
-    QString line;
-    while(!in.atEnd()){
-        line = in.readLine();
-        if(line == "+++"){
-            count = 0;
-            rentals.push_back(tempVehicle);
-            line = in.readLine();
-        }
-        switch(count){
-        case 0:
-            tempVehicle.setId(line.toInt());
-            break;
-        case 1:
-            tempVehicle.setCatagory(line);
-            break;
-        case 2:
-            tempVehicle.setMake(line);
-            break;
-        case 3:
-            tempVehicle.setModel(line);
-            break;
-        case 4:
-            tempVehicle.setYear(line.toInt());
-            break;
-        case 5:
-            tempVehicle.setMilage(line.toInt());
-            break;
-        case 6:
-            if(line == "true"){
-                tempVehicle.setIsRented(true);
-            }
-            else{
-                tempVehicle.setIsRented(false);
-            }
-            break;
-        case 7:
-            tempVehicle.setRenterId(line.toInt());
-            break;
-        default:
-            file.close();
-            return false;
-            break;
-        }
-        count++;
-    }
-
-    file.close();
-    return true;
-}
 
 bool MainWindow::saveCustomers()
 {
@@ -471,7 +413,6 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
     for(auto& customer : customers){
         if(customer.getLastName().contains(arg1)){
             results.insert(customer.getCustNumber());
-            qCritical() << arg1;
         }
         if(customer.getFirstName().contains(arg1)){
             results.insert(customer.getCustNumber());

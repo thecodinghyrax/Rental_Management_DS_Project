@@ -13,13 +13,15 @@ SOURCES += \
     inventory.cpp \
     main.cpp \
     mainwindow.cpp \
-    rentalvehicle.cpp
+    rentalvehicle.cpp \
+    transactions.cpp
 
 HEADERS += \
     customer.h \
     inventory.h \
     mainwindow.h \
-    rentalvehicle.h
+    rentalvehicle.h \
+    transactions.h
 
 FORMS += \
     mainwindow.ui

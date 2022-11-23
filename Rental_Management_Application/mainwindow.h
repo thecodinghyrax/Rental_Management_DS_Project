@@ -33,8 +33,6 @@ private slots:
 
     bool loadCustomers();
 
-    bool loadVehicles();
-
     bool saveCustomers();
 
     bool saveVehilces();
