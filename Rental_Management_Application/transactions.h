@@ -33,6 +33,8 @@ public:
 
     QString printTransaction();
 
+
+
 };
 
 #endif // TRANSACTIONS_H

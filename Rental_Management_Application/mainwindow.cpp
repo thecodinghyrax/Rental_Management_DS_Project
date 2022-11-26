@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
        box.setText("Customers file could not be loaded!");
        box.exec();
    }
+   repo.createCustomerTable();
 //   if(!loadVehicles()){
 //       box.setWindowTitle("Error");
 //       box.setText("Vehicles file could not be loaded!");
@@ -139,10 +140,26 @@ bool MainWindow::saveCustomers()
     return true;
 }
 
-bool MainWindow::saveVehilces()
+bool MainWindow::loadInventory(){
+    //TODO
+    return true;
+}
+
+bool MainWindow::saveInventory()
 {
+    //TODO
     return true;
 };
+
+bool MainWindow::loadTransactions(){
+    //TODO
+    return true;
+}
+
+bool MainWindow::saveTransactions(){
+    //TODO
+    return true;
+}
 
 // Navigation
 void MainWindow::on_welcomeNavBtn_clicked()

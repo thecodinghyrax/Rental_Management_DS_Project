@@ -13,6 +13,7 @@
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
 #include "inventory.h"
+#include "repository.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,7 +36,13 @@ private slots:
 
     bool saveCustomers();
 
-    bool saveVehilces();
+    bool loadInventory();
+
+    bool saveInventory();
+
+    bool loadTransactions();
+
+    bool saveTransactions();
 
     void on_welcomeNavBtn_clicked();
 
@@ -96,5 +103,6 @@ private:
     QVector<Customer> customers;
     Inventory inventory;
     QMap<int, RentalVehicle*> transactions;
+    Repository repo;
 };
 #endif // MAINWINDOW_H
