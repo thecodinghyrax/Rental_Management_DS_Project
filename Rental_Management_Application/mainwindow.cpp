@@ -10,12 +10,13 @@ MainWindow::MainWindow(QWidget *parent)
     clearAllInput();
 
     QMessageBox box;
-   if(!loadCustomers()){
-       box.setWindowTitle("Error");
-       box.setText("Customers file could not be loaded!");
-       box.exec();
-   }
-   repo.createCustomerTable();
+//   if(!loadCustomers()){
+//       box.setWindowTitle("Error");
+//       box.setText("Customers file could not be loaded!");
+//       box.exec();
+//   }
+   repo.testThings();
+
 //   if(!loadVehicles()){
 //       box.setWindowTitle("Error");
 //       box.setText("Vehicles file could not be loaded!");
@@ -54,65 +55,65 @@ bool MainWindow::validate(QString userInput, QString msg, int minLength, int max
     }
 }
 
-bool MainWindow::loadCustomers(){
-    QFile file("customers.txt");
-    if(!file.open(QIODevice::ReadOnly)){
-        return false;
-    }
+//bool MainWindow::loadCustomers(){
+//    QFile file("customers.txt");
+//    if(!file.open(QIODevice::ReadOnly)){
+//        return false;
+//    }
 
-    QTextStream in(&file);
-    int count = 0;
-    Customer tempCust;
-    QString line;
+//    QTextStream in(&file);
+//    int count = 0;
+//    Customer tempCust;
+//    QString line;
 
-    while(!in.atEnd()){
-        line = in.readLine();
-        if(line == "+++"){
-            count = 0;
-            tempCust.setCustNumber();
-            customers.push_back(tempCust);
-            line = in.readLine();
-        }
+//    while(!in.atEnd()){
+//        line = in.readLine();
+//        if(line == "+++"){
+//            count = 0;
+//            tempCust.setCustNumber();
+//            customers.push_back(tempCust);
+//            line = in.readLine();
+//        }
 
-        switch(count){
-        case 0:
-            tempCust.setFirstName(line);
-            break;
-        case 1:
-            tempCust.setLastName(line);
-            break;
-        case 2:
-            tempCust.setAddress(line);
-            break;
-        case 3:
-            tempCust.setCity(line);
-            break;
-        case 4:
-            tempCust.setState(line);
-            break;
-        case 5:
-            tempCust.setZip(line);
-            break;
-        case 6:
-            tempCust.setPhoneNumber(line);
-            break;
-        case 7:
-            tempCust.setDLNumber(line);
-            break;
-        case 8:
-            tempCust.setCCNumber(line);
-            break;
-        default:
-            file.close();
-            return false;
-            break;
-        }
-        count++;
-    }
+//        switch(count){
+//        case 0:
+//            tempCust.setFirstName(line);
+//            break;
+//        case 1:
+//            tempCust.setLastName(line);
+//            break;
+//        case 2:
+//            tempCust.setAddress(line);
+//            break;
+//        case 3:
+//            tempCust.setCity(line);
+//            break;
+//        case 4:
+//            tempCust.setState(line);
+//            break;
+//        case 5:
+//            tempCust.setZip(line);
+//            break;
+//        case 6:
+//            tempCust.setPhoneNumber(line);
+//            break;
+//        case 7:
+//            tempCust.setDLNumber(line);
+//            break;
+//        case 8:
+//            tempCust.setCCNumber(line);
+//            break;
+//        default:
+//            file.close();
+//            return false;
+//            break;
+//        }
+//        count++;
+//    }
 
-    file.close();
-    return true;
-};
+//    file.close();
+//    return true;
+//};
 
 
 bool MainWindow::saveCustomers()
@@ -269,7 +270,8 @@ void MainWindow::on_addCustSubmitBtn_clicked()
                                 ui->zipInput->text(),
                                 ui->phoneNumberInput->text(),
                                 ui->DLInput->text(),
-                                ui->CCInput->text()
+                                ui->CCInput->text(),
+                                repo.getNextCustNumber()
                                 ));
 
         clearAllInput();
@@ -298,9 +300,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     ui->deleteCustSubmitBtn->show();
     QString cust = item->text();
     int custNumber = cust.split(" ").at(0).toInt();
-    int customerIndex = getCustomerIndexById(custNumber);
-    if(customerIndex > -1){
-        //Customer temp = customers[customerIndex];
+    if(custNumber > -1){
         Customer temp = repo.getCustomerById(custNumber);
         ui->firstNameInput->setText(temp.getFirstName());
         ui->lastNameInput->setText(temp.getLastName());
@@ -330,27 +330,33 @@ void MainWindow::on_editCustSubmitBtn_clicked()
 {
     if(ui->validateLable->text().length() < 1){
 
-        int custNumber = ui->custNumberLabel->text().toInt();
-        for(int i = 0; i < customers.size(); ++i){
-            if(customers[i].getCustNumber() == custNumber){
-                customers[i].setFirstName(ui->firstNameInput->text());
-                customers[i].setLastName(ui->lastNameInput->text());
-                customers[i].setAddress(ui->addressInput->text());
-                customers[i].setCity(ui->cityInput->text());
-                customers[i].setState(ui->stateInput->text());
-                customers[i].setZip(ui->zipInput->text());
-                customers[i].setPhoneNumber(ui->phoneNumberInput->text());
-                customers[i].setDLNumber(ui->DLInput->text());
-                customers[i].setCCNumber(ui->CCInput->text());
+        //int custNumber = ui->custNumberLabel->text().toInt();
+//        for(int i = 0; i < customers.size(); ++i){
+//            if(customers[i].getCustNumber() == custNumber){
+//                customers[i].setFirstName(ui->firstNameInput->text());
+//                customers[i].setLastName(ui->lastNameInput->text());
+//                customers[i].setAddress(ui->addressInput->text());
+//                customers[i].setCity(ui->cityInput->text());
+//                customers[i].setState(ui->stateInput->text());
+//                customers[i].setZip(ui->zipInput->text());
+//                customers[i].setPhoneNumber(ui->phoneNumberInput->text());
+//                customers[i].setDLNumber(ui->DLInput->text());
+//                customers[i].setCCNumber(ui->CCInput->text());
 
-                clearAllInput();
-                ui->validateLable->setText("Recored has been updated!");
+//                clearAllInput();
+//                ui->validateLable->setText("Recored has been updated!");
 
-            }
-        }
+//            }
+        Customer temp = Customer(ui->firstNameInput->text(), ui->lastNameInput->text(), ui->addressInput->text(), \
+                                 ui->cityInput->text(), ui->stateInput->text(), ui->zipInput->text(), \
+                                 ui->phoneNumberInput->text(), ui->DLInput->text(), ui->CCInput->text(), ui->custNumberLabel->text().toInt());
+        repo.updateCustomer(temp);
+        clearAllInput();
+        ui->validateLable->setText("Recored has been updated!");
+        //}
     }
 
-saveCustomers();
+//saveCustomers();
 }
 
 void MainWindow::clearAllInput(){

@@ -32,7 +32,7 @@ private slots:
 
     bool validate(QString, QString, int, int);
 
-    bool loadCustomers();
+    //bool loadCustomers();
 
     bool saveCustomers();
 
@@ -104,5 +104,6 @@ private:
     Inventory inventory;
     QMap<int, RentalVehicle*> transactions;
     Repository repo;
+
 };
 #endif // MAINWINDOW_H

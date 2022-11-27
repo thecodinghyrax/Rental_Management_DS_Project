@@ -1,19 +1,22 @@
-#include "repository.h"
+﻿#include "repository.h"
 
 
 
 Repository::Repository()
 {
+    QDir databasePath;
+    //QString path = databasePath.currentPath()+"/rentalDB.sqlite";
+    QString path = "../rentalDB.sqlite";
     const QString DRIVER("QSQLITE");
     if(!QSqlDatabase::isDriverAvailable(DRIVER)) {
         qWarning() << "ERROR: driver not available";
     }
     QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
-    db.setDatabaseName("rentalDB.sqlite");
+    db.setDatabaseName(path);
     if(!db.open()) {
         qWarning() << "ERROR: " << db.lastError();
     }
-    qCritical() <<"DB Should be created here";
+    createCustomerTable();
 }
 
 Repository::~Repository(){
@@ -45,9 +48,10 @@ QVector<Customer> Repository::getCustomers(){
 
 Customer Repository::getCustomerById(int id){
     QSqlQuery query;
-    query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM Customers WHERE custNumber == :custNumber");
+    query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM Customers WHERE custNumber = :custNumber");
     query.bindValue(":custNumber", id);
     query.exec();
+    query.first();
     QString firstName = query.value(0).toString();
     QString lastName = query.value(1).toString();
     QString address = query.value(2).toString();
@@ -59,8 +63,9 @@ Customer Repository::getCustomerById(int id){
     QString CCNumber = query.value(8).toString();
     int custNumber = query.value(9).toInt();
 
-    return Customer(firstName,lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber);
-
+    Customer temp = Customer(firstName,lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber);
+    qCritical() << temp.getFirstName();
+    return temp;
 };
 
 QString Repository::addCustomer(Customer cust){
@@ -79,7 +84,33 @@ QString Repository::addCustomer(Customer cust){
     query.exec();
     return "";
 };
+void Repository::updateCustomer(Customer cust){
+    QSqlQuery query;
+    qCritical() << cust.getFirstName();
+    qCritical() << cust.getLastName();
+    qCritical() << cust.getAddress();
+    qCritical() << cust.getCity();
+    qCritical() << cust.getState();
+    qCritical() << cust.getZip();
+    qCritical() << cust.getPhoneNumber();
+    qCritical() << cust.getDLNumber();
+    qCritical() << cust.getCCNumber();
+    qCritical() << cust.getCustNumber();
+    query.prepare("UPDATE Customers SET firstName = :firstName, lastName = :lastName, address = :address, city = :city," \
+                  "state = :state, zip = :zip, phoneNumber = :phoneNumber, DLNumber = :DLNumber, CCNumber = :CCNumber WHERE custNumber = :custNumber");
+    query.bindValue(":firstName", cust.getFirstName());
+    query.bindValue(":lastName", cust.getLastName());
+    query.bindValue(":address", cust.getAddress());
+    query.bindValue(":city", cust.getCity());
+    query.bindValue(":state", cust.getState());
+    query.bindValue(":zip", cust.getZip());
+    query.bindValue(":phoneNumber", cust.getPhoneNumber());
+    query.bindValue(":DLNumber", cust.getDLNumber());
+    query.bindValue(":CCNumber", cust.getCCNumber());
+    query.bindValue(":custNumber", cust.getCustNumber());
+    query.exec();
 
+};
 int Repository::getNextCustNumber(){
     QSqlQuery query;
     query.prepare("SELECT custNumber FROM Customers ORDER BY custNumber ASC LIMIT 1");
@@ -87,10 +118,17 @@ int Repository::getNextCustNumber(){
     return query.value(0).toInt() + 1;
 };
 
+void Repository::testThings(){
+    if(getCustomerById(6).getFirstName() == ""){
+            qCritical() << "Customer 6 was not found";
+    }
+
+};
+
 void Repository::createCustomerTable(){
     QSqlQuery query;
     query.exec("DROP TABLE IF EXISTS customers");
-    query.exec("CREATE TABLE Customers(firstName TEXT, lastName TEXT, address TEXT, city TEXT, state TEXT, zip TEXT, phoneNumber TEXT, DLNumber TEXT, CCNumber TEXT, custNumber integer)");
+    query.exec("CREATE TABLE Customers(firstName TEXT, lastName TEXT, address TEXT, city TEXT, state TEXT, zip TEXT, phoneNumber TEXT, DLNumber TEXT, CCNumber TEXT, custNumber INT PRIMARY KEY)");
     QSqlQuery insert1;
     insert1.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     insert1.bindValue(":firstName", "Drew");

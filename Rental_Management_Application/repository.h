@@ -21,8 +21,12 @@ public:
     QVector<Customer> getCustomers();
     Customer getCustomerById(int);
     QString addCustomer(Customer cust);
+    void updateCustomer(Customer);
     int getNextCustNumber();
+
+    void testThings();
     void createCustomerTable();
+
 
 };
 
