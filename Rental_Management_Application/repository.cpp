@@ -9,16 +9,83 @@ Repository::Repository()
         qWarning() << "ERROR: driver not available";
     }
     QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
-    db.setDatabaseName("rentalDB.sqlite ");
+    db.setDatabaseName("rentalDB.sqlite");
     if(!db.open()) {
         qWarning() << "ERROR: " << db.lastError();
     }
-
+    qCritical() <<"DB Should be created here";
 }
 
 Repository::~Repository(){
 
 }
+
+QVector<Customer> Repository::getCustomers(){
+        QSqlQuery query;
+        QVector<Customer> customers;
+        query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM Customers");
+        query.exec();
+
+        while(query.next()){
+            QString firstName = query.value(0).toString();
+            QString lastName = query.value(1).toString();
+            QString address = query.value(2).toString();
+            QString city = query.value(3).toString();
+            QString state = query.value(4).toString();
+            QString zip = query.value(5).toString();
+            QString phoneNumber = query.value(6).toString();
+            QString DLNumber = query.value(7).toString();
+            QString CCNumber = query.value(8).toString();
+            int custNumber = query.value(9).toInt();
+            customers.push_back(Customer(firstName,lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber));
+        }
+
+        return customers;
+};
+
+Customer Repository::getCustomerById(int id){
+    QSqlQuery query;
+    query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM Customers WHERE custNumber == :custNumber");
+    query.bindValue(":custNumber", id);
+    query.exec();
+    QString firstName = query.value(0).toString();
+    QString lastName = query.value(1).toString();
+    QString address = query.value(2).toString();
+    QString city = query.value(3).toString();
+    QString state = query.value(4).toString();
+    QString zip = query.value(5).toString();
+    QString phoneNumber = query.value(6).toString();
+    QString DLNumber = query.value(7).toString();
+    QString CCNumber = query.value(8).toString();
+    int custNumber = query.value(9).toInt();
+
+    return Customer(firstName,lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber);
+
+};
+
+QString Repository::addCustomer(Customer cust){
+    QSqlQuery query;
+    query.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
+    query.bindValue(":firstName", cust.getFirstName());
+    query.bindValue(":lastName", cust.getLastName());
+    query.bindValue(":address", cust.getAddress());
+    query.bindValue(":city", cust.getCity());
+    query.bindValue(":state", cust.getState());
+    query.bindValue(":zip", cust.getZip());
+    query.bindValue(":phoneNumber", cust.getPhoneNumber());
+    query.bindValue(":DLNumber", cust.getDLNumber());
+    query.bindValue(":CCNumber", cust.getCCNumber());
+    query.bindValue(":custNumber", getNextCustNumber());
+    query.exec();
+    return "";
+};
+
+int Repository::getNextCustNumber(){
+    QSqlQuery query;
+    query.prepare("SELECT custNumber FROM Customers ORDER BY custNumber ASC LIMIT 1");
+    qCritical() << query.value(0).toInt() + 1;
+    return query.value(0).toInt() + 1;
+};
 
 void Repository::createCustomerTable(){
     QSqlQuery query;
@@ -89,8 +156,4 @@ void Repository::createCustomerTable(){
     insert5.bindValue(":CCNumber", "5555555555555559");
     insert5.bindValue(":custNumber", 5);
     insert5.exec();
-
-
-
-
 };

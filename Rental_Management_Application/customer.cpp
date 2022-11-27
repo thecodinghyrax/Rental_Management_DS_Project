@@ -16,6 +16,7 @@ Customer::Customer()
     // setCustomerNumber will need to be call after the DL and CC info is entered
 }
 
+
 Customer::Customer(QString firstName,
                    QString lastName,
                    QString address,
@@ -37,6 +38,30 @@ Customer::Customer(QString firstName,
     setCustNumber();
 
 };
+
+Customer::Customer(QString firstName,
+                   QString lastName,
+                   QString address,
+                   QString city,
+                   QString state,
+                   QString zip,
+                   QString phoneNumber,
+                   QString DLNumber,
+                   QString CCNumber,
+                   int custNumber){
+    setFirstName(firstName);
+    setLastName(lastName);
+    setAddress(address);
+    setCity(city);
+    setState(state);
+    setZip(zip);
+    setPhoneNumber(phoneNumber);
+    setDLNumber(DLNumber);
+    setCCNumber(CCNumber);
+    setCustNumber(custNumber);
+
+};
+
 Customer::~Customer(){
 
 };
@@ -66,6 +91,15 @@ void Customer::setDLNumber(QString DLNumber){
 };
 void Customer::setCCNumber(QString CCNumber){
         this->CCNumber = CCNumber;
+};
+
+void Customer::setCustNumber(){
+    int id = createCustNumber(this->getCCNumber(), this->getDLNumber());
+    this->custNumber = id;
+};
+
+void Customer::setCustNumber(int custNumber){
+    this->custNumber = custNumber;
 };
 
 QString Customer::getFirstName(){
@@ -100,10 +134,6 @@ int Customer::getCustNumber(){
     return custNumber;
 };
 
-void Customer::setCustNumber(){
-    int id = createCustNumber(this->getCCNumber(), this->getDLNumber());
-    this->custNumber = id;
-};
 
 int Customer::createCustNumber(QString str1, QString str2){
 

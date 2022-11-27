@@ -282,7 +282,7 @@ void MainWindow::on_addCustSubmitBtn_clicked()
 void MainWindow::on_loadCustList_clicked()
 {
     ui->listWidget->clear();
-    for(auto customer : customers){
+    for(auto customer : repo.getCustomers()){
         ui->listWidget->addItem(new QListWidgetItem(QString::number(customer.getCustNumber()) + " " +
                                                     customer.getFirstName() + " " +
                                                     customer.getLastName()
@@ -300,7 +300,8 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     int custNumber = cust.split(" ").at(0).toInt();
     int customerIndex = getCustomerIndexById(custNumber);
     if(customerIndex > -1){
-        Customer temp = customers[customerIndex];
+        //Customer temp = customers[customerIndex];
+        Customer temp = repo.getCustomerById(custNumber);
         ui->firstNameInput->setText(temp.getFirstName());
         ui->lastNameInput->setText(temp.getLastName());
         ui->addressInput->setText(temp.getAddress());
