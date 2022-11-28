@@ -10,7 +10,6 @@ CONFIG += c++17
 
 SOURCES += \
     customer.cpp \
-    inventory.cpp \
     main.cpp \
     mainwindow.cpp \
     rentalvehicle.cpp \
@@ -19,7 +18,6 @@ SOURCES += \
 
 HEADERS += \
     customer.h \
-    inventory.h \
     mainwindow.h \
     rentalvehicle.h \
     repository.h \
