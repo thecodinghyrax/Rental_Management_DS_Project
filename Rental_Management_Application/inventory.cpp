@@ -132,7 +132,7 @@ bool Inventory::loadVehicles(){
             }
             break;
         case 7:
-            tempVehicle.setRenterId(line.toInt());
+            tempVehicle.setCustNumber(line.toInt());
             break;
         default:
             file.close();

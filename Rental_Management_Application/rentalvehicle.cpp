@@ -6,7 +6,7 @@ RentalVehicle::RentalVehicle()
 }
 
 RentalVehicle::RentalVehicle(int id, QString catagory, QString make, QString model,
-                             int year, int milage, int renterId)
+                             int year, int milage, int custNumber)
 {
     setId(id);
     setCatagory(catagory);
@@ -15,7 +15,7 @@ RentalVehicle::RentalVehicle(int id, QString catagory, QString make, QString mod
     setYear(year);
     setMilage(milage);
     setIsRented(false);
-    setRenterId(renterId);
+    setCustNumber(custNumber);
 }
 
 RentalVehicle::~RentalVehicle()
@@ -58,9 +58,9 @@ void RentalVehicle::setIsRented(bool isRented)
     this->isRented = isRented;
 }
 
-void RentalVehicle::setRenterId(int renterId)
+void RentalVehicle::setCustNumber(int custNumber)
 {
-    this->renterId = renterId;
+    this->custNumber = custNumber;
 }
 
 
@@ -99,9 +99,9 @@ bool RentalVehicle::getIsRented()
     return this->isRented;
 }
 
-int RentalVehicle::getRenterId()
+int RentalVehicle::getCustNumber()
 {
-    return this->renterId;
+    return this->custNumber;
 }
 
 QString RentalVehicle::printVehicle()
@@ -115,7 +115,7 @@ QString RentalVehicle::printVehicle()
     temp += QString::number(getMilage()) + ", ";
     if(getIsRented()){
         temp += "true, ";
-        temp += QString::number(getRenterId()) + ", ";
+        temp += QString::number(getCustNumber()) + ", ";
     }else {
         temp += "false, ";
     }

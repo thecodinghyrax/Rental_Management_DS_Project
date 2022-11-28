@@ -13,7 +13,7 @@ private:
     int year;
     int milage;
     bool isRented;
-    int renterId;
+    int custNumber;
 public:
     RentalVehicle();
     RentalVehicle(int, QString, QString, QString, int, int, int);
@@ -26,7 +26,7 @@ public:
     void setYear(int);
     void setMilage(int);
     void setIsRented(bool);
-    void setRenterId(int);
+    void setCustNumber(int);
 
     int getId();
     QString getCatagory();
@@ -35,7 +35,7 @@ public:
     int getYear();
     int getMilage();
     bool getIsRented();
-    int getRenterId();
+    int getCustNumber();
 
     QString printVehicle();
 };
