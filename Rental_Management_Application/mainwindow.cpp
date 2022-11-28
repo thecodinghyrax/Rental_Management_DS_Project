@@ -273,10 +273,13 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
     QSet<int> results;
     QString temp;
       for(auto& customer : repo.getCustomers()){
-        if(customer.getLastName().contains(arg1)){
+        if(customer.getLastName().toLower().contains(arg1.toLower())){
             results.insert(customer.getCustNumber());
         }
-        if(customer.getFirstName().contains(arg1)){
+        if(customer.getFirstName().toLower().contains(arg1.toLower())){
+            results.insert(customer.getCustNumber());
+        }
+        if(QString::number(customer.getCustNumber()).contains(arg1)){
             results.insert(customer.getCustNumber());
         }
     }
@@ -288,5 +291,17 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
         temp.append(tempCust.getLastName() + " ");
         ui->customerSearchResultsList->addItem(temp);
     }
+}
+
+
+void MainWindow::on_completeRentalButton_clicked()
+{
+    QMessageBox box;
+    try {
+        qCritical() << ui->customerSearchResultsList->currentItem()->text();
+    } catch (...) {
+        box.setText("Please use the search box and select a current customer.");
+    }
+
 }
 

@@ -11,7 +11,6 @@
 #include <QMap>
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
-#include "inventory.h"
 #include "repository.h"
 
 QT_BEGIN_NAMESPACE
@@ -82,9 +81,10 @@ private slots:
 
     void on_customerSearchBox_textEdited(const QString &arg1);
 
+    void on_completeRentalButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-    Inventory inventory;
     QMap<int, RentalVehicle*> transactions;
     Repository repo;
 
