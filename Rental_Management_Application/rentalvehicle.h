@@ -6,7 +6,7 @@
 class RentalVehicle
 {
 private:
-    int id;
+    int vehicleNumber;
     QString catagory;
     QString make;
     QString model;
@@ -19,7 +19,7 @@ public:
     RentalVehicle(int, QString, QString, QString, int, int, int);
     ~RentalVehicle();
 
-    void setId(int);
+    void setVehicleNumber(int);
     void setCatagory(QString);
     void setMake(QString);
     void setModel(QString);
@@ -28,7 +28,7 @@ public:
     void setIsRented(bool);
     void setCustNumber(int);
 
-    int getId();
+    int getVehicleNumber();
     QString getCatagory();
     QString getMake();
     QString getModel();

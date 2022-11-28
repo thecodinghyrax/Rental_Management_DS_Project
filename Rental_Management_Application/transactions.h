@@ -11,7 +11,7 @@ private:
     QDateTime rentalEndDate;
     double chargeAmount;
     int vehicleId;
-    int customerId;
+    int custNumber;
     QString returnNote;
 public:
     Transactions(QDateTime, double, int, int);
@@ -21,14 +21,14 @@ public:
     void setEndDate(QDateTime);
     void setChargeAmount(double);
     void setVehicleId(int);
-    void setCustomerId(int);
+    void setCustNumber(int);
     void setReturnNote(QString);
 
     QDateTime getStartDate();
     QDateTime getEndDate();
     double getChargeAmount();
     int getVehicleId();
-    int getCustomerId();
+    int getCustNumber();
     QString getReturnNote();
 
     QString printTransaction();

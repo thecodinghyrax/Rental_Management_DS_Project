@@ -5,10 +5,10 @@ RentalVehicle::RentalVehicle()
 
 }
 
-RentalVehicle::RentalVehicle(int id, QString catagory, QString make, QString model,
+RentalVehicle::RentalVehicle(int vehicleNumber, QString catagory, QString make, QString model,
                              int year, int milage, int custNumber)
 {
-    setId(id);
+    setVehicleNumber(vehicleNumber);
     setCatagory(catagory);
     setMake(make);
     setModel(model);
@@ -23,9 +23,9 @@ RentalVehicle::~RentalVehicle()
 
 }
 
-void RentalVehicle::setId(int id)
+void RentalVehicle::setVehicleNumber(int vehicleNumber)
 {
-    this->id = id;
+    this->vehicleNumber = vehicleNumber;
 }
 
 void RentalVehicle::setCatagory(QString catagory)
@@ -64,9 +64,9 @@ void RentalVehicle::setCustNumber(int custNumber)
 }
 
 
-int RentalVehicle::getId()
+int RentalVehicle::getVehicleNumber()
 {
-    return this->id;
+    return this->vehicleNumber;
 }
 
 QString RentalVehicle::getCatagory()
@@ -107,7 +107,7 @@ int RentalVehicle::getCustNumber()
 QString RentalVehicle::printVehicle()
 {
     QString temp = "";
-    temp += QString::number(getId()) + ", ";
+    temp += QString::number(getVehicleNumber()) + ", ";
     temp += getCatagory() + ", ";
     temp += getMake() + ", ";
     temp += getModel() + ", ";

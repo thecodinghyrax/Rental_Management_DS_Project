@@ -1,10 +1,10 @@
 #include "transactions.h"
 
-Transactions::Transactions(QDateTime start, double amount, int vehicleId, int customerId){
+Transactions::Transactions(QDateTime start, double amount, int vehicleId, int custNumber){
     setStartDate(start);
     setChargeAmount(amount);
     setVehicleId(vehicleId);
-    setCustomerId(customerId);
+    setCustNumber(custNumber);
 };
 Transactions::~Transactions(){
 
@@ -22,8 +22,8 @@ void Transactions::setChargeAmount(double amount){
 void Transactions::setVehicleId(int id){
     this->vehicleId = id;
 };
-void Transactions::setCustomerId(int id){
-    this->customerId = id;
+void Transactions::setCustNumber(int id){
+    this->custNumber = id;
 };
 void Transactions::setReturnNote(QString note){
     this->returnNote = note;
@@ -41,15 +41,15 @@ double Transactions::getChargeAmount(){
 int Transactions::getVehicleId(){
     return vehicleId;
 };
-int Transactions::getCustomerId(){
-    return customerId;
+int Transactions::getCustNumber(){
+    return custNumber;
 };
 QString Transactions::getReturnNote(){
     return returnNote;
 };
 QString Transactions::printTransaction(){
     QString trans;
-    trans.append("Customer ID: " + QString::number(getCustomerId()) + "\n");
+    trans.append("Customer Number: " + QString::number(getCustNumber()) + "\n");
     trans.append("Vehicle ID: " + QString::number(getVehicleId()) + "\n");
 
     trans.append("Start Date: " + getStartDate().toString() + "\n");

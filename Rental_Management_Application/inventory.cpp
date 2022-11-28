@@ -38,7 +38,7 @@ void Inventory::addVehicle(RentalVehicle vehicle, QVector<RentalVehicle>& vec){
 
 bool Inventory::removeVehicleById(int id, QVector<RentalVehicle>& vec){
     for(int i = 0; i < vec.size(); ++i){
-        if(vec[i].getId() == id){
+        if(vec[i].getVehicleNumber() == id){
             vec.remove(i);
             return true;
         }
@@ -106,7 +106,7 @@ bool Inventory::loadVehicles(){
         }
         switch(count){
         case 0:
-            tempVehicle.setId(line.toInt());
+            tempVehicle.setVehicleNumber(line.toInt());
             break;
         case 1:
             tempVehicle.setCatagory(line);

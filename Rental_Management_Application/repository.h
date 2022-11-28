@@ -9,6 +9,8 @@
 #include <QVector>
 #include <QDebug>
 #include "customer.h"
+#include "rentalvehicle.h"
+#include "transactions.h"
 
 class Repository
 {

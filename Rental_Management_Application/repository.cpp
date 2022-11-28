@@ -47,7 +47,7 @@ QVector<Customer> Repository::getCustomers(){
 
 Customer Repository::getCustomerById(int id){
     QSqlQuery query;
-    query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM Customers WHERE custNumber = :custNumber");
+    query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM customers WHERE custNumber = :custNumber");
     query.bindValue(":custNumber", id);
     query.exec();
     query.first();
@@ -68,7 +68,7 @@ Customer Repository::getCustomerById(int id){
 
 QString Repository::addCustomer(Customer cust){
     QSqlQuery query;
-    query.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
+    query.prepare("INSERT INTO customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     query.bindValue(":firstName", cust.getFirstName());
     query.bindValue(":lastName", cust.getLastName());
     query.bindValue(":address", cust.getAddress());
@@ -84,7 +84,7 @@ QString Repository::addCustomer(Customer cust){
 };
 void Repository::updateCustomer(Customer cust){
     QSqlQuery query;
-    query.prepare("UPDATE Customers SET firstName = :firstName, lastName = :lastName, address = :address, city = :city," \
+    query.prepare("UPDATE customers SET firstName = :firstName, lastName = :lastName, address = :address, city = :city," \
                   "state = :state, zip = :zip, phoneNumber = :phoneNumber, DLNumber = :DLNumber, CCNumber = :CCNumber WHERE custNumber = :custNumber");
     query.bindValue(":firstName", cust.getFirstName());
     query.bindValue(":lastName", cust.getLastName());
@@ -102,14 +102,14 @@ void Repository::updateCustomer(Customer cust){
 
 void Repository::deleteCustomerById(int id){
     QSqlQuery query;
-    query.prepare("DELETE FROM Customers WHERE custNumber = :id");
+    query.prepare("DELETE FROM customers WHERE custNumber = :id");
     query.bindValue(":id", id);
     query.exec();
 };
 
 int Repository::getNextCustNumber(){
     QSqlQuery query;
-    query.exec("SELECT custNumber FROM Customers ORDER BY custNumber DESC LIMIT 1");
+    query.exec("SELECT custNumber FROM customers ORDER BY custNumber DESC LIMIT 1");
     query.first();
     return query.value(0).toInt() + 1;
 };
@@ -125,10 +125,12 @@ void Repository::createCustomerTable(){
     QSqlQuery query;
     query.exec("DROP TABLE IF EXISTS customers");
     query.exec("DROP TABLE IF EXISTS rentalVehicles");
-    query.exec("CREATE TABLE Customers(firstName TEXT, lastName TEXT, address TEXT, city TEXT, state TEXT, zip TEXT, phoneNumber TEXT, DLNumber TEXT, CCNumber TEXT, custNumber INT PRIMARY KEY)");
-    query.exec("CREATE TABLE rentalVehicles(id INT PRIMARY KEY, catagory TEXT, make TEXT, model TEXT, year INT, milage INT, isRented INT, custNumber INT, FOREIGN KEY (custNumber) REFERENCES customers (custNumber))");
+    query.exec("DROP TABLE IF EXISTS transactions");
+    query.exec("CREATE TABLE customers(custNumber INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT, lastName TEXT, address TEXT, city TEXT, state TEXT, zip TEXT, phoneNumber TEXT, DLNumber TEXT, CCNumber TEXT)");
+    query.exec("CREATE TABLE rentalVehicles(vehicleNumber INTEGER PRIMARY KEY AUTOINCREMENT, catagory TEXT, make TEXT, model TEXT, year INTEGER, milage INTEGER, isRented INTEGER, custNumber INTEGER, FOREIGN KEY (custNumber) REFERENCES customers (custNumber))");
+    query.exec("CREATE TABLE transactions(rentalStartDate DATETIME, rentalEndDate DATETIME, chargeAmount REAL, vehicleNumber INTEGER, custNumber INTEGER, FOREIGN KEY (vehicleNumber) REFERENCES rentalVehicles (vehicleNumber), FOREIGN KEY (custNumber) REFERENCES customers (custNumber))");
     QSqlQuery insert1;
-    insert1.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
+    insert1.prepare("INSERT INTO customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     insert1.bindValue(":firstName", "Drew");
     insert1.bindValue(":lastName", "Crawford");
     insert1.bindValue(":address", "1234 SW Round Circle");
@@ -138,7 +140,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":phoneNumber", "123-456-7891");
     insert1.bindValue(":DLNumber", "1234PP7894");
     insert1.bindValue(":CCNumber", "1234569812345214");
-    insert1.bindValue(":custNumber", 1);
     insert1.exec();
     insert1.bindValue(":firstName", "Cathy");
     insert1.bindValue(":lastName", "Crawford");
@@ -149,7 +150,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":phoneNumber", "123-999-7891");
     insert1.bindValue(":DLNumber", "9999ML7894");
     insert1.bindValue(":CCNumber", "9999569812341111");
-    insert1.bindValue(":custNumber", 2);
     insert1.exec();
     insert1.bindValue(":firstName", "Larry");
     insert1.bindValue(":lastName", "Layabout");
@@ -160,7 +160,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":phoneNumber", "111-111-1191");
     insert1.bindValue(":DLNumber", "1111FG1111");
     insert1.bindValue(":CCNumber", "7654324152637283");
-    insert1.bindValue(":custNumber", 3);
     insert1.exec();
     insert1.bindValue(":firstName", "Tom");
     insert1.bindValue(":lastName", "Thompson");
@@ -171,7 +170,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":phoneNumber", "999-888-7777");
     insert1.bindValue(":DLNumber", "9874AA1234");
     insert1.bindValue(":CCNumber", "9999999999999999");
-    insert1.bindValue(":custNumber", 4);
     insert1.exec();
     insert1.bindValue(":firstName", "Tony");
     insert1.bindValue(":lastName", "Peterson");
@@ -182,11 +180,9 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":phoneNumber", "222-478-3211");
     insert1.bindValue(":DLNumber", "555RT5555");
     insert1.bindValue(":CCNumber", "5555555555555559");
-    insert1.bindValue(":custNumber", 5);
     insert1.exec();
     QSqlQuery insert2;
-    insert2.prepare("INSERT INTO rentalVehicles(id, catagory, make, model, year, milage, isRented, custNumber) VALUES (:id, :catagory, :make, :model, :year, :milage, :isRented, :custNumber)");
-    insert2.bindValue(":id", 1);
+    insert2.prepare("INSERT INTO rentalVehicles(vehicleNumber, catagory, make, model, year, milage, isRented, custNumber) VALUES (:vehicleNumber, :catagory, :make, :model, :year, :milage, :isRented, :custNumber)");
     insert2.bindValue(":catagory", "economy");
     insert2.bindValue(":make", "Ford");
     insert2.bindValue(":model", "Fiesta");
@@ -195,42 +191,41 @@ void Repository::createCustomerTable(){
     insert2.bindValue(":isRented", 1);
     insert2.bindValue(":custNumber", 5);
     insert2.exec();
-    insert2.bindValue(":id", 2);
     insert2.bindValue(":catagory", "compact");
     insert2.bindValue(":make", "Ford");
     insert2.bindValue(":model", "Focus");
     insert2.bindValue(":year", 2021);
     insert2.bindValue(":milage", 8892);
     insert2.bindValue(":isRented", 0);
-    insert2.bindValue(":custNumber", NULL);
     insert2.exec();
-    insert2.bindValue(":id", 3);
     insert2.bindValue(":catagory", "compact");
     insert2.bindValue(":make", "Ford");
     insert2.bindValue(":model", "Focus");
     insert2.bindValue(":year", 2022);
     insert2.bindValue(":milage", 192);
     insert2.bindValue(":isRented", 0);
-    insert2.bindValue(":custNumber", NULL);
     insert2.exec();
-    insert2.bindValue(":id", 4);
     insert2.bindValue(":catagory", "compact");
     insert2.bindValue(":make", "Ford");
     insert2.bindValue(":model", "Focus");
     insert2.bindValue(":year", 2018);
     insert2.bindValue(":milage", 218892);
     insert2.bindValue(":isRented", 0);
-    insert2.bindValue(":custNumber", NULL);
     insert2.exec();
-    insert2.bindValue(":id", 5);
     insert2.bindValue(":catagory", "standard");
     insert2.bindValue(":make", "Ford");
     insert2.bindValue(":model", "Fusion");
     insert2.bindValue(":year", 2020);
     insert2.bindValue(":milage", 58892);
     insert2.bindValue(":isRented", 0);
-    insert2.bindValue(":custNumber", NULL);
     insert2.exec();
-
-//    query.exec("CREATE TABLE rentalVehicles(id INT PRIMARY KEY, catagory TEXT, make TEXT, model TEXT, year INT, milage INT, isRented INT, custNumber INT, FOREIGN KEY (custNumber) REFERENCES customers (custNumber)");
+    QSqlQuery insert3;
+    QDateTime current;
+    current = current.currentDateTime();
+    insert3.prepare("INSERT INTO transactions(rentalStartDate, rentalEndDate, chargeAmount, vehicleNumber, custNumber) VALUES (:rentalStartDate, :rentalEndDate, :chargeAmount, :vehicleNumber, :custNumber)");
+    insert3.bindValue(":rentalStartDate", current);
+    insert3.bindValue(":chargeAmount", 99.99);
+    insert3.bindValue(":vehicleNumber", 1);
+    insert3.bindValue(":custNumber", 3);
+    insert3.exec();
 };
