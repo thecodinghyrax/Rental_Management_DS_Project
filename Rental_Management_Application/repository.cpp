@@ -140,8 +140,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":CCNumber", "1234569812345214");
     insert1.bindValue(":custNumber", 1);
     insert1.exec();
-//    QSqlQuery insert2;
-//    insert2.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     insert1.bindValue(":firstName", "Cathy");
     insert1.bindValue(":lastName", "Crawford");
     insert1.bindValue(":address", "1234 SW Round Circle");
@@ -153,8 +151,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":CCNumber", "9999569812341111");
     insert1.bindValue(":custNumber", 2);
     insert1.exec();
-//    QSqlQuery insert3;
-//    insert3.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     insert1.bindValue(":firstName", "Larry");
     insert1.bindValue(":lastName", "Layabout");
     insert1.bindValue(":address", "3 Main");
@@ -166,8 +162,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":CCNumber", "7654324152637283");
     insert1.bindValue(":custNumber", 3);
     insert1.exec();
-//    QSqlQuery insert4;
-//    insert4.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     insert1.bindValue(":firstName", "Tom");
     insert1.bindValue(":lastName", "Thompson");
     insert1.bindValue(":address", "Lost Ln");
@@ -179,8 +173,6 @@ void Repository::createCustomerTable(){
     insert1.bindValue(":CCNumber", "9999999999999999");
     insert1.bindValue(":custNumber", 4);
     insert1.exec();
-//    QSqlQuery insert5;
-//    insert5.prepare("INSERT INTO Customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
     insert1.bindValue(":firstName", "Tony");
     insert1.bindValue(":lastName", "Peterson");
     insert1.bindValue(":address", "114 6th Ave");
