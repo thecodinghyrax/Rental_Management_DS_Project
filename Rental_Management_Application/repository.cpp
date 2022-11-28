@@ -86,16 +86,6 @@ QString Repository::addCustomer(Customer cust){
 };
 void Repository::updateCustomer(Customer cust){
     QSqlQuery query;
-    qCritical() << cust.getFirstName();
-    qCritical() << cust.getLastName();
-    qCritical() << cust.getAddress();
-    qCritical() << cust.getCity();
-    qCritical() << cust.getState();
-    qCritical() << cust.getZip();
-    qCritical() << cust.getPhoneNumber();
-    qCritical() << cust.getDLNumber();
-    qCritical() << cust.getCCNumber();
-    qCritical() << cust.getCustNumber();
     query.prepare("UPDATE Customers SET firstName = :firstName, lastName = :lastName, address = :address, city = :city," \
                   "state = :state, zip = :zip, phoneNumber = :phoneNumber, DLNumber = :DLNumber, CCNumber = :CCNumber WHERE custNumber = :custNumber");
     query.bindValue(":firstName", cust.getFirstName());
@@ -111,6 +101,14 @@ void Repository::updateCustomer(Customer cust){
     query.exec();
 
 };
+
+void Repository::deleteCustomerById(int id){
+    QSqlQuery query;
+    query.prepare("DELETE FROM Customers WHERE custNumber = :id");
+    query.bindValue(":id", id);
+    query.exec();
+};
+
 int Repository::getNextCustNumber(){
     QSqlQuery query;
     query.prepare("SELECT custNumber FROM Customers ORDER BY custNumber ASC LIMIT 1");

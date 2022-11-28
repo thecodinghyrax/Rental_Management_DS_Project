@@ -22,6 +22,7 @@ public:
     Customer getCustomerById(int);
     QString addCustomer(Customer cust);
     void updateCustomer(Customer);
+    void deleteCustomerById(int);
     int getNextCustNumber();
 
     void testThings();

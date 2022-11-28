@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    Customer getCustById(int);
+    //Customer getCustById(int);
 
 private slots:
 
@@ -34,7 +34,7 @@ private slots:
 
     //bool loadCustomers();
 
-    bool saveCustomers();
+    //bool saveCustomers();
 
     bool loadInventory();
 
@@ -80,7 +80,7 @@ private slots:
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
-    int getCustomerIndexById(int);
+    //int getCustomerIndexById(int);
 
     void on_editCustSubmitBtn_clicked();
 
@@ -100,7 +100,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QVector<Customer> customers;
+    //QVector<Customer> customers;
     Inventory inventory;
     QMap<int, RentalVehicle*> transactions;
     Repository repo;

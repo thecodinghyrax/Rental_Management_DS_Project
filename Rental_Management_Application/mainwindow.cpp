@@ -33,14 +33,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-Customer MainWindow::getCustById(int id){
-    for(auto& customer : customers){
-        if(customer.getCustNumber() == id){
-            return customer;
-        }
-    }
-    return Customer();
-};
+//Customer MainWindow::getCustById(int id){
+//    for(auto& customer : customers){
+//        if(customer.getCustNumber() == id){
+//            return customer;
+//        }
+//    }
+//    return Customer();
+//};
 
 bool MainWindow::validate(QString userInput, QString msg, int minLength, int maxLength){
     ui->validateLable->setText("");
@@ -116,30 +116,30 @@ bool MainWindow::validate(QString userInput, QString msg, int minLength, int max
 //};
 
 
-bool MainWindow::saveCustomers()
-{
-    QFile file("customers.txt");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        return false;
-    }
+//bool MainWindow::saveCustomers()
+//{
+//    QFile file("customers.txt");
+//    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+//        return false;
+//    }
 
-    QTextStream stream(&file);
+//    QTextStream stream(&file);
 
-    for(auto& customer : customers){
-        stream << customer.getFirstName() << "\n";
-        stream << customer.getLastName() << "\n";
-        stream << customer.getAddress() << "\n";
-        stream << customer.getCity() << "\n";
-        stream << customer.getState() << "\n";
-        stream << customer.getZip() << "\n";
-        stream << customer.getPhoneNumber() << "\n";
-        stream << customer.getDLNumber() << "\n";
-        stream << customer.getCCNumber() << "\n";
-        stream << "+++\n";
-    }
-    file.close();
-    return true;
-}
+//    for(auto& customer : customers){
+//        stream << customer.getFirstName() << "\n";
+//        stream << customer.getLastName() << "\n";
+//        stream << customer.getAddress() << "\n";
+//        stream << customer.getCity() << "\n";
+//        stream << customer.getState() << "\n";
+//        stream << customer.getZip() << "\n";
+//        stream << customer.getPhoneNumber() << "\n";
+//        stream << customer.getDLNumber() << "\n";
+//        stream << customer.getCCNumber() << "\n";
+//        stream << "+++\n";
+//    }
+//    file.close();
+//    return true;
+//}
 
 bool MainWindow::loadInventory(){
     //TODO
@@ -261,18 +261,28 @@ void MainWindow::on_addCustSubmitBtn_clicked()
 {
     QString first = ui->firstNameInput->text();
     if(ui->validateLable->text().length() == 0 && first.length() != 0){
-        customers.push_back(Customer(
-                                ui->firstNameInput->text(),
-                                ui->lastNameInput->text(),
-                                ui->addressInput->text(),
-                                ui->cityInput->text(),
-                                ui->stateInput->text(),
-                                ui->zipInput->text(),
-                                ui->phoneNumberInput->text(),
-                                ui->DLInput->text(),
-                                ui->CCInput->text(),
-                                repo.getNextCustNumber()
-                                ));
+          repo.addCustomer(Customer(ui->firstNameInput->text(),
+                                    ui->lastNameInput->text(),
+                                    ui->addressInput->text(),
+                                    ui->cityInput->text(),
+                                    ui->stateInput->text(),
+                                    ui->zipInput->text(),
+                                    ui->phoneNumberInput->text(),
+                                    ui->DLInput->text(),
+                                    ui->CCInput->text(),
+                                    repo.getNextCustNumber()));
+//        customers.push_back(Customer(
+//                                ui->firstNameInput->text(),
+//                                ui->lastNameInput->text(),
+//                                ui->addressInput->text(),
+//                                ui->cityInput->text(),
+//                                ui->stateInput->text(),
+//                                ui->zipInput->text(),
+//                                ui->phoneNumberInput->text(),
+//                                ui->DLInput->text(),
+//                                ui->CCInput->text(),
+//                                repo.getNextCustNumber()
+//                                ));
 
         clearAllInput();
         ui->validateLable->setText(first + " has been added!");
@@ -316,14 +326,14 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 }
 
-int MainWindow::getCustomerIndexById(int id){
-    for(int i = 0; i < customers.size(); ++i){
-        if(customers[i].getCustNumber() == id){
-            return i;
-        }
-    }
-    return -1;
-};
+//int MainWindow::getCustomerIndexById(int id){
+//    for(int i = 0; i < customers.size(); ++i){
+//        if(customers[i].getCustNumber() == id){
+//            return i;
+//        }
+//    }
+//    return -1;
+//};
 
 
 void MainWindow::on_editCustSubmitBtn_clicked()
@@ -378,14 +388,17 @@ void MainWindow::clearAllInput(){
 void MainWindow::on_deleteCustSubmitBtn_clicked()
 {
     int custNumber = ui->custNumberLabel->text().toInt();
-    for(int i = 0; i < customers.size(); ++i){
-        if(customers[i].getCustNumber() == custNumber){
-            customers.erase(customers.begin() + i);
-            clearAllInput();
-            ui->validateLable->setText("Recored has been deleted!");
-            }
-        }
-    saveCustomers();
+    repo.deleteCustomerById(custNumber);
+    clearAllInput();
+    ui->validateLable->setText("Recored has been deleted!");
+//    for(int i = 0; i < customers.size(); ++i){
+//        if(customers[i].getCustNumber() == custNumber){
+//            customers.erase(customers.begin() + i);
+//            clearAllInput();
+//            ui->validateLable->setText("Recored has been deleted!");
+//            }
+//        }
+//    saveCustomers();
 }
 
 
@@ -434,7 +447,8 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
     ui->customerSearchResultsList->clear();
     QSet<int> results;
     QString temp;
-    for(auto& customer : customers){
+//    for(auto& customer : customers){
+      for(auto& customer : repo.getCustomers()){
         if(customer.getLastName().contains(arg1)){
             results.insert(customer.getCustNumber());
         }
@@ -444,10 +458,11 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
     }
     for(auto result : results){
         temp.clear();
-        Customer tempCust = getCustById(result);
+        Customer tempCust = repo.getCustomerById(result);
+        //Customer tempCust = getCustById(result);
+        temp.append(QString::number(tempCust.getCustNumber()) + " ");
         temp.append(tempCust.getFirstName() + " ");
         temp.append(tempCust.getLastName() + " ");
-        temp.append(QString::number(tempCust.getCustNumber()) + " ");
         ui->customerSearchResultsList->addItem(temp);
     }
 }
