@@ -1,5 +1,4 @@
 ﻿#include "customer.h"
-#include "qmessagebox.h"
 
 
 Customer::Customer()
@@ -13,31 +12,8 @@ Customer::Customer()
     setPhoneNumber("Not Entered");
     setDLNumber("Not Entered");
     setCCNumber("Not Entered");
-    // setCustomerNumber will need to be call after the DL and CC info is entered
 }
 
-
-//Customer::Customer(QString firstName,
-//                   QString lastName,
-//                   QString address,
-//                   QString city,
-//                   QString state,
-//                   QString zip,
-//                   QString phoneNumber,
-//                   QString DLNumber,
-//                   QString CCNumber){
-//    setFirstName(firstName);
-//    setLastName(lastName);
-//    setAddress(address);
-//    setCity(city);
-//    setState(state);
-//    setZip(zip);
-//    setPhoneNumber(phoneNumber);
-//    setDLNumber(DLNumber);
-//    setCCNumber(CCNumber);
-//    setCustNumber();
-
-//};
 
 Customer::Customer(QString firstName,
                    QString lastName,
@@ -93,11 +69,6 @@ void Customer::setCCNumber(QString CCNumber){
         this->CCNumber = CCNumber;
 };
 
-//void Customer::setCustNumber(){
-//    int id = createCustNumber(this->getCCNumber(), this->getDLNumber());
-//    this->custNumber = id;
-//};
-
 void Customer::setCustNumber(int custNumber){
     this->custNumber = custNumber;
 };
@@ -135,18 +106,18 @@ int Customer::getCustNumber(){
 };
 
 
-int Customer::createCustNumber(QString str1, QString str2){
+//int Customer::createCustNumber(QString str1, QString str2){
 
-    uint value1 = 0;
-    for(int i = 0; i < str1.length(); ++i){
-        value1 += str1[i].digitValue();
-        }
-    uint value2 = 0;
-    for(int i = 0; i < str2.length(); ++i){
-        value2 += str2[i].digitValue();
-        }
-    return (value1 * value1 * value2 * value2) % 1000000;
-};
+//    uint value1 = 0;
+//    for(int i = 0; i < str1.length(); ++i){
+//        value1 += str1[i].digitValue();
+//        }
+//    uint value2 = 0;
+//    for(int i = 0; i < str2.length(); ++i){
+//        value2 += str2[i].digitValue();
+//        }
+//    return (value1 * value1 * value2 * value2) % 1000000;
+//};
 
 QString Customer::printCustomer(){
     QString output;

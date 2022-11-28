@@ -8,20 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     clearAllInput();
-
-    QMessageBox box;
-//   if(!loadCustomers()){
-//       box.setWindowTitle("Error");
-//       box.setText("Customers file could not be loaded!");
-//       box.exec();
-//   }
-   repo.testThings();
-
-//   if(!loadVehicles()){
-//       box.setWindowTitle("Error");
-//       box.setText("Vehicles file could not be loaded!");
-//       box.exec();
-//   }
+    repo.testThings();
    /*
 Note on file finding issues:
 Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
@@ -32,15 +19,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-//Customer MainWindow::getCustById(int id){
-//    for(auto& customer : customers){
-//        if(customer.getCustNumber() == id){
-//            return customer;
-//        }
-//    }
-//    return Customer();
-//};
 
 bool MainWindow::validate(QString userInput, QString msg, int minLength, int maxLength){
     ui->validateLable->setText("");
@@ -55,112 +33,6 @@ bool MainWindow::validate(QString userInput, QString msg, int minLength, int max
     }
 }
 
-//bool MainWindow::loadCustomers(){
-//    QFile file("customers.txt");
-//    if(!file.open(QIODevice::ReadOnly)){
-//        return false;
-//    }
-
-//    QTextStream in(&file);
-//    int count = 0;
-//    Customer tempCust;
-//    QString line;
-
-//    while(!in.atEnd()){
-//        line = in.readLine();
-//        if(line == "+++"){
-//            count = 0;
-//            tempCust.setCustNumber();
-//            customers.push_back(tempCust);
-//            line = in.readLine();
-//        }
-
-//        switch(count){
-//        case 0:
-//            tempCust.setFirstName(line);
-//            break;
-//        case 1:
-//            tempCust.setLastName(line);
-//            break;
-//        case 2:
-//            tempCust.setAddress(line);
-//            break;
-//        case 3:
-//            tempCust.setCity(line);
-//            break;
-//        case 4:
-//            tempCust.setState(line);
-//            break;
-//        case 5:
-//            tempCust.setZip(line);
-//            break;
-//        case 6:
-//            tempCust.setPhoneNumber(line);
-//            break;
-//        case 7:
-//            tempCust.setDLNumber(line);
-//            break;
-//        case 8:
-//            tempCust.setCCNumber(line);
-//            break;
-//        default:
-//            file.close();
-//            return false;
-//            break;
-//        }
-//        count++;
-//    }
-
-//    file.close();
-//    return true;
-//};
-
-
-//bool MainWindow::saveCustomers()
-//{
-//    QFile file("customers.txt");
-//    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-//        return false;
-//    }
-
-//    QTextStream stream(&file);
-
-//    for(auto& customer : customers){
-//        stream << customer.getFirstName() << "\n";
-//        stream << customer.getLastName() << "\n";
-//        stream << customer.getAddress() << "\n";
-//        stream << customer.getCity() << "\n";
-//        stream << customer.getState() << "\n";
-//        stream << customer.getZip() << "\n";
-//        stream << customer.getPhoneNumber() << "\n";
-//        stream << customer.getDLNumber() << "\n";
-//        stream << customer.getCCNumber() << "\n";
-//        stream << "+++\n";
-//    }
-//    file.close();
-//    return true;
-//}
-
-bool MainWindow::loadInventory(){
-    //TODO
-    return true;
-}
-
-bool MainWindow::saveInventory()
-{
-    //TODO
-    return true;
-};
-
-bool MainWindow::loadTransactions(){
-    //TODO
-    return true;
-}
-
-bool MainWindow::saveTransactions(){
-    //TODO
-    return true;
-}
 
 // Navigation
 void MainWindow::on_welcomeNavBtn_clicked()
@@ -260,6 +132,7 @@ void MainWindow::on_CCInput_textChanged(const QString &arg1)
 void MainWindow::on_addCustSubmitBtn_clicked()
 {
     QString first = ui->firstNameInput->text();
+    qCritical() << "Next = " << repo.getNextCustNumber();
     if(ui->validateLable->text().length() == 0 && first.length() != 0){
           repo.addCustomer(Customer(ui->firstNameInput->text(),
                                     ui->lastNameInput->text(),
@@ -271,18 +144,7 @@ void MainWindow::on_addCustSubmitBtn_clicked()
                                     ui->DLInput->text(),
                                     ui->CCInput->text(),
                                     repo.getNextCustNumber()));
-//        customers.push_back(Customer(
-//                                ui->firstNameInput->text(),
-//                                ui->lastNameInput->text(),
-//                                ui->addressInput->text(),
-//                                ui->cityInput->text(),
-//                                ui->stateInput->text(),
-//                                ui->zipInput->text(),
-//                                ui->phoneNumberInput->text(),
-//                                ui->DLInput->text(),
-//                                ui->CCInput->text(),
-//                                repo.getNextCustNumber()
-//                                ));
+          qCritical() << "Next = " << repo.getNextCustNumber();
 
         clearAllInput();
         ui->validateLable->setText(first + " has been added!");
@@ -326,47 +188,18 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 }
 
-//int MainWindow::getCustomerIndexById(int id){
-//    for(int i = 0; i < customers.size(); ++i){
-//        if(customers[i].getCustNumber() == id){
-//            return i;
-//        }
-//    }
-//    return -1;
-//};
-
 
 void MainWindow::on_editCustSubmitBtn_clicked()
 {
     if(ui->validateLable->text().length() < 1){
-
-        //int custNumber = ui->custNumberLabel->text().toInt();
-//        for(int i = 0; i < customers.size(); ++i){
-//            if(customers[i].getCustNumber() == custNumber){
-//                customers[i].setFirstName(ui->firstNameInput->text());
-//                customers[i].setLastName(ui->lastNameInput->text());
-//                customers[i].setAddress(ui->addressInput->text());
-//                customers[i].setCity(ui->cityInput->text());
-//                customers[i].setState(ui->stateInput->text());
-//                customers[i].setZip(ui->zipInput->text());
-//                customers[i].setPhoneNumber(ui->phoneNumberInput->text());
-//                customers[i].setDLNumber(ui->DLInput->text());
-//                customers[i].setCCNumber(ui->CCInput->text());
-
-//                clearAllInput();
-//                ui->validateLable->setText("Recored has been updated!");
-
-//            }
         Customer temp = Customer(ui->firstNameInput->text(), ui->lastNameInput->text(), ui->addressInput->text(), \
                                  ui->cityInput->text(), ui->stateInput->text(), ui->zipInput->text(), \
                                  ui->phoneNumberInput->text(), ui->DLInput->text(), ui->CCInput->text(), ui->custNumberLabel->text().toInt());
         repo.updateCustomer(temp);
         clearAllInput();
         ui->validateLable->setText("Recored has been updated!");
-        //}
-    }
 
-//saveCustomers();
+    }
 }
 
 void MainWindow::clearAllInput(){
@@ -391,14 +224,6 @@ void MainWindow::on_deleteCustSubmitBtn_clicked()
     repo.deleteCustomerById(custNumber);
     clearAllInput();
     ui->validateLable->setText("Recored has been deleted!");
-//    for(int i = 0; i < customers.size(); ++i){
-//        if(customers[i].getCustNumber() == custNumber){
-//            customers.erase(customers.begin() + i);
-//            clearAllInput();
-//            ui->validateLable->setText("Recored has been deleted!");
-//            }
-//        }
-//    saveCustomers();
 }
 
 
@@ -447,7 +272,6 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
     ui->customerSearchResultsList->clear();
     QSet<int> results;
     QString temp;
-//    for(auto& customer : customers){
       for(auto& customer : repo.getCustomers()){
         if(customer.getLastName().contains(arg1)){
             results.insert(customer.getCustNumber());
@@ -459,7 +283,6 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
     for(auto result : results){
         temp.clear();
         Customer tempCust = repo.getCustomerById(result);
-        //Customer tempCust = getCustById(result);
         temp.append(QString::number(tempCust.getCustNumber()) + " ");
         temp.append(tempCust.getFirstName() + " ");
         temp.append(tempCust.getLastName() + " ");

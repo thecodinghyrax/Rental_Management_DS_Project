@@ -5,7 +5,6 @@
 Repository::Repository()
 {
     QDir databasePath;
-    //QString path = databasePath.currentPath()+"/rentalDB.sqlite";
     QString path = "../rentalDB.sqlite";
     const QString DRIVER("QSQLITE");
     if(!QSqlDatabase::isDriverAvailable(DRIVER)) {
@@ -64,7 +63,6 @@ Customer Repository::getCustomerById(int id){
     int custNumber = query.value(9).toInt();
 
     Customer temp = Customer(firstName,lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber);
-    qCritical() << temp.getFirstName();
     return temp;
 };
 
@@ -111,14 +109,15 @@ void Repository::deleteCustomerById(int id){
 
 int Repository::getNextCustNumber(){
     QSqlQuery query;
-    query.prepare("SELECT custNumber FROM Customers ORDER BY custNumber ASC LIMIT 1");
-    qCritical() << query.value(0).toInt() + 1;
+    query.exec("SELECT custNumber FROM Customers ORDER BY custNumber DESC LIMIT 1");
+    query.first();
+    qCritical() << "next cust number from repository.cpp = " << query.value(0).toInt() + 1;
     return query.value(0).toInt() + 1;
 };
 
 void Repository::testThings(){
     if(getCustomerById(6).getFirstName() == ""){
-            qCritical() << "Customer 6 was not found";
+            //qCritical() << "Customer 6 was not found";
     }
 
 };

@@ -9,7 +9,6 @@
 #include <QTextStream>
 #include <QSet>
 #include <QMap>
-#include "customer.h"
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
 #include "inventory.h"
@@ -26,23 +25,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    //Customer getCustById(int);
 
 private slots:
 
     bool validate(QString, QString, int, int);
-
-    //bool loadCustomers();
-
-    //bool saveCustomers();
-
-    bool loadInventory();
-
-    bool saveInventory();
-
-    bool loadTransactions();
-
-    bool saveTransactions();
 
     void on_welcomeNavBtn_clicked();
 
@@ -80,8 +66,6 @@ private slots:
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
-    //int getCustomerIndexById(int);
-
     void on_editCustSubmitBtn_clicked();
 
     void clearAllInput();
@@ -100,7 +84,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    //QVector<Customer> customers;
     Inventory inventory;
     QMap<int, RentalVehicle*> transactions;
     Repository repo;

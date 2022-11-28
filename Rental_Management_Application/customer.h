@@ -22,8 +22,6 @@ private:
     int custNumber;
 public:
     Customer();
-//    Customer(QString, QString, QString, QString,
-//             QString, QString, QString, QString, QString);
     Customer(QString, QString, QString, QString, QString,
               QString, QString, QString, QString, int);
     ~Customer();
@@ -36,7 +34,6 @@ public:
     void setPhoneNumber(QString);
     void setDLNumber(QString);
     void setCCNumber(QString);
-    //void setCustNumber();
     void setCustNumber(int);
 
     QString getFirstName();
@@ -50,7 +47,7 @@ public:
     QString getCCNumber();
     int getCustNumber();
 
-    int createCustNumber(QString, QString);
+    //int createCustNumber(QString, QString);
     QString printCustomer();
 
 
