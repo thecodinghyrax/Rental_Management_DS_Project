@@ -15,7 +15,7 @@ SOURCES += \
     mainwindow.cpp \
     rentalvehicle.cpp \
     repository.cpp \
-    transactions.cpp
+    transaction.cpp
 
 HEADERS += \
     customer.h \
@@ -23,7 +23,7 @@ HEADERS += \
     mainwindow.h \
     rentalvehicle.h \
     repository.h \
-    transactions.h
+    transaction.h
 
 FORMS += \
     mainwindow.ui

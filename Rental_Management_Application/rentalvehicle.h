@@ -16,7 +16,9 @@ private:
     int custNumber;
 public:
     RentalVehicle();
-    RentalVehicle(int, QString, QString, QString, int, int, int);
+    RentalVehicle(QString, QString, QString,int, int, bool, int);
+    RentalVehicle(QString, QString, QString,int, int, bool);
+    RentalVehicle(int, QString, QString, QString, int, int, bool, int);
     ~RentalVehicle();
 
     void setVehicleNumber(int);

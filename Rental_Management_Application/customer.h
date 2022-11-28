@@ -24,6 +24,8 @@ public:
     Customer();
     Customer(QString, QString, QString, QString, QString,
               QString, QString, QString, QString, int);
+    Customer(QString, QString, QString, QString, QString,
+              QString, QString, QString, QString);
     ~Customer();
     void setFirstName(QString);
     void setLastName(QString);

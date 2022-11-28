@@ -1,12 +1,13 @@
-#ifndef TRANSACTIONS_H
-#define TRANSACTIONS_H
+#ifndef TRANSACTION_H
+#define TRANSACTION_H
 #include <chrono>
 #include <QString>
 #include <QDateTime>
 
-class Transactions
+class Transaction
 {
 private:
+    int id;
     QDateTime rentalStartDate;
     QDateTime rentalEndDate;
     double chargeAmount;
@@ -14,9 +15,12 @@ private:
     int custNumber;
     QString returnNote;
 public:
-    Transactions(QDateTime, double, int, int);
-    ~Transactions();
+    Transaction(QDateTime, double, int, int);
+    Transaction(QDateTime, QDateTime, double, int, int);
+    Transaction(int, QDateTime, QDateTime, double, int, int);
+    ~Transaction();
 
+    void setId(int);
     void setStartDate(QDateTime);
     void setEndDate(QDateTime);
     void setChargeAmount(double);
@@ -24,6 +28,7 @@ public:
     void setCustNumber(int);
     void setReturnNote(QString);
 
+    int getId();
     QDateTime getStartDate();
     QDateTime getEndDate();
     double getChargeAmount();
@@ -37,4 +42,4 @@ public:
 
 };
 
-#endif // TRANSACTIONS_H
+#endif // TRANSACTION_H

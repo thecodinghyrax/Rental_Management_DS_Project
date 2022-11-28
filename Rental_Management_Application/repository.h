@@ -10,7 +10,7 @@
 #include <QDebug>
 #include "customer.h"
 #include "rentalvehicle.h"
-#include "transactions.h"
+#include "transaction.h"
 
 class Repository
 {
@@ -20,15 +20,28 @@ private:
 public:
     Repository();
     ~Repository();
+
     QVector<Customer> getCustomers();
     Customer getCustomerById(int);
-    QString addCustomer(Customer cust);
+    void addCustomer(Customer cust);
     void updateCustomer(Customer);
     void deleteCustomerById(int);
     int getNextCustNumber();
 
+    QVector<RentalVehicle> getVehicles();
+    RentalVehicle getVehicleById(int);
+    void addVehicle(RentalVehicle vehicle);
+    void updateVehicle(RentalVehicle);
+    void deleteVehicleById(int);
+
+    QVector<Transaction> getTransactions();
+    Transaction getTransactionById(int);
+    void addTransaction(Transaction transaction);
+    void updateTransaction(Transaction);
+    void deleteTransactionById(int);
+
     void testThings();
-    void createCustomerTable();
+    void createTables();
 
 
 };

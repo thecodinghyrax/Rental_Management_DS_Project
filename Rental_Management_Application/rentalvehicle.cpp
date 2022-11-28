@@ -5,8 +5,32 @@ RentalVehicle::RentalVehicle()
 
 }
 
+RentalVehicle::RentalVehicle(QString catagory, QString make, QString model,
+                             int year, int milage, bool isRented, int custNumber)
+{
+    setCatagory(catagory);
+    setMake(make);
+    setModel(model);
+    setYear(year);
+    setMilage(milage);
+    setIsRented(isRented);
+    setCustNumber(custNumber);
+}
+
+RentalVehicle::RentalVehicle(QString catagory, QString make, QString model,
+                             int year, int milage, bool isRented)
+{
+    setCatagory(catagory);
+    setMake(make);
+    setModel(model);
+    setYear(year);
+    setMilage(milage);
+    setIsRented(isRented);
+    setCustNumber(-1);
+}
+
 RentalVehicle::RentalVehicle(int vehicleNumber, QString catagory, QString make, QString model,
-                             int year, int milage, int custNumber)
+                             int year, int milage, bool isRented, int custNumber)
 {
     setVehicleNumber(vehicleNumber);
     setCatagory(catagory);
@@ -14,7 +38,7 @@ RentalVehicle::RentalVehicle(int vehicleNumber, QString catagory, QString make, 
     setModel(model);
     setYear(year);
     setMilage(milage);
-    setIsRented(false);
+    setIsRented(isRented);
     setCustNumber(custNumber);
 }
 

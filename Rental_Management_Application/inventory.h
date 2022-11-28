@@ -10,33 +10,33 @@
 
 class Inventory
 {
-private:
-    QVector<RentalVehicle> economy;
-    QVector<RentalVehicle> compact;
-    QVector<RentalVehicle> standard;
-    QVector<RentalVehicle> premium;
-    QStack<RentalVehicle> returns;
-public:
-    Inventory();
-    ~Inventory();
+//private:
+//    QVector<RentalVehicle> economy;
+//    QVector<RentalVehicle> compact;
+//    QVector<RentalVehicle> standard;
+//    QVector<RentalVehicle> premium;
+//    QStack<RentalVehicle> returns;
+//public:
+//    Inventory();
+//    ~Inventory();
 
-    bool isAvailable(QStack<RentalVehicle>&);
+//    bool isAvailable(QStack<RentalVehicle>&);
 
-    RentalVehicle getNextVehicle(QStack<RentalVehicle>&);
+//    RentalVehicle getNextVehicle(QStack<RentalVehicle>&);
 
-    RentalVehicle peekReturns();
+//    RentalVehicle peekReturns();
 
-    void addVehicle(RentalVehicle vehicle, QVector<RentalVehicle>& vec);
-    void addReturn(RentalVehicle);
+//    void addVehicle(RentalVehicle vehicle, QVector<RentalVehicle>& vec);
+//    void addReturn(RentalVehicle);
 
-    bool removeVehicleById(int id, QVector<RentalVehicle>& vec);
+//    bool removeVehicleById(int id, QVector<RentalVehicle>& vec);
 
-    bool removeNextReturn();
+//    bool removeNextReturn();
 
-    void sortVehiclesByAge(QVector<RentalVehicle>&);
+//    void sortVehiclesByAge(QVector<RentalVehicle>&);
 
-    bool loadVehicles();
-    bool saveVehilces();
+//    bool loadVehicles();
+//    bool saveVehilces();
 
 };
 

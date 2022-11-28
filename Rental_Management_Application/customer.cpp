@@ -12,6 +12,7 @@ Customer::Customer()
     setPhoneNumber("Not Entered");
     setDLNumber("Not Entered");
     setCCNumber("Not Entered");
+    setCustNumber(-1);
 }
 
 
@@ -35,7 +36,27 @@ Customer::Customer(QString firstName,
     setDLNumber(DLNumber);
     setCCNumber(CCNumber);
     setCustNumber(custNumber);
+};
 
+Customer::Customer(QString firstName,
+                   QString lastName,
+                   QString address,
+                   QString city,
+                   QString state,
+                   QString zip,
+                   QString phoneNumber,
+                   QString DLNumber,
+                   QString CCNumber){
+    setFirstName(firstName);
+    setLastName(lastName);
+    setAddress(address);
+    setCity(city);
+    setState(state);
+    setZip(zip);
+    setPhoneNumber(phoneNumber);
+    setDLNumber(DLNumber);
+    setCCNumber(CCNumber);
+    setCustNumber(-1);
 };
 
 Customer::~Customer(){
