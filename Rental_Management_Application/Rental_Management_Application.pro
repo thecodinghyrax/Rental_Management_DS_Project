@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,11 +11,17 @@ CONFIG += c++17
 SOURCES += \
     customer.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    rentalvehicle.cpp \
+    repository.cpp \
+    transaction.cpp
 
 HEADERS += \
     customer.h \
-    mainwindow.h
+    mainwindow.h \
+    rentalvehicle.h \
+    repository.h \
+    transaction.h
 
 FORMS += \
     mainwindow.ui

@@ -8,35 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     clearAllInput();
-//    ui->editCustSubmitBtn->hide();
-//    ui->addCustSubmitBtn->show();
-    customers.push_back(Customer("Drew",
-                                 "Crawford",
-                                 "437 Main Cir",
-                                 "Ankeny",
-                                 "Iowa",
-                                 "50123",
-                                 "514-868-9227",
-                                 "8492PP0043",
-                                 "9999-9999-9999-1234"));
-    customers.push_back(Customer("Cathy",
-                                 "Crawford",
-                                 "4427 SW Harmony Cir",
-                                 "Ankeny",
-                                 "Iowa",
-                                 "40023",
-                                 "515-865-7890",
-                                 "7894BB5674",
-                                 "1234-1234-4321-6435"));
-    customers.push_back(Customer("Larry",
-                                 "Thompson",
-                                 "1 Rockway Cir",
-                                 "Des Moines",
-                                 "Iowa",
-                                 "52023",
-                                 "515-555-8888",
-                                 "8493OI4784",
-                                 "4321-7894-1234-1234"));
+    repo.testThings();
+   /*
+Note on file finding issues:
+Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
+*/
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +32,7 @@ bool MainWindow::validate(QString userInput, QString msg, int minLength, int max
         return true;
     }
 }
+
 
 // Navigation
 void MainWindow::on_welcomeNavBtn_clicked()
@@ -155,18 +132,19 @@ void MainWindow::on_CCInput_textChanged(const QString &arg1)
 void MainWindow::on_addCustSubmitBtn_clicked()
 {
     QString first = ui->firstNameInput->text();
+    qCritical() << "Next = " << repo.getNextCustNumber();
     if(ui->validateLable->text().length() == 0 && first.length() != 0){
-        customers.push_back(Customer(
-                                ui->firstNameInput->text(),
-                                ui->lastNameInput->text(),
-                                ui->addressInput->text(),
-                                ui->cityInput->text(),
-                                ui->stateInput->text(),
-                                ui->zipInput->text(),
-                                ui->phoneNumberInput->text(),
-                                ui->DLInput->text(),
-                                ui->CCInput->text()
-                                ));
+          repo.addCustomer(Customer(ui->firstNameInput->text(),
+                                    ui->lastNameInput->text(),
+                                    ui->addressInput->text(),
+                                    ui->cityInput->text(),
+                                    ui->stateInput->text(),
+                                    ui->zipInput->text(),
+                                    ui->phoneNumberInput->text(),
+                                    ui->DLInput->text(),
+                                    ui->CCInput->text(),
+                                    repo.getNextCustNumber()));
+          qCritical() << "Next = " << repo.getNextCustNumber();
 
         clearAllInput();
         ui->validateLable->setText(first + " has been added!");
@@ -178,7 +156,7 @@ void MainWindow::on_addCustSubmitBtn_clicked()
 void MainWindow::on_loadCustList_clicked()
 {
     ui->listWidget->clear();
-    for(auto customer : customers){
+    for(auto customer : repo.getCustomers()){
         ui->listWidget->addItem(new QListWidgetItem(QString::number(customer.getCustNumber()) + " " +
                                                     customer.getFirstName() + " " +
                                                     customer.getLastName()
@@ -194,9 +172,8 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     ui->deleteCustSubmitBtn->show();
     QString cust = item->text();
     int custNumber = cust.split(" ").at(0).toInt();
-    int customerIndex = getCustomerIndexById(custNumber);
-    if(customerIndex > -1){
-        Customer temp = customers[customerIndex];
+    if(custNumber > -1){
+        Customer temp = repo.getCustomerById(custNumber);
         ui->firstNameInput->setText(temp.getFirstName());
         ui->lastNameInput->setText(temp.getLastName());
         ui->addressInput->setText(temp.getAddress());
@@ -211,41 +188,18 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 }
 
-int MainWindow::getCustomerIndexById(int id){
-    for(int i = 0; i < customers.size(); ++i){
-        if(customers[i].getCustNumber() == id){
-            return i;
-        }
-    }
-    return -1;
-};
-
 
 void MainWindow::on_editCustSubmitBtn_clicked()
 {
     if(ui->validateLable->text().length() < 1){
+        Customer temp = Customer(ui->firstNameInput->text(), ui->lastNameInput->text(), ui->addressInput->text(), \
+                                 ui->cityInput->text(), ui->stateInput->text(), ui->zipInput->text(), \
+                                 ui->phoneNumberInput->text(), ui->DLInput->text(), ui->CCInput->text(), ui->custNumberLabel->text().toInt());
+        repo.updateCustomer(temp);
+        clearAllInput();
+        ui->validateLable->setText("Recored has been updated!");
 
-        int custNumber = ui->custNumberLabel->text().toInt();
-        for(int i = 0; i < customers.size(); ++i){
-            if(customers[i].getCustNumber() == custNumber){
-                customers[i].setFirstName(ui->firstNameInput->text());
-                customers[i].setLastName(ui->lastNameInput->text());
-                customers[i].setAddress(ui->addressInput->text());
-                customers[i].setCity(ui->cityInput->text());
-                customers[i].setState(ui->stateInput->text());
-                customers[i].setZip(ui->zipInput->text());
-                customers[i].setPhoneNumber(ui->phoneNumberInput->text());
-                customers[i].setDLNumber(ui->DLInput->text());
-                customers[i].setCCNumber(ui->CCInput->text());
-
-                clearAllInput();
-                ui->validateLable->setText("Recored has been updated!");
-
-            }
-        }
     }
-
-
 }
 
 void MainWindow::clearAllInput(){
@@ -267,12 +221,87 @@ void MainWindow::clearAllInput(){
 void MainWindow::on_deleteCustSubmitBtn_clicked()
 {
     int custNumber = ui->custNumberLabel->text().toInt();
-    for(int i = 0; i < customers.size(); ++i){
-        if(customers[i].getCustNumber() == custNumber){
-            customers.erase(customers.begin() + i);
-            clearAllInput();
-            ui->validateLable->setText("Recored has been deleted!");
-            }
+    repo.deleteCustomerById(custNumber);
+    clearAllInput();
+    ui->validateLable->setText("Recored has been deleted!");
+}
+
+
+void MainWindow::on_selectEconomyBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:5px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:0px solid green;");
+    ui->catSelectedLabel->setText("Economy");
+}
+
+
+void MainWindow::on_selectCompactBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:5px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:0px solid green;");
+    ui->catSelectedLabel->setText("Compact");
+}
+
+
+void MainWindow::on_selectStandardBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:5px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:0px solid green;");
+    ui->catSelectedLabel->setText("Standard");
+}
+
+
+void MainWindow::on_selectPremiumBtn_clicked()
+{
+    ui->selectEconomyBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectCompactBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectStandardBtn->setStyleSheet("outline:0px solid green;");
+    ui->selectPremiumBtn->setStyleSheet("outline:5px solid green;");
+    ui->catSelectedLabel->setText("Premium");
+}
+
+
+void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
+{
+    ui->customerSearchResultsList->clear();
+    QSet<int> results;
+    QString temp;
+      for(auto& customer : repo.getCustomers()){
+        if(customer.getLastName().toLower().contains(arg1.toLower())){
+            results.insert(customer.getCustNumber());
         }
+        if(customer.getFirstName().toLower().contains(arg1.toLower())){
+            results.insert(customer.getCustNumber());
+        }
+        if(QString::number(customer.getCustNumber()).contains(arg1)){
+            results.insert(customer.getCustNumber());
+        }
+    }
+    for(auto result : results){
+        temp.clear();
+        Customer tempCust = repo.getCustomerById(result);
+        temp.append(QString::number(tempCust.getCustNumber()) + " ");
+        temp.append(tempCust.getFirstName() + " ");
+        temp.append(tempCust.getLastName() + " ");
+        ui->customerSearchResultsList->addItem(temp);
+    }
+}
+
+
+void MainWindow::on_completeRentalButton_clicked()
+{
+    QMessageBox box;
+    try {
+        qCritical() << ui->customerSearchResultsList->currentItem()->text();
+    } catch (...) {
+        box.setText("Please use the search box and select a current customer.");
+    }
+
 }
 

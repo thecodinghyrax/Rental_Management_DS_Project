@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 #include <QString>
+#include <QHashFunctions>
+#include <QHash>
 
 
 class Customer
@@ -19,8 +21,11 @@ private:
     QString CCNumber;
     int custNumber;
 public:
-    Customer(QString, QString, QString, QString,
-             QString, QString, QString, QString, QString);
+    Customer();
+    Customer(QString, QString, QString, QString, QString,
+              QString, QString, QString, QString, int);
+    Customer(QString, QString, QString, QString, QString,
+              QString, QString, QString, QString);
     ~Customer();
     void setFirstName(QString);
     void setLastName(QString);
@@ -31,7 +36,7 @@ public:
     void setPhoneNumber(QString);
     void setDLNumber(QString);
     void setCCNumber(QString);
-    void setCustNumber();
+    void setCustNumber(int);
 
     QString getFirstName();
     QString getLastName();
@@ -44,8 +49,10 @@ public:
     QString getCCNumber();
     int getCustNumber();
 
-    int createCustNumber(QString, QString);
+    //int createCustNumber(QString, QString);
     QString printCustomer();
+
+
 
 };
 

@@ -1,6 +1,42 @@
 ﻿#include "customer.h"
-#include "qmessagebox.h"
 
+
+Customer::Customer()
+{
+    setFirstName("Not Entered");
+    setLastName("Not Entered");
+    setAddress("Not Entered");
+    setCity("Not Entered");
+    setState("Not Entered");
+    setZip("Not Entered");
+    setPhoneNumber("Not Entered");
+    setDLNumber("Not Entered");
+    setCCNumber("Not Entered");
+    setCustNumber(-1);
+}
+
+
+Customer::Customer(QString firstName,
+                   QString lastName,
+                   QString address,
+                   QString city,
+                   QString state,
+                   QString zip,
+                   QString phoneNumber,
+                   QString DLNumber,
+                   QString CCNumber,
+                   int custNumber){
+    setFirstName(firstName);
+    setLastName(lastName);
+    setAddress(address);
+    setCity(city);
+    setState(state);
+    setZip(zip);
+    setPhoneNumber(phoneNumber);
+    setDLNumber(DLNumber);
+    setCCNumber(CCNumber);
+    setCustNumber(custNumber);
+};
 
 Customer::Customer(QString firstName,
                    QString lastName,
@@ -20,9 +56,9 @@ Customer::Customer(QString firstName,
     setPhoneNumber(phoneNumber);
     setDLNumber(DLNumber);
     setCCNumber(CCNumber);
-    setCustNumber();
-
+    setCustNumber(-1);
 };
+
 Customer::~Customer(){
 
 };
@@ -52,6 +88,10 @@ void Customer::setDLNumber(QString DLNumber){
 };
 void Customer::setCCNumber(QString CCNumber){
         this->CCNumber = CCNumber;
+};
+
+void Customer::setCustNumber(int custNumber){
+    this->custNumber = custNumber;
 };
 
 QString Customer::getFirstName(){
@@ -86,23 +126,19 @@ int Customer::getCustNumber(){
     return custNumber;
 };
 
-void Customer::setCustNumber(){
-    int id = createCustNumber(this->getCCNumber(), this->getDLNumber());
-    this->custNumber = id;
-};
 
-int Customer::createCustNumber(QString str1, QString str2){
+//int Customer::createCustNumber(QString str1, QString str2){
 
-    uint value1 = 0;
-    for(int i = 0; i < str1.length(); ++i){
-        value1 += str1[i].digitValue();
-        }
-    uint value2 = 0;
-    for(int i = 0; i < str2.length(); ++i){
-        value2 += str2[i].digitValue();
-        }
-    return (value1 * value1 * value2 * value2) % 1000000;
-};
+//    uint value1 = 0;
+//    for(int i = 0; i < str1.length(); ++i){
+//        value1 += str1[i].digitValue();
+//        }
+//    uint value2 = 0;
+//    for(int i = 0; i < str2.length(); ++i){
+//        value2 += str2[i].digitValue();
+//        }
+//    return (value1 * value1 * value2 * value2) % 1000000;
+//};
 
 QString Customer::printCustomer(){
     QString output;
@@ -118,6 +154,7 @@ QString Customer::printCustomer(){
     output.append(getCCNumber() + "\n");
     return output;
 };
+
 
 
 

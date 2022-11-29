@@ -4,8 +4,14 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QVector>
-#include "customer.h"
+#include <QFile>
+#include <QStandardPaths>
+#include <QTextStream>
+#include <QSet>
+#include <QMap>
 #include "qlistwidget.h"
+#include "rentalvehicle.h"
+#include "repository.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,6 +26,9 @@ public:
     ~MainWindow();
 
 private slots:
+
+    bool validate(QString, QString, int, int);
+
     void on_welcomeNavBtn_clicked();
 
     void on_addCustomerNavBtn_clicked();
@@ -31,8 +40,6 @@ private slots:
     void on_viewTransactionsNavBtn_clicked();
 
     void on_returnQueueNavBtn_clicked();
-
-    bool validate(QString, QString, int, int);
 
     void on_firstNameInput_textChanged(const QString &arg1);
 
@@ -58,16 +65,28 @@ private slots:
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
-    int getCustomerIndexById(int);
-
     void on_editCustSubmitBtn_clicked();
 
     void clearAllInput();
 
     void on_deleteCustSubmitBtn_clicked();
 
+    void on_selectEconomyBtn_clicked();
+
+    void on_selectCompactBtn_clicked();
+
+    void on_selectStandardBtn_clicked();
+
+    void on_selectPremiumBtn_clicked();
+
+    void on_customerSearchBox_textEdited(const QString &arg1);
+
+    void on_completeRentalButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-    QVector<Customer> customers;
+    QMap<int, RentalVehicle*> transactions;
+    Repository repo;
+
 };
 #endif // MAINWINDOW_H
