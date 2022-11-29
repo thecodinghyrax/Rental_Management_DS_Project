@@ -16,6 +16,7 @@ class Repository
 {
 private:
     QSqlDatabase db;
+    QMap<QString, double> rentalPrices;
 
 public:
     Repository();
@@ -30,15 +31,22 @@ public:
 
     QVector<RentalVehicle> getVehicles();
     RentalVehicle getVehicleById(int);
+    int getAvailableVehicleIdByCatagory(QString);
     void addVehicle(RentalVehicle vehicle);
     void updateVehicle(RentalVehicle);
     void deleteVehicleById(int);
+    double getPriceById(int);
 
     QVector<Transaction> getTransactions();
     Transaction getTransactionById(int);
     void addTransaction(Transaction transaction);
     void updateTransaction(Transaction);
     void deleteTransactionById(int);
+
+    void setRentalPrice(QString, double);
+    void setDefaultRentalPrices();
+    void updateRentalPrice(QString, double);
+    double getRentalPrice(QString);
 
     void testThings();
     void createTables();

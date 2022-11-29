@@ -296,12 +296,55 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
 
 void MainWindow::on_completeRentalButton_clicked()
 {
-    QMessageBox box;
-    try {
-        qCritical() << ui->customerSearchResultsList->currentItem()->text();
-    } catch (...) {
-        box.setText("Please use the search box and select a current customer.");
+    bool custSelected = false;
+    bool vehicleSelected = false;
+    if(ui->customerSearchResultsList->selectedItems().size() == 0){
+        QMessageBox custBox;
+        custBox.setText("Please use the search box and select a current customer.");
+        custBox.exec();
+    } else {
+        custSelected = true;
     }
+    if(ui->catSelectedLabel->text() == "None"){
+        QMessageBox vehicleBox;
+        vehicleBox.setText("Please select a vehicle catagory by clicking the proper image.");
+        vehicleBox.exec();
+    } else {
+        vehicleSelected = true;
+    }
+    if(custSelected && vehicleSelected){
+        QMessageBox::StandardButton confirm;
+        QDateTime current = QDateTime::currentDateTime();
+        int days = ui->daysSpinBox->value();
+        double chargeAmount = repo.getRentalPrice(ui->catSelectedLabel->text().toLower()) * days;
+        int custNumber = ui->customerSearchResultsList->selectedItems().at(0)->text().split(" ").value(0).toInt();
+        int vehicleNumber = repo.getAvailableVehicleIdByCatagory(ui->catSelectedLabel->text().toLower());
+        setStyleSheet("QMessageBox::question{color:white;background-color:black}");
+        ui->centralwidget->setStyleSheet("background-color:black");
+        ui->statusbar->setStyleSheet("background-color:black");
+        QString selection = "Is this information correct?\nCustomer: ";
+        selection.append(ui->customerSearchResultsList->selectedItems().at(0)->text() + "\n");
+        selection.append("Days: " + QString::number(days) + "\n");
+        selection.append("Charge Amount: $" + QString::number(chargeAmount) + "\n");
+        selection.append("Catagory: " + ui->catSelectedLabel->text());
+        confirm = QMessageBox::question(this, "Confirm", selection, QMessageBox::Yes | QMessageBox::No);
 
+
+        if(confirm == QMessageBox::Yes){
+            if(vehicleNumber == -1){
+                QMessageBox none;
+                none.setText("There are no " + ui->catSelectedLabel->text() + " vechiles available. \nPlease selecte a differnet vehicle catagory.");
+                none.exec();
+            }else {
+                RentalVehicle rental = repo.getVehicleById(vehicleNumber);
+                rental.setIsRented(true);
+                rental.setCustNumber(custNumber);
+                repo.updateVehicle(rental);
+                repo.addTransaction(Transaction(current, chargeAmount, days, vehicleNumber, custNumber));
+                ui->stackedWidget->setCurrentIndex(3);
+            }
+
+        }
+    }
 }
 

@@ -15,6 +15,7 @@ Repository::Repository()
         qWarning() << "ERROR: " << db.lastError();
     }
     createTables();
+    setDefaultRentalPrices();
 }
 
 Repository::~Repository(){
@@ -154,6 +155,19 @@ RentalVehicle Repository::getVehicleById(int id){
     return temp;
 };
 
+int Repository::getAvailableVehicleIdByCatagory(QString catagory){
+    QSqlQuery query;
+    query.prepare("SELECT vehicleNumber, catagory FROM rentalVehicles WHERE catagory = :catagory AND isRented = 0 ORDER BY year DESC LIMIT 1");
+    query.bindValue(":catagory", catagory);
+    query.exec();
+    query.first();
+    if(query.value(0).toString() == ""){
+        return -1;
+    } else {
+        return query.value(0).toInt();
+    }
+};
+
 void Repository::addVehicle(RentalVehicle vehicle){
     QSqlQuery query;
     query.prepare("INSERT INTO rentalVehicles(catagory, make, model, year, milage, isRented, custNumber) VALUES (:catagory, :make, :model, :year, :milage, :isRented, :custNumber)");
@@ -194,7 +208,7 @@ void Repository::deleteVehicleById(int id){
 QVector<Transaction> Repository::getTransactions(){
     QSqlQuery query;
     QVector<Transaction> transactions;
-    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, vehicleNumber, custNumber FROM transactions");
+    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber FROM transactions");
     query.exec();
 
     while(query.next()){
@@ -202,9 +216,10 @@ QVector<Transaction> Repository::getTransactions(){
         QDateTime rentalStartDate = query.value(1).toDateTime();
         QDateTime rentalEndDate = query.value(2).toDateTime();
         double chargeAmount = query.value(3).toDouble();
-        int vehicleNumber = query.value(4).toInt();
-        int custNumber = query.value(5).toInt();
-        transactions.push_back(Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, vehicleNumber, custNumber));
+        int numberOfDays = query.value(4).toInt();
+        int vehicleNumber = query.value(5).toInt();
+        int custNumber = query.value(6).toInt();
+        transactions.push_back(Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber));
     }
 
     return transactions;
@@ -212,7 +227,7 @@ QVector<Transaction> Repository::getTransactions(){
 
 Transaction Repository::getTransactionById(int transId){
     QSqlQuery query;
-    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, vehicleNumber, custNumber FROM transactions WHERE id = :transId");
+    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber FROM transactions WHERE id = :transId");
     query.bindValue(":transId", transId);
     query.exec();
     query.first();
@@ -220,18 +235,20 @@ Transaction Repository::getTransactionById(int transId){
     QDateTime rentalStartDate = query.value(1).toDateTime();
     QDateTime rentalEndDate = query.value(2).toDateTime();
     double chargeAmount = query.value(3).toDouble();
-    int vehicleNumber = query.value(4).toInt();
-    int custNumber = query.value(5).toInt();
+    int numberOfDays = query.value(4).toInt();
+    int vehicleNumber = query.value(5).toInt();
+    int custNumber = query.value(6).toInt();
 
-    Transaction temp = Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, vehicleNumber, custNumber);
+    Transaction temp = Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber);
     return temp;
 };
 
 void Repository::addTransaction(Transaction transaction){
     QSqlQuery query;
-    query.prepare("INSERT INTO transactions(rentalStartDate, chargeAmount, vehicleNumber, custNumber) VALUES (:rentalStartDate, :chargeAmount, :vehicleNumber, :custNumber)");
+    query.prepare("INSERT INTO transactions(rentalStartDate, chargeAmount, numberOfDays, vehicleNumber, custNumber) VALUES (:rentalStartDate, :chargeAmount, :numberOfDays, :vehicleNumber, :custNumber)");
     query.bindValue(":rentalStartDate", transaction.getStartDate());
     query.bindValue(":chargeAmount", transaction.getChargeAmount());
+    query.bindValue(":numberOfDays", transaction.getNumberOfDays());
     query.bindValue(":vehicleNumber", transaction.getVehicleId());
     query.bindValue(":custNumber", transaction.getCustNumber());
     query.exec();
@@ -239,11 +256,12 @@ void Repository::addTransaction(Transaction transaction){
 
 void Repository::updateTransaction(Transaction transaction){
     QSqlQuery query;
-    query.prepare("UPDATE transactions SET rentalStartDate = :rentalStartDate, rentalEndDate = :rentalEndDate, chargeAmount = :chargeAmount, vehicleNumber = :vehicleNumber, custNumber = :custNumber WHERE id = :id");
+    query.prepare("UPDATE transactions SET rentalStartDate = :rentalStartDate, rentalEndDate = :rentalEndDate, chargeAmount = :chargeAmount, numberOfDays = :numberOfDays, vehicleNumber = :vehicleNumber, custNumber = :custNumber WHERE id = :id");
     query.bindValue(":id", transaction.getId());
     query.bindValue(":rentalStartDate", transaction.getStartDate());
     query.bindValue(":rentalEndDate", transaction.getEndDate());
     query.bindValue(":chargeAmount", transaction.getChargeAmount());
+    query.bindValue(":numberOfDays", transaction.getNumberOfDays());
     query.bindValue(":vehicleNumber", transaction.getVehicleId());
     query.bindValue(":custNumber", transaction.getCustNumber());
     query.exec();
@@ -255,6 +273,23 @@ void Repository::deleteTransactionById(int id){
     query.bindValue(":id", id);
     query.exec();
 };
+
+void Repository::setRentalPrice(QString catagory, double price){
+    rentalPrices.insert(catagory, price);
+};
+void Repository::setDefaultRentalPrices(){
+    rentalPrices.insert("economy", 20.);
+    rentalPrices.insert("compact", 25.5);
+    rentalPrices.insert("standard", 31.4);
+    rentalPrices.insert("premium", 40.0);
+};
+void Repository::updateRentalPrice(QString catagory, double price){
+    rentalPrices.value(catagory, price);
+}
+double Repository::getRentalPrice(QString catagory){
+    return rentalPrices.value(catagory);
+};
+
 
 void Repository::testThings(){
     if(getCustomerById(6).getFirstName() == ""){
@@ -271,7 +306,7 @@ void Repository::createTables(){
 
     query.exec("CREATE TABLE customers(custNumber INTEGER PRIMARY KEY AUTOINCREMENT, firstName TEXT, lastName TEXT, address TEXT, city TEXT, state TEXT, zip TEXT, phoneNumber TEXT, DLNumber TEXT, CCNumber TEXT)");
     query.exec("CREATE TABLE rentalVehicles(vehicleNumber INTEGER PRIMARY KEY AUTOINCREMENT, catagory TEXT, make TEXT, model TEXT, year INTEGER, milage INTEGER, isRented INTEGER, custNumber INTEGER, FOREIGN KEY (custNumber) REFERENCES customers (custNumber))");
-    query.exec("CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, rentalStartDate DATETIME, rentalEndDate DATETIME, chargeAmount REAL, vehicleNumber INTEGER, custNumber INTEGER, FOREIGN KEY (vehicleNumber) REFERENCES rentalVehicles (vehicleNumber), FOREIGN KEY (custNumber) REFERENCES customers (custNumber))");
+    query.exec("CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, rentalStartDate DATETIME, rentalEndDate DATETIME, chargeAmount REAL, numberOfDays INTEGER, vehicleNumber INTEGER, custNumber INTEGER, FOREIGN KEY (vehicleNumber) REFERENCES rentalVehicles (vehicleNumber), FOREIGN KEY (custNumber) REFERENCES customers (custNumber))");
 
     addCustomer(Customer("Drew", "Crawford", "1234 SW Round Circle", "My Town", "Iowa", "78945", "123-456-7891", "1234PP7894", "1234569812345214"));
     addCustomer(Customer("Cathy", "Crawford", "1234 SW Round Circle", "My Town", "Iowa", "78945", "123-999-7891", "9999ML7894", "9999569812341111"));
@@ -299,14 +334,14 @@ void Repository::createTables(){
     addVehicle(RentalVehicle("compact", "Ford", "Focus", 2018, 218892, 0));
 
     QDateTime current = QDateTime::currentDateTime();
-    addTransaction(Transaction(current, 99.99, 1, 3));
-    addTransaction(Transaction(current, 101.99, 2, 2));
-    addTransaction(Transaction(current, 71.90, 5, 1));
+    addTransaction(Transaction(current, 99.99, 5, 1, 3));
+    addTransaction(Transaction(current, 101.99, 4, 2, 2));
+    addTransaction(Transaction(current, 71.90, 5, 5, 1));
     Transaction tempTrans = getTransactionById(3);
     QDateTime end;
     end = current.addDays(2);
     tempTrans.setEndDate(end);
     updateTransaction(tempTrans);
     deleteTransactionById(1);
-    addTransaction(Transaction(current, 99.99, 1, 3));
+    addTransaction(Transaction(current, 99.99, 5, 1, 3));
 };

@@ -1,23 +1,26 @@
 #include "transaction.h"
 
-Transaction::Transaction(QDateTime start, double amount, int vehicleId, int custNumber){
+Transaction::Transaction(QDateTime start, double amount, int numberOfDays, int vehicleId, int custNumber){
     setStartDate(start);
     setChargeAmount(amount);
+    setNumberOfDays(numberOfDays);
     setVehicleId(vehicleId);
     setCustNumber(custNumber);
 };
-Transaction::Transaction(QDateTime start, QDateTime end, double amount, int vehicleId, int custNumber){
+Transaction::Transaction(QDateTime start, QDateTime end, double amount, int numberOfDays,int vehicleId, int custNumber){
     setStartDate(start);
     setEndDate(end);
     setChargeAmount(amount);
+    setNumberOfDays(numberOfDays);
     setVehicleId(vehicleId);
     setCustNumber(custNumber);
 };
-Transaction::Transaction(int id, QDateTime start, QDateTime end, double amount, int vehicleId, int custNumber){
+Transaction::Transaction(int id, QDateTime start, QDateTime end, double amount, int numberOfDays,int vehicleId, int custNumber){
     setId(id);
     setStartDate(start);
     setEndDate(end);
     setChargeAmount(amount);
+    setNumberOfDays(numberOfDays);
     setVehicleId(vehicleId);
     setCustNumber(custNumber);
 };
@@ -36,6 +39,9 @@ void Transaction::setEndDate(QDateTime end){
 void Transaction::setChargeAmount(double amount){
     this->chargeAmount = amount;
 };
+void Transaction::setNumberOfDays(int numberOfDays){
+    this->numberOfDays = numberOfDays;
+}
 void Transaction::setVehicleId(int id){
     this->vehicleId = id;
 };
@@ -58,6 +64,9 @@ QDateTime Transaction::getEndDate(){
 double Transaction::getChargeAmount(){
     return chargeAmount;
 };
+int Transaction::getNumberOfDays(){
+    return numberOfDays;
+}
 int Transaction::getVehicleId(){
     return vehicleId;
 };
@@ -77,6 +86,7 @@ QString Transaction::printTransaction(){
     trans.append("End Date: " + getEndDate().toString() + "\n");
 
     trans.append("Charge Amount: " + QString::number(getChargeAmount()) + "\n");
+    trans.append("Number of Days: " + QString::number(getNumberOfDays()) + "\n");
     trans.append("Return Note: " + getReturnNote() + "\n");
     trans.append("--------------------------------------------------------------");
     return trans;
