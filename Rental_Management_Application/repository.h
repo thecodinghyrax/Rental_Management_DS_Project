@@ -30,8 +30,10 @@ public:
     int getNextCustNumber();
 
     QVector<RentalVehicle> getVehicles();
+    QVector<RentalVehicle> getRentedVehicles();
     RentalVehicle getVehicleById(int);
     int getAvailableVehicleIdByCatagory(QString);
+
     void addVehicle(RentalVehicle vehicle);
     void updateVehicle(RentalVehicle);
     void deleteVehicleById(int);
@@ -50,7 +52,6 @@ public:
 
     void testThings();
     void createTables();
-
 
 };
 

@@ -58,6 +58,16 @@ void MainWindow::on_rentNavBtn_clicked()
 void MainWindow::on_returnNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    ui->rentedVehicleList->clear();
+    for(auto vehicle : repo.getRentedVehicles()){
+        ui->rentedVehicleList->addItem(new QListWidgetItem(QString::number(vehicle.getVehicleNumber()) + " " +
+                                                    vehicle.getMake() + " " +
+                                                    vehicle.getModel() + " " +
+                                                    QString::number(vehicle.getYear()) + " " +
+                                                    repo.getCustomerById(vehicle.getCustNumber()).getFirstName() + " " +
+                                                    repo.getCustomerById(vehicle.getCustNumber()).getLastName()
+                                                    ));
+        }
 }
 
 
@@ -346,5 +356,11 @@ void MainWindow::on_completeRentalButton_clicked()
 
         }
     }
+}
+
+
+void MainWindow::on_rentedVehicleList_itemClicked(QListWidgetItem *item)
+{
+    ui->rentalSelectedForReturn->setText(item->text());
 }
 

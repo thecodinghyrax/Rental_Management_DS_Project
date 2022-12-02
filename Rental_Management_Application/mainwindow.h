@@ -83,6 +83,8 @@ private slots:
 
     void on_completeRentalButton_clicked();
 
+    void on_rentedVehicleList_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
     QMap<int, RentalVehicle*> transactions;

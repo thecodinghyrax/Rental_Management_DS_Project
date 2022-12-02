@@ -136,6 +136,26 @@ QVector<RentalVehicle> Repository::getVehicles(){
     return vehicles;
 };
 
+QVector<RentalVehicle> Repository::getRentedVehicles(){
+    QSqlQuery query;
+    QVector<RentalVehicle> rentedVehicles;
+    query.prepare("SELECT vehicleNumber, catagory, make, model, year, milage, isRented, custNumber FROM rentalVehicles WHERE isRented = 1");
+    query.exec();
+
+    while(query.next()){
+        int vehicleNumber = query.value(0).toInt();
+        QString catagory = query.value(1).toString();
+        QString make = query.value(2).toString();
+        QString model = query.value(3).toString();
+        int year = query.value(4).toInt();
+        int milage = query.value(5).toInt();
+        bool isRented = query.value(6).toBool();
+        int custNumber = query.value(7).toInt();
+        rentedVehicles.push_back(RentalVehicle(vehicleNumber, catagory, make, model, year, milage, isRented, custNumber));
+    }
+    return rentedVehicles;
+};
+
 RentalVehicle Repository::getVehicleById(int id){
     QSqlQuery query;
     query.prepare("SELECT vehicleNumber, catagory, make, model, year, milage, isRented, custNumber FROM rentalVehicles WHERE vehicleNumber = :vehicleNumber");
