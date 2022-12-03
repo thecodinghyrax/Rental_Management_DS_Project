@@ -134,7 +134,6 @@ void MainWindow::on_CCInput_textChanged(const QString &arg1)
 void MainWindow::on_addCustSubmitBtn_clicked()
 {
     QString first = ui->firstNameInput->text();
-    qCritical() << "Next = " << repo.getNextCustNumber();
     if(ui->validateLable->text().length() == 0 && first.length() != 0){
           repo.addCustomer(Customer(ui->firstNameInput->text(),
                                     ui->lastNameInput->text(),
@@ -146,7 +145,6 @@ void MainWindow::on_addCustSubmitBtn_clicked()
                                     ui->DLInput->text(),
                                     ui->CCInput->text(),
                                     repo.getNextCustNumber()));
-          qCritical() << "Next = " << repo.getNextCustNumber();
 
         clearAllInput();
         ui->validateLable->setText(first + " has been added!");
@@ -383,29 +381,15 @@ void MainWindow::on_returnVehicleBtn_clicked()
 
         tempTrans.setEndDate(current);
         tempTrans.setReturnNote(ui->returnConditionInput->toPlainText());
-        qCritical() << "The temp id: " << tempTrans.getId();
-        qCritical() << "The start date: " << tempTrans.getStartDate();
-        qCritical() << "The end date: " << tempTrans.getEndDate();
-        qCritical() << "The charge amount: " << tempTrans.getChargeAmount();
-        qCritical() << "The number of days: " << tempTrans.getNumberOfDays();
-        qCritical() << "The vehicle id: " << tempTrans.getVehicleId();
-        qCritical() << "The customer id: " << tempTrans.getCustNumber();
-        qCritical() << "The return note: " << tempTrans.getReturnNote();
 
         repo.updateTransaction(tempTrans);
 
         RentalVehicle tempVehicle = repo.getVehicleById(id);
         tempVehicle.setCustNumber(-1);
         tempVehicle.setIsRented(false);
-        qCritical() << "The vehicle ID: " << tempVehicle.getVehicleNumber();
-        qCritical() << "The vehicle ID: " << tempVehicle.getCatagory();
-        qCritical() << "The vehicle ID: " << tempVehicle.getMake();
-        qCritical() << "The vehicle ID: " << tempVehicle.getModel();
-        qCritical() << "The vehicle ID: " << tempVehicle.getYear();
-        qCritical() << "The vehicle ID: " << tempVehicle.getMilage();
-        qCritical() << "The vehicle ID: " << tempVehicle.getIsRented();
-        qCritical() << "The vehicle ID: " << tempVehicle.getCustNumber();
         repo.updateVehicle(tempVehicle);
+
+        recentReturns.push(tempVehicle);
 
         populateRentedVhicleList();
         ui->returnConditionInput->clear();

@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QSet>
 #include <QMap>
+#include <QStack>
 #include <QVariant>
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
@@ -94,6 +95,8 @@ private:
     Ui::MainWindow *ui;
     QMap<int, RentalVehicle*> transactions;
     Repository repo;
+    QStack<RentalVehicle> recentReturns;
+
 
 };
 #endif // MAINWINDOW_H
