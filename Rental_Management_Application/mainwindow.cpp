@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     clearAllInput();
-    repo.testThings();
+    //repo.testThings();
    /*
 Note on file finding issues:
 Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
@@ -66,12 +66,25 @@ void MainWindow::on_returnNavBtn_clicked()
 void MainWindow::on_returnQueueNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(4);
+    if(!recentReturns.isEmpty()){
+        QString vehcileToPark = QString::number(recentReturns.top().getVehicleNumber());
+        vehcileToPark.append(" - " + QString::number(recentReturns.top().getYear()));
+        vehcileToPark.append(" " + recentReturns.top().getMake());
+        vehcileToPark.append(" " + recentReturns.top().getModel());
+
+        vehcileToPark.append(" current milage: " + QString::number(recentReturns.top().getMilage()));
+        ui->nextCarLbl->setText(vehcileToPark);
+    } else {
+        ui->nextCarLbl->setText("No vehicles currently waiting");
+    }
+
 }
 
 
 void MainWindow::on_viewTransactionsNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
+    populateHistoryTable();
 }
 
 
@@ -369,7 +382,7 @@ void MainWindow::populateRentedVhicleList(){
 }
 
 void MainWindow::on_returnVehicleBtn_clicked()
-{  
+{
     if(ui->rentedVehicleList->selectedItems().size() == 0){
         QMessageBox box;
         box.setText("There are no vehicles to return.");
@@ -402,3 +415,31 @@ void MainWindow::on_returnVehicleBtn_clicked()
 
 }
 
+
+void MainWindow::on_returnedToLotBtn_clicked()
+{
+
+    if(recentReturns.size() > 1){
+        recentReturns.pop();
+        QString vehcileToPark = QString::number(recentReturns.top().getVehicleNumber());
+        vehcileToPark.append(" - " + QString::number(recentReturns.top().getYear()));
+        vehcileToPark.append(" " + recentReturns.top().getMake());
+        vehcileToPark.append(" " + recentReturns.top().getModel());
+
+        vehcileToPark.append(" current milage: " + QString::number(recentReturns.top().getMilage()));
+        ui->nextCarLbl->setText(vehcileToPark);
+    } else if(recentReturns.size() == 1) {
+        recentReturns.pop();
+        ui->nextCarLbl->setText("No vehicles currently waiting");
+    }else {
+        ui->nextCarLbl->setText("No vehicles currently waiting");
+    }
+}
+
+void MainWindow::populateHistoryTable(){
+    QSqlQueryModel * model = new QSqlQueryModel();
+    repo.getHistoryModel(model);
+    ui->rentalHistoryTable->setSortingEnabled(true);
+    ui->rentalHistoryTable->setModel(model);
+
+};

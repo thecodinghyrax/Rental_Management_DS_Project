@@ -8,6 +8,7 @@
 #include <QVariant>
 #include <QVector>
 #include <QDebug>
+#include <QSqlTableModel>
 #include "customer.h"
 #include "rentalvehicle.h"
 #include "transaction.h"
@@ -40,6 +41,7 @@ public:
     double getPriceById(int);
 
     QVector<Transaction> getTransactions();
+    QVector<Transaction> getTransactionsByCustId(int);
     Transaction getTransactionById(int);
     Transaction getTransactionByRentedVehicleId(int);
     void addTransaction(Transaction transaction);
@@ -50,6 +52,8 @@ public:
     void setDefaultRentalPrices();
     void updateRentalPrice(QString, double);
     double getRentalPrice(QString);
+
+    void getHistoryModel(QSqlQueryModel *model);
 
     void testThings();
     void createTables();

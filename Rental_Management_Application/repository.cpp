@@ -16,6 +16,7 @@ Repository::Repository()
     }
     createTables();
     setDefaultRentalPrices();
+
 }
 
 Repository::~Repository(){
@@ -249,6 +250,28 @@ QVector<Transaction> Repository::getTransactions(){
     return transactions;
 };
 
+QVector<Transaction> Repository::getTransactionsByCustId(int custId){
+    QSqlQuery query;
+    QVector<Transaction> transactions;
+    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote FROM transactions WHERE custNumber = :id");
+    query.bindValue(":id", custId);
+    query.exec();
+
+    while(query.next()){
+        int id = query.value(0).toInt();
+        QDateTime rentalStartDate = query.value(1).toDateTime();
+        QDateTime rentalEndDate = query.value(2).toDateTime();
+        double chargeAmount = query.value(3).toDouble();
+        int numberOfDays = query.value(4).toInt();
+        int vehicleNumber = query.value(5).toInt();
+        int custNumber = query.value(6).toInt();
+        QString returnNote = query.value(7).toString();
+        transactions.push_back(Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote));
+    }
+
+    return transactions;
+};
+
 Transaction Repository::getTransactionById(int transId){
     QSqlQuery query;
     query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote FROM transactions WHERE id = :transId");
@@ -333,6 +356,13 @@ double Repository::getRentalPrice(QString catagory){
     return rentalPrices.value(catagory);
 };
 
+
+void Repository::getHistoryModel(QSqlQueryModel *model){
+    QSqlQuery query;
+    query.prepare("SELECT rentalStartDate, rentalEndDate, numberOfDays, chargeAmount, vehicleNumber, custNumber, returnNote FROM Transactions WHERE rentalEndDate NOT NULL");
+    query.exec();
+    model->setQuery(std::move(query));
+}
 
 void Repository::testThings(){
     if(getCustomerById(6).getFirstName() == ""){

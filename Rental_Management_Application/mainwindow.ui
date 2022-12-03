@@ -43,7 +43,7 @@ color: rgb(255, 255, 255);</string>
 }</string>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="Welcome">
      <widget class="QLabel" name="label">
@@ -1128,9 +1128,9 @@ color: rgb(255, 255, 255);</string>
      <widget class="QLabel" name="checkInLbl">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>60</x>
         <y>0</y>
-        <width>181</width>
+        <width>201</width>
         <height>64</height>
        </rect>
       </property>
@@ -1143,10 +1143,13 @@ color: rgb(255, 255, 255);</string>
       <property name="font">
        <font>
         <family>Segoe UI</family>
-        <pointsize>-1</pointsize>
+        <pointsize>36</pointsize>
         <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 36pt &quot;Segoe UI&quot;;</string>
       </property>
       <property name="text">
        <string>Check In</string>
@@ -1209,7 +1212,7 @@ color: rgb(255, 255, 255);</string>
       <property name="font">
        <font>
         <family>Segoe UI</family>
-        <pointsize>7</pointsize>
+        <pointsize>12</pointsize>
         <italic>false</italic>
         <bold>false</bold>
         <kerning>true</kerning>
@@ -1220,7 +1223,7 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(255, 255, 255);
-font: 7pt &quot;Segoe UI&quot;;</string>
+font: 12pt &quot;Segoe UI&quot;;</string>
       </property>
       <property name="text">
        <string/>
@@ -1313,7 +1316,7 @@ background-color: rgb(0, 159, 77);</string>
      <widget class="QLabel" name="label_29">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>50</x>
         <y>0</y>
         <width>311</width>
         <height>51</height>
@@ -1377,58 +1380,27 @@ background-color: rgb(0, 159, 77);</string>
       <property name="midLineWidth">
        <number>1</number>
       </property>
-      <widget class="QLabel" name="label_31">
+      <widget class="QLabel" name="nextCarLbl">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>30</y>
-         <width>321</width>
-         <height>21</height>
+         <x>10</x>
+         <y>20</y>
+         <width>341</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>16</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>2020 Ford Focus Econmy #12345 </string>
+        <string/>
        </property>
       </widget>
-     </widget>
-     <widget class="QLabel" name="label_32">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>220</y>
-        <width>391</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>Remaining cars to be returned to the lot</string>
-      </property>
-     </widget>
-     <widget class="QListView" name="listView_2">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>260</y>
-        <width>361</width>
-        <height>331</height>
-       </rect>
-      </property>
      </widget>
      <widget class="QPushButton" name="returnedToLotBtn">
       <property name="geometry">
@@ -1458,7 +1430,7 @@ background-color: rgb(0, 159, 77);</string>
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>30</x>
         <y>0</y>
         <width>381</width>
         <height>71</height>
@@ -1477,7 +1449,7 @@ alternate-background-color: rgb(25, 25, 25);</string>
        <string>View Transactions</string>
       </property>
      </widget>
-     <widget class="QTableView" name="tableView">
+     <widget class="QTableView" name="rentalHistoryTable">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -1671,9 +1643,8 @@ background-color: rgb(25, 25, 25);</string>
   <tabstop>completeRentalButton</tabstop>
   <tabstop>returnConditionInput</tabstop>
   <tabstop>returnVehicleBtn</tabstop>
-  <tabstop>listView_2</tabstop>
   <tabstop>returnedToLotBtn</tabstop>
-  <tabstop>tableView</tabstop>
+  <tabstop>rentalHistoryTable</tabstop>
   <tabstop>welcomeNavBtn</tabstop>
   <tabstop>addCustomerNavBtn</tabstop>
   <tabstop>rentNavBtn</tabstop>

@@ -30,17 +30,7 @@ QWidget
 
 
 /*-----QLabel-----*/
-/*----------https://doc-snapshots.qt.io/qt6-dev/stylesheet-syntax.html----------*/
-QLabel
-	QLabel#checkInLbl {
-			font-size: 36px;
-	}
-{
-	background-color: transparent;
-	color: #c2c7d5;
-	font-size: 13px;
 
-}
 
 
 /*-----QPushButton-----*/
@@ -133,21 +123,6 @@ QLineEdit
 
 }
 
-/*-----QTextEdit-----*/
-QTextEdit 
-QTextEdit#returnConditionInput{
-	color: white;
-}
-{
-	background-color: #c2c7d5;
-	color: white;
-	font-size: 12px;
-	font-weight: bold;
-	border: 1px solid white;
-	border-radius: 2px;
-	padding: 3px;
-}
-
 
 /*-----QListView-----*/
 QListView
@@ -156,7 +131,7 @@ QListView
 	color: #fff;
 	font-size: 12px;
 	font-weight: bold;
-	border: 1px solid #191919;
+	border: 1px solid white;
 	show-decoration-selected: 0;
 
 }
@@ -170,7 +145,7 @@ QListView::item
 	padding: 5px;
 	border-radius: 0px;
 	padding-left : 10px;
-	height: 24px;
+	height: 20px;
 
 }
 
