@@ -1,4 +1,4 @@
-#ifndef TRANSACTION_H
+﻿#ifndef TRANSACTION_H
 #define TRANSACTION_H
 #include <chrono>
 #include <QString>
@@ -17,8 +17,8 @@ private:
     QString returnNote;
 public:
     Transaction(QDateTime, double, int, int, int);
-    Transaction(QDateTime, QDateTime, double, int, int, int);
-    Transaction(int, QDateTime, QDateTime, double, int, int, int);
+    Transaction(QDateTime, QDateTime, double, int, int, int, QString);
+    Transaction(int, QDateTime, QDateTime, double, int, int, int, QString);
     ~Transaction();
 
     void setId(int);

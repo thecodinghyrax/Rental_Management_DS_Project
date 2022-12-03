@@ -59,6 +59,7 @@ void MainWindow::on_returnNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
     populateRentedVhicleList();
+    ui->rentalSelectedForReturn->clear();
 }
 
 
@@ -370,20 +371,50 @@ void MainWindow::populateRentedVhicleList(){
 }
 
 void MainWindow::on_returnVehicleBtn_clicked()
-{
-    QDateTime current = QDateTime::currentDateTime();
-    int id = ui->rentedVehicleList->currentItem()->text().split(" ").value(0).toInt();
-    Transaction tempTrans = repo.getTransactionByRentedVehicleId(id);
-    tempTrans.setEndDate(current);
-    tempTrans.setReturnNote(ui->returnConditionInput->toPlainText());
-    repo.updateTransaction(tempTrans);
+{  
+    if(ui->rentedVehicleList->selectedItems().size() == 0){
+        QMessageBox box;
+        box.setText("There are no vehicles to return.");
+        box.exec();
+    }else if(ui->returnConditionInput->toPlainText() != ""){
+        QDateTime current = QDateTime::currentDateTime();
+        int id = ui->rentedVehicleList->currentItem()->text().split(" ").value(0).toInt();
+        Transaction tempTrans = repo.getTransactionByRentedVehicleId(id);
 
-    RentalVehicle tempVehicle = repo.getVehicleById(id);
-    tempVehicle.setCustNumber(-1);
-    tempVehicle.setIsRented(false);
-    repo.updateVehicle(tempVehicle);
+        tempTrans.setEndDate(current);
+        tempTrans.setReturnNote(ui->returnConditionInput->toPlainText());
+        qCritical() << "The temp id: " << tempTrans.getId();
+        qCritical() << "The start date: " << tempTrans.getStartDate();
+        qCritical() << "The end date: " << tempTrans.getEndDate();
+        qCritical() << "The charge amount: " << tempTrans.getChargeAmount();
+        qCritical() << "The number of days: " << tempTrans.getNumberOfDays();
+        qCritical() << "The vehicle id: " << tempTrans.getVehicleId();
+        qCritical() << "The customer id: " << tempTrans.getCustNumber();
+        qCritical() << "The return note: " << tempTrans.getReturnNote();
 
-    populateRentedVhicleList();
-    ui->returnConditionInput->clear();
+        repo.updateTransaction(tempTrans);
+
+        RentalVehicle tempVehicle = repo.getVehicleById(id);
+        tempVehicle.setCustNumber(-1);
+        tempVehicle.setIsRented(false);
+        qCritical() << "The vehicle ID: " << tempVehicle.getVehicleNumber();
+        qCritical() << "The vehicle ID: " << tempVehicle.getCatagory();
+        qCritical() << "The vehicle ID: " << tempVehicle.getMake();
+        qCritical() << "The vehicle ID: " << tempVehicle.getModel();
+        qCritical() << "The vehicle ID: " << tempVehicle.getYear();
+        qCritical() << "The vehicle ID: " << tempVehicle.getMilage();
+        qCritical() << "The vehicle ID: " << tempVehicle.getIsRented();
+        qCritical() << "The vehicle ID: " << tempVehicle.getCustNumber();
+        repo.updateVehicle(tempVehicle);
+
+        populateRentedVhicleList();
+        ui->returnConditionInput->clear();
+        ui->rentalSelectedForReturn->clear();
+    } else {
+        QMessageBox box;
+        box.setText("Pleas enter a return condition comment.");
+        box.exec();
+    }
+
 }
 

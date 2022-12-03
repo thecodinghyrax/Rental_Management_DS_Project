@@ -1,4 +1,4 @@
-#include "transaction.h"
+﻿#include "transaction.h"
 
 Transaction::Transaction(QDateTime start, double amount, int numberOfDays, int vehicleId, int custNumber){
     setStartDate(start);
@@ -7,15 +7,16 @@ Transaction::Transaction(QDateTime start, double amount, int numberOfDays, int v
     setVehicleId(vehicleId);
     setCustNumber(custNumber);
 };
-Transaction::Transaction(QDateTime start, QDateTime end, double amount, int numberOfDays,int vehicleId, int custNumber){
+Transaction::Transaction(QDateTime start, QDateTime end, double amount, int numberOfDays,int vehicleId, int custNumber, QString returnNote){
     setStartDate(start);
     setEndDate(end);
     setChargeAmount(amount);
     setNumberOfDays(numberOfDays);
     setVehicleId(vehicleId);
     setCustNumber(custNumber);
+    setReturnNote(returnNote);
 };
-Transaction::Transaction(int id, QDateTime start, QDateTime end, double amount, int numberOfDays,int vehicleId, int custNumber){
+Transaction::Transaction(int id, QDateTime start, QDateTime end, double amount, int numberOfDays,int vehicleId, int custNumber, QString returnNote){
     setId(id);
     setStartDate(start);
     setEndDate(end);
@@ -23,6 +24,7 @@ Transaction::Transaction(int id, QDateTime start, QDateTime end, double amount, 
     setNumberOfDays(numberOfDays);
     setVehicleId(vehicleId);
     setCustNumber(custNumber);
+    setReturnNote(returnNote);
 };
 Transaction::~Transaction(){
 
