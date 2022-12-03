@@ -41,6 +41,7 @@ public:
 
     QVector<Transaction> getTransactions();
     Transaction getTransactionById(int);
+    Transaction getTransactionByRentedVehicleId(int);
     void addTransaction(Transaction transaction);
     void updateTransaction(Transaction);
     void deleteTransactionById(int);

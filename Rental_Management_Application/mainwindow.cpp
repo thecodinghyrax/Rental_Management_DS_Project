@@ -58,16 +58,7 @@ void MainWindow::on_rentNavBtn_clicked()
 void MainWindow::on_returnNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    ui->rentedVehicleList->clear();
-    for(auto vehicle : repo.getRentedVehicles()){
-        ui->rentedVehicleList->addItem(new QListWidgetItem(QString::number(vehicle.getVehicleNumber()) + " " +
-                                                    vehicle.getMake() + " " +
-                                                    vehicle.getModel() + " " +
-                                                    QString::number(vehicle.getYear()) + " " +
-                                                    repo.getCustomerById(vehicle.getCustNumber()).getFirstName() + " " +
-                                                    repo.getCustomerById(vehicle.getCustNumber()).getLastName()
-                                                    ));
-        }
+    populateRentedVhicleList();
 }
 
 
@@ -352,6 +343,7 @@ void MainWindow::on_completeRentalButton_clicked()
                 repo.updateVehicle(rental);
                 repo.addTransaction(Transaction(current, chargeAmount, days, vehicleNumber, custNumber));
                 ui->stackedWidget->setCurrentIndex(3);
+                populateRentedVhicleList();
             }
 
         }
@@ -362,5 +354,36 @@ void MainWindow::on_completeRentalButton_clicked()
 void MainWindow::on_rentedVehicleList_itemClicked(QListWidgetItem *item)
 {
     ui->rentalSelectedForReturn->setText(item->text());
+}
+
+void MainWindow::populateRentedVhicleList(){
+    ui->rentedVehicleList->clear();
+    for(auto vehicle : repo.getRentedVehicles()){
+        ui->rentedVehicleList->addItem(new QListWidgetItem(QString::number(vehicle.getVehicleNumber()) + " " +
+                                                    vehicle.getMake() + " " +
+                                                    vehicle.getModel() + " " +
+                                                    QString::number(vehicle.getYear()) + " " +
+                                                    repo.getCustomerById(vehicle.getCustNumber()).getFirstName() + " " +
+                                                    repo.getCustomerById(vehicle.getCustNumber()).getLastName()
+                                                    ));
+        }
+}
+
+void MainWindow::on_returnVehicleBtn_clicked()
+{
+    QDateTime current = QDateTime::currentDateTime();
+    int id = ui->rentedVehicleList->currentItem()->text().split(" ").value(0).toInt();
+    Transaction tempTrans = repo.getTransactionByRentedVehicleId(id);
+    tempTrans.setEndDate(current);
+    tempTrans.setReturnNote(ui->returnConditionInput->toPlainText());
+    repo.updateTransaction(tempTrans);
+
+    RentalVehicle tempVehicle = repo.getVehicleById(id);
+    tempVehicle.setCustNumber(-1);
+    tempVehicle.setIsRented(false);
+    repo.updateVehicle(tempVehicle);
+
+    populateRentedVhicleList();
+    ui->returnConditionInput->clear();
 }
 

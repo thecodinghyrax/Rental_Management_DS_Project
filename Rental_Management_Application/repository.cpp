@@ -214,7 +214,10 @@ void Repository::updateVehicle(RentalVehicle vehicle){
     query.bindValue(":year", vehicle.getYear());
     query.bindValue(":milage", vehicle.getMilage());
     query.bindValue(":isRented", vehicle.getIsRented());
-    query.bindValue(":custNumber", vehicle.getCustNumber());
+    if(vehicle.getCustNumber() != -1){
+        query.bindValue(":custNumber", vehicle.getCustNumber());
+    }
+
     query.exec();
 };
 
@@ -249,6 +252,24 @@ Transaction Repository::getTransactionById(int transId){
     QSqlQuery query;
     query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber FROM transactions WHERE id = :transId");
     query.bindValue(":transId", transId);
+    query.exec();
+    query.first();
+    int id = query.value(0).toInt();
+    QDateTime rentalStartDate = query.value(1).toDateTime();
+    QDateTime rentalEndDate = query.value(2).toDateTime();
+    double chargeAmount = query.value(3).toDouble();
+    int numberOfDays = query.value(4).toInt();
+    int vehicleNumber = query.value(5).toInt();
+    int custNumber = query.value(6).toInt();
+
+    Transaction temp = Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber);
+    return temp;
+};
+
+Transaction Repository::getTransactionByRentedVehicleId(int vehicleId){
+    QSqlQuery query;
+    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber FROM transactions WHERE id = :vehicleNumber AND isRented = 1");
+    query.bindValue(":vehicleNumber", vehicleId);
     query.exec();
     query.first();
     int id = query.value(0).toInt();

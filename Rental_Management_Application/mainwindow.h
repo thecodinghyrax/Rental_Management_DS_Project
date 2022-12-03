@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QSet>
 #include <QMap>
+#include <QVariant>
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
 #include "repository.h"
@@ -84,6 +85,10 @@ private slots:
     void on_completeRentalButton_clicked();
 
     void on_rentedVehicleList_itemClicked(QListWidgetItem *item);
+
+    void populateRentedVhicleList();
+
+    void on_returnVehicleBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
