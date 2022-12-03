@@ -9,9 +9,13 @@
 #include <QTextStream>
 #include <QSet>
 #include <QMap>
+#include <QStack>
+#include <QVariant>
+#include <QSqlTableModel>
 #include "qlistwidget.h"
 #include "rentalvehicle.h"
 #include "repository.h"
+#include "transaction.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -83,10 +87,26 @@ private slots:
 
     void on_completeRentalButton_clicked();
 
+    void on_rentedVehicleList_itemClicked(QListWidgetItem *item);
+
+    void populateRentedVhicleList();
+
+    void on_returnVehicleBtn_clicked();
+
+    void on_returnedToLotBtn_clicked();
+
+    void populateHistoryTable();
+
+
+    void on_rentalHistoryTable_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
-    QMap<int, RentalVehicle*> transactions;
-    Repository repo;
+    QVector<Transaction> custTransactions;
+    QMap<int, QVector<Transaction>> customerTransactionsMap;
+    Repository repo = Repository(customerTransactionsMap);
+    QStack<RentalVehicle> recentReturns;
+
 
 };
 #endif // MAINWINDOW_H

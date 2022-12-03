@@ -1,4 +1,4 @@
-#ifndef TRANSACTION_H
+﻿#ifndef TRANSACTION_H
 #define TRANSACTION_H
 #include <chrono>
 #include <QString>
@@ -11,19 +11,21 @@ private:
     QDateTime rentalStartDate;
     QDateTime rentalEndDate;
     double chargeAmount;
+    int numberOfDays;
     int vehicleId;
     int custNumber;
     QString returnNote;
 public:
-    Transaction(QDateTime, double, int, int);
-    Transaction(QDateTime, QDateTime, double, int, int);
-    Transaction(int, QDateTime, QDateTime, double, int, int);
+    Transaction(QDateTime, double, int, int, int);
+    Transaction(QDateTime, QDateTime, double, int, int, int, QString);
+    Transaction(int, QDateTime, QDateTime, double, int, int, int, QString);
     ~Transaction();
 
     void setId(int);
     void setStartDate(QDateTime);
     void setEndDate(QDateTime);
     void setChargeAmount(double);
+    void setNumberOfDays(int);
     void setVehicleId(int);
     void setCustNumber(int);
     void setReturnNote(QString);
@@ -32,6 +34,7 @@ public:
     QDateTime getStartDate();
     QDateTime getEndDate();
     double getChargeAmount();
+    int getNumberOfDays();
     int getVehicleId();
     int getCustNumber();
     QString getReturnNote();

@@ -8,11 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     clearAllInput();
-    repo.testThings();
-   /*
-Note on file finding issues:
-Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
-*/
 }
 
 MainWindow::~MainWindow()
@@ -58,18 +53,33 @@ void MainWindow::on_rentNavBtn_clicked()
 void MainWindow::on_returnNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    populateRentedVhicleList();
+    ui->rentalSelectedForReturn->clear();
 }
 
 
 void MainWindow::on_returnQueueNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(4);
+    if(!recentReturns.isEmpty()){
+        QString vehcileToPark = QString::number(recentReturns.top().getVehicleNumber());
+        vehcileToPark.append(" - " + QString::number(recentReturns.top().getYear()));
+        vehcileToPark.append(" " + recentReturns.top().getMake());
+        vehcileToPark.append(" " + recentReturns.top().getModel());
+
+        vehcileToPark.append(" current milage: " + QString::number(recentReturns.top().getMilage()));
+        ui->nextCarLbl->setText(vehcileToPark);
+    } else {
+        ui->nextCarLbl->setText("No vehicles currently waiting");
+    }
+
 }
 
 
 void MainWindow::on_viewTransactionsNavBtn_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
+    populateHistoryTable();
 }
 
 
@@ -132,7 +142,6 @@ void MainWindow::on_CCInput_textChanged(const QString &arg1)
 void MainWindow::on_addCustSubmitBtn_clicked()
 {
     QString first = ui->firstNameInput->text();
-    qCritical() << "Next = " << repo.getNextCustNumber();
     if(ui->validateLable->text().length() == 0 && first.length() != 0){
           repo.addCustomer(Customer(ui->firstNameInput->text(),
                                     ui->lastNameInput->text(),
@@ -144,10 +153,10 @@ void MainWindow::on_addCustSubmitBtn_clicked()
                                     ui->DLInput->text(),
                                     ui->CCInput->text(),
                                     repo.getNextCustNumber()));
-          qCritical() << "Next = " << repo.getNextCustNumber();
 
         clearAllInput();
         ui->validateLable->setText(first + " has been added!");
+        repo.updateCustTransMap(customerTransactionsMap);
     }
 
 }
@@ -198,7 +207,7 @@ void MainWindow::on_editCustSubmitBtn_clicked()
         repo.updateCustomer(temp);
         clearAllInput();
         ui->validateLable->setText("Recored has been updated!");
-
+        repo.updateCustTransMap(customerTransactionsMap);
     }
 }
 
@@ -296,12 +305,157 @@ void MainWindow::on_customerSearchBox_textEdited(const QString &arg1)
 
 void MainWindow::on_completeRentalButton_clicked()
 {
-    QMessageBox box;
-    try {
-        qCritical() << ui->customerSearchResultsList->currentItem()->text();
-    } catch (...) {
-        box.setText("Please use the search box and select a current customer.");
+    bool custSelected = false;
+    bool vehicleSelected = false;
+    if(ui->customerSearchResultsList->selectedItems().size() == 0){
+        QMessageBox custBox;
+        custBox.setText("Please use the search box and select a current customer.");
+        custBox.exec();
+    } else {
+        custSelected = true;
+    }
+    if(ui->catSelectedLabel->text() == "None"){
+        QMessageBox vehicleBox;
+        vehicleBox.setText("Please select a vehicle catagory by clicking the proper image.");
+        vehicleBox.exec();
+    } else {
+        vehicleSelected = true;
+    }
+    if(custSelected && vehicleSelected){
+        QMessageBox::StandardButton confirm;
+        QDateTime current = QDateTime::currentDateTime();
+        int days = ui->daysSpinBox->value();
+        double chargeAmount = repo.getRentalPrice(ui->catSelectedLabel->text().toLower()) * days;
+        int custNumber = ui->customerSearchResultsList->selectedItems().at(0)->text().split(" ").value(0).toInt();
+        int vehicleNumber = repo.getAvailableVehicleIdByCatagory(ui->catSelectedLabel->text().toLower());
+        setStyleSheet("QMessageBox::question{color:white;background-color:black}");
+        ui->centralwidget->setStyleSheet("background-color:black");
+        ui->statusbar->setStyleSheet("background-color:black");
+        QString selection = "Is this information correct?\nCustomer: ";
+        selection.append(ui->customerSearchResultsList->selectedItems().at(0)->text() + "\n");
+        selection.append("Days: " + QString::number(days) + "\n");
+        selection.append("Charge Amount: $" + QString::number(chargeAmount) + "\n");
+        selection.append("Catagory: " + ui->catSelectedLabel->text());
+        confirm = QMessageBox::question(this, "Confirm", selection, QMessageBox::Yes | QMessageBox::No);
+
+
+        if(confirm == QMessageBox::Yes){
+            if(vehicleNumber == -1){
+                QMessageBox none;
+                none.setText("There are no " + ui->catSelectedLabel->text() + " vechiles available. \nPlease selecte a differnet vehicle catagory.");
+                none.exec();
+            }else {
+                RentalVehicle rental = repo.getVehicleById(vehicleNumber);
+                rental.setIsRented(true);
+                rental.setCustNumber(custNumber);
+                repo.updateVehicle(rental);
+                repo.addTransaction(Transaction(current, chargeAmount, days, vehicleNumber, custNumber));
+                ui->stackedWidget->setCurrentIndex(3);
+                populateRentedVhicleList();
+                repo.updateCustTransMap(customerTransactionsMap);
+            }
+
+        }
+    }
+}
+
+
+void MainWindow::on_rentedVehicleList_itemClicked(QListWidgetItem *item)
+{
+    ui->rentalSelectedForReturn->setText(item->text());
+}
+
+void MainWindow::populateRentedVhicleList(){
+    ui->rentedVehicleList->clear();
+    for(auto vehicle : repo.getRentedVehicles()){
+        ui->rentedVehicleList->addItem(new QListWidgetItem(QString::number(vehicle.getVehicleNumber()) + " " +
+                                                    vehicle.getMake() + " " +
+                                                    vehicle.getModel() + " " +
+                                                    QString::number(vehicle.getYear()) + " " +
+                                                    repo.getCustomerById(vehicle.getCustNumber()).getFirstName() + " " +
+                                                    repo.getCustomerById(vehicle.getCustNumber()).getLastName()
+                                                    ));
+        }
+}
+
+void MainWindow::on_returnVehicleBtn_clicked()
+{
+    if(ui->rentedVehicleList->selectedItems().size() == 0){
+        QMessageBox box;
+        box.setText("There are no vehicles to return.");
+        box.exec();
+    }else if(ui->returnConditionInput->toPlainText() != ""){
+        QDateTime current = QDateTime::currentDateTime();
+        int id = ui->rentedVehicleList->currentItem()->text().split(" ").value(0).toInt();
+        Transaction tempTrans = repo.getTransactionByRentedVehicleId(id);
+
+        tempTrans.setEndDate(current);
+        tempTrans.setReturnNote(ui->returnConditionInput->toPlainText());
+
+        repo.updateTransaction(tempTrans);
+
+        RentalVehicle tempVehicle = repo.getVehicleById(id);
+        tempVehicle.setCustNumber(-1);
+        tempVehicle.setIsRented(false);
+        repo.updateVehicle(tempVehicle);
+
+        recentReturns.push(tempVehicle);
+
+        populateRentedVhicleList();
+        ui->returnConditionInput->clear();
+        ui->rentalSelectedForReturn->clear();
+        repo.updateCustTransMap(customerTransactionsMap);
+    } else {
+        QMessageBox box;
+        box.setText("Pleas enter a return condition comment.");
+        box.exec();
     }
 
+}
+
+
+void MainWindow::on_returnedToLotBtn_clicked()
+{
+
+    if(recentReturns.size() > 1){
+        recentReturns.pop();
+        QString vehcileToPark = QString::number(recentReturns.top().getVehicleNumber());
+        vehcileToPark.append(" - " + QString::number(recentReturns.top().getYear()));
+        vehcileToPark.append(" " + recentReturns.top().getMake());
+        vehcileToPark.append(" " + recentReturns.top().getModel());
+
+        vehcileToPark.append(" current milage: " + QString::number(recentReturns.top().getMilage()));
+        ui->nextCarLbl->setText(vehcileToPark);
+    } else if(recentReturns.size() == 1) {
+        recentReturns.pop();
+        ui->nextCarLbl->setText("No vehicles currently waiting");
+    }else {
+        ui->nextCarLbl->setText("No vehicles currently waiting");
+    }
+}
+
+void MainWindow::populateHistoryTable(){
+    QSqlQueryModel * model = new QSqlQueryModel();
+    repo.getHistoryModel(model);
+    ui->rentalHistoryTable->setSortingEnabled(true);
+    ui->rentalHistoryTable->setModel(model);
+
+};
+
+void MainWindow::on_rentalHistoryTable_clicked(const QModelIndex &index)
+{
+    if(index.column() == 5){
+        int custNumber = ui->rentalHistoryTable->model()->data(index).toInt();
+        QMessageBox box;
+        QString message;
+        message.append(repo.getCustomerById(custNumber).getFirstName() + " " +
+                repo.getCustomerById(custNumber).getLastName() + "'s transactions\n\n");
+        QVector<Transaction> transactions = customerTransactionsMap[custNumber];
+        for(auto trans : transactions){
+            message.append(trans.printTransaction());
+        }
+        box.setText(message);
+        box.exec();
+    }
 }
 

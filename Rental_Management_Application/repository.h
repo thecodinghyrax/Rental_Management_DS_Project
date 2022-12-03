@@ -8,6 +8,7 @@
 #include <QVariant>
 #include <QVector>
 #include <QDebug>
+#include <QSqlTableModel>
 #include "customer.h"
 #include "rentalvehicle.h"
 #include "transaction.h"
@@ -16,9 +17,10 @@ class Repository
 {
 private:
     QSqlDatabase db;
+    QMap<QString, double> rentalPrices;
 
 public:
-    Repository();
+    Repository(QMap<int, QVector<Transaction>>&);
     ~Repository();
 
     QVector<Customer> getCustomers();
@@ -29,20 +31,35 @@ public:
     int getNextCustNumber();
 
     QVector<RentalVehicle> getVehicles();
+    QVector<RentalVehicle> getRentedVehicles();
     RentalVehicle getVehicleById(int);
+    int getAvailableVehicleIdByCatagory(QString);
+
     void addVehicle(RentalVehicle vehicle);
     void updateVehicle(RentalVehicle);
     void deleteVehicleById(int);
+    double getPriceById(int);
 
     QVector<Transaction> getTransactions();
+    QVector<Transaction> getTransactionsByCustId(int);
+    QVector<Transaction> getCompletedTransactionsByCustId(int);
     Transaction getTransactionById(int);
+    Transaction getTransactionByRentedVehicleId(int);
     void addTransaction(Transaction transaction);
     void updateTransaction(Transaction);
     void deleteTransactionById(int);
 
+    void setRentalPrice(QString, double);
+    void setDefaultRentalPrices();
+    void updateRentalPrice(QString, double);
+    double getRentalPrice(QString);
+
+    void getHistoryModel(QSqlQueryModel *model);
+
+    void updateCustTransMap(QMap<int, QVector<Transaction>>&);
+
     void testThings();
     void createTables();
-
 
 };
 
