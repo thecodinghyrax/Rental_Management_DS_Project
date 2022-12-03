@@ -1,7 +1,7 @@
 ﻿#include "repository.h"
 
 
-Repository::Repository()
+Repository::Repository(QMap<int, QVector<Transaction>>& map)
 {
     QDir databasePath;
     QString path = "../rentalDB.sqlite";
@@ -16,7 +16,7 @@ Repository::Repository()
     }
     createTables();
     setDefaultRentalPrices();
-
+    updateCustTransMap(map);
 }
 
 Repository::~Repository(){
@@ -272,6 +272,28 @@ QVector<Transaction> Repository::getTransactionsByCustId(int custId){
     return transactions;
 };
 
+QVector<Transaction> Repository::getCompletedTransactionsByCustId(int custId){
+    QSqlQuery query;
+    QVector<Transaction> transactions;
+    query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote FROM transactions WHERE custNumber = :id AND rentalEndDate NOT NULL");
+    query.bindValue(":id", custId);
+    query.exec();
+
+    while(query.next()){
+        int id = query.value(0).toInt();
+        QDateTime rentalStartDate = query.value(1).toDateTime();
+        QDateTime rentalEndDate = query.value(2).toDateTime();
+        double chargeAmount = query.value(3).toDouble();
+        int numberOfDays = query.value(4).toInt();
+        int vehicleNumber = query.value(5).toInt();
+        int custNumber = query.value(6).toInt();
+        QString returnNote = query.value(7).toString();
+        transactions.push_back(Transaction(id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote));
+    }
+
+    return transactions;
+};
+
 Transaction Repository::getTransactionById(int transId){
     QSqlQuery query;
     query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote FROM transactions WHERE id = :transId");
@@ -331,6 +353,7 @@ void Repository::updateTransaction(Transaction transaction){
     query.bindValue(":custNumber", transaction.getCustNumber());
     query.bindValue(":returnNote", transaction.getReturnNote());
     query.exec();
+
 };
 
 void Repository::deleteTransactionById(int id){
@@ -364,6 +387,15 @@ void Repository::getHistoryModel(QSqlQueryModel *model){
     model->setQuery(std::move(query));
 }
 
+void Repository::updateCustTransMap(QMap<int, QVector<Transaction>>& map){
+    map.clear();
+    for(auto cust : getCustomers()){
+        QVector<Transaction> trans;
+        map.insert(cust.getCustNumber(), getCompletedTransactionsByCustId(cust.getCustNumber()));
+    }
+};
+
+
 void Repository::testThings(){
     if(getCustomerById(6).getFirstName() == ""){
             //qCritical() << "Customer 6 was not found";
@@ -371,6 +403,7 @@ void Repository::testThings(){
 
 };
 
+// Create testing data in db
 void Repository::createTables(){
     QSqlQuery query;
     query.exec("DROP TABLE IF EXISTS customers");
@@ -422,7 +455,7 @@ void Repository::createTables(){
 
     Transaction tempTrans = getTransactionById(3);
     QDateTime end;
-    end = current.addDays(2);
+    end = current.addDays(4);
     tempTrans.setEndDate(end);
     tempTrans.setReturnNote("No damage. Clean. Full tank");
     updateTransaction(tempTrans);

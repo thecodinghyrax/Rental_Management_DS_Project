@@ -20,7 +20,7 @@ private:
     QMap<QString, double> rentalPrices;
 
 public:
-    Repository();
+    Repository(QMap<int, QVector<Transaction>>&);
     ~Repository();
 
     QVector<Customer> getCustomers();
@@ -42,6 +42,7 @@ public:
 
     QVector<Transaction> getTransactions();
     QVector<Transaction> getTransactionsByCustId(int);
+    QVector<Transaction> getCompletedTransactionsByCustId(int);
     Transaction getTransactionById(int);
     Transaction getTransactionByRentedVehicleId(int);
     void addTransaction(Transaction transaction);
@@ -54,6 +55,8 @@ public:
     double getRentalPrice(QString);
 
     void getHistoryModel(QSqlQueryModel *model);
+
+    void updateCustTransMap(QMap<int, QVector<Transaction>>&);
 
     void testThings();
     void createTables();

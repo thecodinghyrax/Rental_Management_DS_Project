@@ -87,9 +87,9 @@ QString Transaction::printTransaction(){
     trans.append("Start Date: " + getStartDate().toString() + "\n");
     trans.append("End Date: " + getEndDate().toString() + "\n");
 
-    trans.append("Charge Amount: " + QString::number(getChargeAmount()) + "\n");
+    trans.append("Charge Amount: $" + QString::number(getChargeAmount()) + "\n");
     trans.append("Number of Days: " + QString::number(getNumberOfDays()) + "\n");
     trans.append("Return Note: " + getReturnNote() + "\n");
-    trans.append("--------------------------------------------------------------");
+    trans.append("--------------------------------------------------------------\n");
     return trans;
 };

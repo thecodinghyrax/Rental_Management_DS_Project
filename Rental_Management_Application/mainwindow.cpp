@@ -8,11 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     clearAllInput();
-    //repo.testThings();
-   /*
-Note on file finding issues:
-Your current working folder is set by Qt Creator. Go to Projects >> Your selected build >> Press the 'Run' button (next to 'Build) and you will see what it is on this page which of course you can change as well.
-*/
 }
 
 MainWindow::~MainWindow()
@@ -161,6 +156,7 @@ void MainWindow::on_addCustSubmitBtn_clicked()
 
         clearAllInput();
         ui->validateLable->setText(first + " has been added!");
+        repo.updateCustTransMap(customerTransactionsMap);
     }
 
 }
@@ -211,7 +207,7 @@ void MainWindow::on_editCustSubmitBtn_clicked()
         repo.updateCustomer(temp);
         clearAllInput();
         ui->validateLable->setText("Recored has been updated!");
-
+        repo.updateCustTransMap(customerTransactionsMap);
     }
 }
 
@@ -356,6 +352,7 @@ void MainWindow::on_completeRentalButton_clicked()
                 repo.addTransaction(Transaction(current, chargeAmount, days, vehicleNumber, custNumber));
                 ui->stackedWidget->setCurrentIndex(3);
                 populateRentedVhicleList();
+                repo.updateCustTransMap(customerTransactionsMap);
             }
 
         }
@@ -407,6 +404,7 @@ void MainWindow::on_returnVehicleBtn_clicked()
         populateRentedVhicleList();
         ui->returnConditionInput->clear();
         ui->rentalSelectedForReturn->clear();
+        repo.updateCustTransMap(customerTransactionsMap);
     } else {
         QMessageBox box;
         box.setText("Pleas enter a return condition comment.");
@@ -443,3 +441,21 @@ void MainWindow::populateHistoryTable(){
     ui->rentalHistoryTable->setModel(model);
 
 };
+
+void MainWindow::on_rentalHistoryTable_clicked(const QModelIndex &index)
+{
+    if(index.column() == 5){
+        int custNumber = ui->rentalHistoryTable->model()->data(index).toInt();
+        QMessageBox box;
+        QString message;
+        message.append(repo.getCustomerById(custNumber).getFirstName() + " " +
+                repo.getCustomerById(custNumber).getLastName() + "'s transactions\n\n");
+        QVector<Transaction> transactions = customerTransactionsMap[custNumber];
+        for(auto trans : transactions){
+            message.append(trans.printTransaction());
+        }
+        box.setText(message);
+        box.exec();
+    }
+}
+

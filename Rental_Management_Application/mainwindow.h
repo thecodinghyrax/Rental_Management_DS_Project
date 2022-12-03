@@ -97,11 +97,14 @@ private slots:
 
     void populateHistoryTable();
 
+
+    void on_rentalHistoryTable_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QVector<Transaction> custTransactions;
     QMap<int, QVector<Transaction>> customerTransactionsMap;
-    Repository repo;
+    Repository repo = Repository(customerTransactionsMap);
     QStack<RentalVehicle> recentReturns;
 
 
