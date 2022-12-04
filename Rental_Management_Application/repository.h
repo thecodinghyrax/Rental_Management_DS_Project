@@ -55,10 +55,9 @@ public:
     double getRentalPrice(QString);
 
     void getHistoryModel(QSqlQueryModel *model);
-
+    void sortTransactionByDate(QVector<Transaction>&);
     void updateCustTransMap(QMap<int, QVector<Transaction>>&);
 
-    void testThings();
     void createTables();
 
 };

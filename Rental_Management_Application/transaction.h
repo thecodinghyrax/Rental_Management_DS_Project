@@ -16,6 +16,7 @@ private:
     int custNumber;
     QString returnNote;
 public:
+    Transaction();
     Transaction(QDateTime, double, int, int, int);
     Transaction(QDateTime, QDateTime, double, int, int, int, QString);
     Transaction(int, QDateTime, QDateTime, double, int, int, int, QString);

@@ -1,5 +1,9 @@
 ﻿#include "transaction.h"
 
+
+Transaction::Transaction(){
+
+};
 Transaction::Transaction(QDateTime start, double amount, int numberOfDays, int vehicleId, int custNumber){
     setStartDate(start);
     setChargeAmount(amount);

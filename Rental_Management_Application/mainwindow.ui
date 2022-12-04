@@ -43,7 +43,7 @@ color: rgb(255, 255, 255);</string>
 }</string>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Welcome">
      <widget class="QLabel" name="label">

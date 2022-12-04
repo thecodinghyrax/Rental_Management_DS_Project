@@ -97,7 +97,6 @@ private slots:
 
     void populateHistoryTable();
 
-
     void on_rentalHistoryTable_clicked(const QModelIndex &index);
 
 private:

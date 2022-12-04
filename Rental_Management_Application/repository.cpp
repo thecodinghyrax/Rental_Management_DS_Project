@@ -387,21 +387,39 @@ void Repository::getHistoryModel(QSqlQueryModel *model){
     model->setQuery(std::move(query));
 }
 
+void Repository::sortTransactionByDate(QVector<Transaction>& transactions){// From Inventory class deleted commit
+        // Insersion sort
+        Transaction temp;
+        int earliestDateIndex = 0;
+        int currentIndex = 0;
+        while(currentIndex < transactions.size()){
+            //searching unsorted section for earliest date
+            for(int i = currentIndex; i < transactions.size(); ++ i){
+                if(transactions[i].getEndDate() < transactions[earliestDateIndex].getEndDate()){
+                    earliestDateIndex = i;
+                }
+            }
+            // Swapping current index with earilest
+            if(currentIndex != earliestDateIndex){
+                temp = transactions[earliestDateIndex];
+                transactions[earliestDateIndex] = transactions[currentIndex];
+                transactions[currentIndex] = temp;
+            }
+
+            currentIndex++;
+            earliestDateIndex = currentIndex;
+        }
+};
+
 void Repository::updateCustTransMap(QMap<int, QVector<Transaction>>& map){
     map.clear();
     for(auto cust : getCustomers()){
-        QVector<Transaction> trans;
-        map.insert(cust.getCustNumber(), getCompletedTransactionsByCustId(cust.getCustNumber()));
+        QVector<Transaction> trans = getCompletedTransactionsByCustId(cust.getCustNumber());
+        sortTransactionByDate(trans);
+        map.insert(cust.getCustNumber(), trans);
     }
 };
 
-
-void Repository::testThings(){
-    if(getCustomerById(6).getFirstName() == ""){
-            //qCritical() << "Customer 6 was not found";
-    }
-
-};
 
 // Create testing data in db
 void Repository::createTables(){
