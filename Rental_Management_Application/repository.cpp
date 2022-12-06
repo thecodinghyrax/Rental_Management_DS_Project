@@ -578,6 +578,14 @@ void Repository::setDefaultRentalPrices(){
 void Repository::updateRentalPrice(QString catagory, double price){
     rentalPrices.value(catagory, price);
 }
+
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getRentalPrice
+* Description: Gets the price of a catagory
+* Input: QString/catagory
+* Output: none
+***************************************************************/
 double Repository::getRentalPrice(QString catagory){
     return rentalPrices.value(catagory);
 };
