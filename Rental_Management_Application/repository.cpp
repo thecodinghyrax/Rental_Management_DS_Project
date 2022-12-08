@@ -1,9 +1,23 @@
-﻿#include "repository.h"
+﻿/***************************************************************
+* Name        : Repository
+* Author      : Drew Crawford
+* Created     : 12/9/22
+***************************************************************/
+#include "repository.h"
 
+/**************************************************************
+* Constructors
+***************************************************************/
 
+/**************************************************************
+* Name: Drew Crawford
+* Class Name: Repository
+* Description: Constructor that accepts a QMap of ints and
+*               QVectors of Transaction objects
+* Input: QMap<int, QVector<Transaction>>/map
+***************************************************************/
 Repository::Repository(QMap<int, QVector<Transaction>>& map)
 {
-    QDir databasePath;
     QString path = "../rentalDB.sqlite";
     const QString DRIVER("QSQLITE");
     if(!QSqlDatabase::isDriverAvailable(DRIVER)) {
@@ -19,10 +33,28 @@ Repository::Repository(QMap<int, QVector<Transaction>>& map)
     updateCustTransMap(map);
 }
 
+/**************************************************************
+* Name: Drew Crawford
+* Class Name: ~Repository
+* Description: Destructor
+* Input parameters: none
+***************************************************************/
 Repository::~Repository(){
 
 }
 
+
+/***************************************************************
+* Class Methods
+***************************************************************/
+
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getCustomers
+* Description: Gets all customers found in the db
+* Input: none
+* Output: QVector<Customer>/customers
+***************************************************************/
 QVector<Customer> Repository::getCustomers(){
         QSqlQuery query;
         QVector<Customer> customers;
@@ -46,6 +78,13 @@ QVector<Customer> Repository::getCustomers(){
         return customers;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getCustomerById
+* Description: Gets a customer from the db by id
+* Input: int/id
+* Output: Customer/the customer with a matching id
+***************************************************************/
 Customer Repository::getCustomerById(int id){
     QSqlQuery query;
     query.prepare("SELECT firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber FROM customers WHERE custNumber = :custNumber");
@@ -67,6 +106,13 @@ Customer Repository::getCustomerById(int id){
     return temp;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: addCustomer
+* Description: Adds a Customer object to the db
+* Input: Customer/cust
+* Output: none
+***************************************************************/
 void Repository::addCustomer(Customer cust){
     QSqlQuery query;
     query.prepare("INSERT INTO customers(firstName, lastName, address, city, state, zip, phoneNumber, DLNumber, CCNumber, custNumber) VALUES (:firstName, :lastName, :address, :city, :state, :zip, :phoneNumber, :DLNumber, :CCNumber, :custNumber)");
@@ -83,6 +129,13 @@ void Repository::addCustomer(Customer cust){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: updateCustomer
+* Description: Updates a Customer in the db
+* Input: Customer/cust
+* Output: none
+***************************************************************/
 void Repository::updateCustomer(Customer cust){
     QSqlQuery query;
     query.prepare("UPDATE customers SET firstName = :firstName, lastName = :lastName, address = :address, city = :city," \
@@ -101,6 +154,13 @@ void Repository::updateCustomer(Customer cust){
 
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: deleteCustomerById
+* Description: Deletes a Customer from the db with a matching id
+* Input: int/id
+* Output: none
+***************************************************************/
 void Repository::deleteCustomerById(int id){
     QSqlQuery query;
     query.prepare("DELETE FROM customers WHERE custNumber = :id");
@@ -108,6 +168,14 @@ void Repository::deleteCustomerById(int id){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getNextCustNumber
+* Description: Gets the highest customer number in the db and returns
+*               a number one more than that
+* Input: none
+* Output: int/the highest Customer number plus one
+***************************************************************/
 int Repository::getNextCustNumber(){
     QSqlQuery query;
     query.exec("SELECT custNumber FROM customers ORDER BY custNumber DESC LIMIT 1");
@@ -115,7 +183,13 @@ int Repository::getNextCustNumber(){
     return query.value(0).toInt() + 1;
 };
 
-
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getVehicles
+* Description: Gets all rental vehicles from the db
+* Input: none
+* Output: QVector<RentalVehicle>/All vehicles from the db
+***************************************************************/
 QVector<RentalVehicle> Repository::getVehicles(){
     QSqlQuery query;
     QVector<RentalVehicle> vehicles;
@@ -137,6 +211,14 @@ QVector<RentalVehicle> Repository::getVehicles(){
     return vehicles;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getRentedVehicles
+* Description: Gets all rental vehicles from the db that have
+*               a isRented value of true
+* Input: none
+* Output: QVector<RentalVehicle>/All rented vehicles
+***************************************************************/
 QVector<RentalVehicle> Repository::getRentedVehicles(){
     QSqlQuery query;
     QVector<RentalVehicle> rentedVehicles;
@@ -157,6 +239,13 @@ QVector<RentalVehicle> Repository::getRentedVehicles(){
     return rentedVehicles;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getVehicleById
+* Description: Gets a vehicle from the db by its id
+* Input: int/id
+* Output: RentalVehicle/the vehicle with a matching id
+***************************************************************/
 RentalVehicle Repository::getVehicleById(int id){
     QSqlQuery query;
     query.prepare("SELECT vehicleNumber, catagory, make, model, year, milage, isRented, custNumber FROM rentalVehicles WHERE vehicleNumber = :vehicleNumber");
@@ -176,6 +265,15 @@ RentalVehicle Repository::getVehicleById(int id){
     return temp;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getAvailableVehicleIdByCatagory
+* Description: Gets a single vehicle with a matching catagory
+*               that is not currently rented. Return -1 if
+*               none are avaible.
+* Input: QString/catagory
+* Output: RentalVehicle/the vehicle with a matching id
+***************************************************************/
 int Repository::getAvailableVehicleIdByCatagory(QString catagory){
     QSqlQuery query;
     query.prepare("SELECT vehicleNumber, catagory FROM rentalVehicles WHERE catagory = :catagory AND isRented = 0 ORDER BY year DESC LIMIT 1");
@@ -189,6 +287,13 @@ int Repository::getAvailableVehicleIdByCatagory(QString catagory){
     }
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: addVehicle
+* Description: Adds a rental vehicle to the db
+* Input:RentalVehicle/vehicle
+* Output: none
+***************************************************************/
 void Repository::addVehicle(RentalVehicle vehicle){
     QSqlQuery query;
     query.prepare("INSERT INTO rentalVehicles(catagory, make, model, year, milage, isRented, custNumber) VALUES (:catagory, :make, :model, :year, :milage, :isRented, :custNumber)");
@@ -204,6 +309,13 @@ void Repository::addVehicle(RentalVehicle vehicle){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: updateVehicle
+* Description: Udates a rental vehicle in the db
+* Input:RentalVehicle/vehicle
+* Output: none
+***************************************************************/
 void Repository::updateVehicle(RentalVehicle vehicle){
     QSqlQuery query;
     query.prepare("UPDATE rentalVehicles SET catagory = :catagory, make = :make, model = :model," \
@@ -222,6 +334,14 @@ void Repository::updateVehicle(RentalVehicle vehicle){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: deleteVehicleById
+* Description: Deletes a rental vehicle from the db with a
+*               matching id
+* Input:int/id
+* Output: none
+***************************************************************/
 void Repository::deleteVehicleById(int id){
     QSqlQuery query;
     query.prepare("DELETE FROM rentalVehicles WHERE vehicleNumber = :id");
@@ -229,6 +349,13 @@ void Repository::deleteVehicleById(int id){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getTransactions
+* Description: Gets all Transactions from the db
+* Input: none
+* Output: QVector<Transaction>/transactions
+***************************************************************/
 QVector<Transaction> Repository::getTransactions(){
     QSqlQuery query;
     QVector<Transaction> transactions;
@@ -250,6 +377,14 @@ QVector<Transaction> Repository::getTransactions(){
     return transactions;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getTransactionsByCustId
+* Description: Gets all Transactions from the db with a
+*               matcching customer Id
+* Input: int/custId
+* Output: QVector<Transaction>/transactions for a customer
+***************************************************************/
 QVector<Transaction> Repository::getTransactionsByCustId(int custId){
     QSqlQuery query;
     QVector<Transaction> transactions;
@@ -272,6 +407,14 @@ QVector<Transaction> Repository::getTransactionsByCustId(int custId){
     return transactions;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getCompletedTransactionsByCustId
+* Description: Gets all Transactions from the db with a
+*               matcching customer Id and an end date
+* Input: int/custId
+* Output: QVector<Transaction>/transactions for a customer with end date
+***************************************************************/
 QVector<Transaction> Repository::getCompletedTransactionsByCustId(int custId){
     QSqlQuery query;
     QVector<Transaction> transactions;
@@ -294,6 +437,14 @@ QVector<Transaction> Repository::getCompletedTransactionsByCustId(int custId){
     return transactions;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getTransactionById
+* Description: Gets a single transaction from the db with
+*               a matching id
+* Input: int/transId
+* Output: Transaction/transaction with matching id
+***************************************************************/
 Transaction Repository::getTransactionById(int transId){
     QSqlQuery query;
     query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote FROM transactions WHERE id = :transId");
@@ -312,6 +463,15 @@ Transaction Repository::getTransactionById(int transId){
     return temp;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getTransactionByRentedVehicleId
+* Description: Gets the last transaction for a single vehicle.
+*           If the vehicle is currently rented, this will be
+*           the current (open) transaction.
+* Input: int/vehicleId
+* Output: Transaction/last transaction with matching vehicle id
+***************************************************************/
 Transaction Repository::getTransactionByRentedVehicleId(int vehicleId){
     QSqlQuery query;
     query.prepare("SELECT id, rentalStartDate, rentalEndDate, chargeAmount, numberOfDays, vehicleNumber, custNumber, returnNote FROM transactions WHERE vehicleNumber = :vehicleNumber");
@@ -330,6 +490,13 @@ Transaction Repository::getTransactionByRentedVehicleId(int vehicleId){
     return temp;
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: addTransaction
+* Description: Adds a transacgtion to the db
+* Input: Transaction/transaction
+* Output: none
+***************************************************************/
 void Repository::addTransaction(Transaction transaction){
     QSqlQuery query;
     query.prepare("INSERT INTO transactions(rentalStartDate, chargeAmount, numberOfDays, vehicleNumber, custNumber) VALUES (:rentalStartDate, :chargeAmount, :numberOfDays, :vehicleNumber, :custNumber)");
@@ -341,6 +508,13 @@ void Repository::addTransaction(Transaction transaction){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: updateTransaction
+* Description: Updates a transacgtion in the db
+* Input: Transaction/transaction
+* Output: none
+***************************************************************/
 void Repository::updateTransaction(Transaction transaction){
     QSqlQuery query;
     query.prepare("UPDATE transactions SET rentalStartDate = :rentalStartDate, rentalEndDate = :rentalEndDate, chargeAmount = :chargeAmount, numberOfDays = :numberOfDays, vehicleNumber = :vehicleNumber, custNumber = :custNumber, returnNote = :returnNote WHERE id = :id");
@@ -356,6 +530,13 @@ void Repository::updateTransaction(Transaction transaction){
 
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: deleteTransactionById
+* Description: Deletes a transacgtion in the db with a matching id
+* Input: int/id
+* Output: none
+***************************************************************/
 void Repository::deleteTransactionById(int id){
     QSqlQuery query;
     query.prepare("DELETE FROM transactions WHERE id = :id");
@@ -363,23 +544,61 @@ void Repository::deleteTransactionById(int id){
     query.exec();
 };
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: setRentalPrice
+* Description: Sets a rental price for a matching catagory
+* Input: QString/catagory, double/price
+* Output: none
+***************************************************************/
 void Repository::setRentalPrice(QString catagory, double price){
     rentalPrices.insert(catagory, price);
 };
+
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: setDefaultRentalPrices
+* Description: Sets the default rental prices for all vehicles catagories
+* Input: none
+* Output: none
+***************************************************************/
 void Repository::setDefaultRentalPrices(){
     rentalPrices.insert("economy", 20.);
     rentalPrices.insert("compact", 25.5);
     rentalPrices.insert("standard", 31.4);
     rentalPrices.insert("premium", 40.0);
 };
+
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: updateRentalPrice
+* Description: Update a catagory price
+* Input: QString/catagory, double/price
+* Output: none
+***************************************************************/
 void Repository::updateRentalPrice(QString catagory, double price){
     rentalPrices.value(catagory, price);
 }
+
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getRentalPrice
+* Description: Gets the price of a catagory
+* Input: QString/catagory
+* Output: none
+***************************************************************/
 double Repository::getRentalPrice(QString catagory){
     return rentalPrices.value(catagory);
 };
 
-
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: getHistoryModel
+* Description: Creates a data modle to be used in a QTableView showing
+*               all transactions with an end date (completed)
+* Input: QSqlQueryModel/ *model
+* Output: none
+***************************************************************/
 void Repository::getHistoryModel(QSqlQueryModel *model){
     QSqlQuery query;
     query.prepare("SELECT rentalStartDate, rentalEndDate, numberOfDays, chargeAmount, vehicleNumber, custNumber, returnNote FROM Transactions WHERE rentalEndDate NOT NULL");
@@ -387,23 +606,63 @@ void Repository::getHistoryModel(QSqlQueryModel *model){
     model->setQuery(std::move(query));
 }
 
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: sortTransactionByDate
+* Description: sorts a QVector of Transactions by date. This
+*               is an insersion sort algorithm written by Drew.
+* Input: QVector<Transaction>/&transactions
+* Output: none
+***************************************************************/
+void Repository::sortTransactionByDate(QVector<Transaction>& transactions){// From Inventory class deleted commit
+        // Insersion sort
+        Transaction temp;
+        int earliestDateIndex = 0;
+        int currentIndex = 0;
+        while(currentIndex < transactions.size()){
+            //searching unsorted section for earliest date
+            for(int i = currentIndex; i < transactions.size(); ++ i){
+                if(transactions[i].getEndDate() < transactions[earliestDateIndex].getEndDate()){
+                    earliestDateIndex = i;
+                }
+            }
+            // Swapping current index with earilest
+            if(currentIndex != earliestDateIndex){
+                temp = transactions[earliestDateIndex];
+                transactions[earliestDateIndex] = transactions[currentIndex];
+                transactions[currentIndex] = temp;
+            }
+
+            currentIndex++;
+            earliestDateIndex = currentIndex;
+        }
+};
+
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: updateCustTransMap
+* Description: Clears the customer transaction map and adds back
+*               all customers and their sorted transactions.
+* Input: QMap<int, QVector<Transaction>>/& map
+* Output: none
+***************************************************************/
 void Repository::updateCustTransMap(QMap<int, QVector<Transaction>>& map){
     map.clear();
     for(auto cust : getCustomers()){
-        QVector<Transaction> trans;
-        map.insert(cust.getCustNumber(), getCompletedTransactionsByCustId(cust.getCustNumber()));
+        QVector<Transaction> trans = getCompletedTransactionsByCustId(cust.getCustNumber());
+        sortTransactionByDate(trans);
+        map.insert(cust.getCustNumber(), trans);
     }
 };
 
-
-void Repository::testThings(){
-    if(getCustomerById(6).getFirstName() == ""){
-            //qCritical() << "Customer 6 was not found";
-    }
-
-};
-
-// Create testing data in db
+/**************************************************************
+* Name: Drew Crawford
+* Method Name: createTables
+* Description: Resets all tables in the db and populates them
+*               with test data.
+* Input: none
+* Output: none
+***************************************************************/
 void Repository::createTables(){
     QSqlQuery query;
     query.exec("DROP TABLE IF EXISTS customers");
